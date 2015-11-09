@@ -11,27 +11,50 @@
       // Default options
       defaults = {
 
-        scroll: true, // (Boolean||'invert'||'invertx'||'inverty') If true, the X and Y of the scene are tied to document's scroll for a typical parallax experience. Set to false if you want to control the scene's X and Y manually.
+        scroll: true,
+        // (Boolean||'invert'||'invertx'||'inverty')
+        // If true, the X and Y of the scene are tied to document's scroll for a typical parallax experience.
+        // If 'invert'||'invertx'||'inverty', the appropriate axes will be reversed on scroll.
+        // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
 
-        x: 0, // (Number) Starting x position. If tied to scroll, this will be overridden on render.
+        x: 0,
+        // (Number)
+        // Starting x position. If tied to scroll, this will be overridden on render.
 
-        y: 0, // (Number) Starting y position. If tied to scroll, this will be overridden on render.
+        y: 0, // (Number)
+        // Starting y position. If tied to scroll, this will be overridden on render.
 
-        damping: 1, // (Number) the 'easing' of the x & y position when updated. 1 = none, higher is longer. If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
+        damping: 1,
+        // (Number)
+        // The 'easing' of the x & y position when updated. 1 = none, higher is longer. If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
 
-        parent: document.body, // (Node) Canvas is prepended to document.body by default. Override with your own node if you want it within a certain container.
+        canvas: undefined,
+        // (Node)
+        // Use Canvallax on an existing canvas node, otherwise one is created.
 
-        canvas: undefined, // (Node) Use Canvallax on an existing canvas node, otherwise one is created.
+        parent: document.body,
+        // (Node)
+        // Canvas is prepended to document.body by default. Override with your own node if you want it within a certain container.
 
-        elements: undefined, // (Array) Array of elements to render on the Canvallax instance
+        elements: undefined,
+        // (Array)
+        // Collection of elements to render on the Canvallax instance
 
-        animating: true, // (Boolean) Update canvas every requestAnimationFrame call.
+        animating: true,
+        // (Boolean)
+        // Update canvas every requestAnimationFrame call.
 
-        fullscreen: true, // (Boolean) Set the canvas width and height to the size of the window, and update on window resize. Otherwise, the provided with and height will be used.
+        fullscreen: true,
+        // (Boolean)
+        // Set the canvas width and height to the size of the window, and update on window resize. Otherwise, the provided with and height will be used.
 
-        preRender: noop, // (Function) called before elements are rendered.
+        preRender: noop,
+        // (Function)
+        // Callback before elements are rendered.
 
-        postRender: noop // (Function) called after elements are rendered.
+        postRender: noop
+        // (Function)
+        // Callback after elements are rendered.
 
       },
 
@@ -74,13 +97,6 @@
     if ( options && options.elements ) { C.addElements(options.elements); }
 
     C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
-
-    if ( !watchingScroll ) {
-      watchingScroll = true;
-      onScroll();
-      W.addEventListener('scroll', onScroll);
-      W.addEventListener('touchmove', onScroll);
-    }
 
     C.render();
 
@@ -136,6 +152,12 @@
       if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
 
       if ( C.scroll ) {
+        if ( !watchingScroll ) {
+          watchingScroll = true;
+          onScroll();
+          W.addEventListener('scroll', onScroll);
+          W.addEventListener('touchmove', onScroll);
+        }
         C.x = ( C.scroll === 'invert' || C.scroll === 'invertx' ? -Wscrollx : Wscrollx );
         C.y = ( C.scroll === 'invert' || C.scroll === 'inverty' ? -Wscrolly : Wscrolly );
       }
