@@ -1,5 +1,3 @@
-(function(Canvallax){
-
   var twoPI = 2 * Math.PI;
 
   Canvallax.Circle = Canvallax.createElement({
@@ -22,5 +20,3 @@
       }
     }
   });
-
-})(Canvallax);

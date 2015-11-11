@@ -1,5 +1,3 @@
-(function(Canvallax){
-
   Canvallax.Rectangle = Canvallax.createElement({
     width: 100,
     height: 100,
@@ -21,5 +19,3 @@
       }
     }
   });
-
-})(Canvallax);

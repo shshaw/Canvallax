@@ -1,5 +1,3 @@
-(function() {
-
   var W = window,
       D = document,
       R = D.documentElement,
@@ -19,14 +17,17 @@
 
         x: 0,
         // (Number)
-        // Starting x position. If tied to scroll, this will be overridden on render.
+        // Starting x position.
+        // If tied to scroll, this will be overridden on render.
 
         y: 0, // (Number)
-        // Starting y position. If tied to scroll, this will be overridden on render.
+        // Starting y position.
+        // If tied to scroll, this will be overridden on render.
 
         damping: 1,
         // (Number)
-        // The 'easing' of the x & y position when updated. 1 = none, higher is longer. If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
+        // The 'easing' of the x & y position when updated. 1 = none, higher is longer.
+        // If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
 
         canvas: undefined,
         // (Node)
@@ -71,8 +72,7 @@
   // Check for canvas support, exit out if no supprt
   if ( !W.CanvasRenderingContext2D ) { return W.Canvallax = function(){ return false; }; }
 
-
-  function Canvallax(options) {
+  W.Canvallax = function Canvallax(options) {
     // Make new instance if not called with `new Canvallax`
     if ( !(this instanceof Canvallax) ) { return new Canvallax(options); }
 
@@ -82,6 +82,7 @@
 
     C.canvas = C.canvas || D.createElement('canvas');
     C.canvas.className = 'canvallax ' + C.className;
+
     C.parent.insertBefore(C.canvas, C.parent.firstChild);
 
     if ( C.fullscreen ) {
@@ -103,17 +104,10 @@
     return C;
   }
 
-
   ////////////////////////////////////////
-
 
   function zIndexSort(a,b){
     return (a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
-  }
-
-  function stop(){
-    this.animating = false;
-    return this;
   }
 
   Canvallax.prototype = {
@@ -169,15 +163,13 @@
       //C.ctx.scale(C.zoom,C.zoom);
 
       C.preRender(C.ctx,C);
-      C.ctx.save();
 
       for ( ; i < len; i++ ){
+        C.ctx.save();
         C.elements[i]._render(C.ctx,C);
-        C.ctx.setTransform(1, 0, 0, 1, 0, 0);
-        C.ctx.globalAlpha = 1;
+        C.ctx.restore();
       }
 
-      C.ctx.restore();
       C.postRender(C.ctx,C);
 
       return this;
@@ -195,17 +187,16 @@
 
     play: function(){
       this.animating = true;
-      this.render();
-      return this;
+      return this.render();
     },
 
-    stop: stop,
-    pause: stop
+    pause: function(){
+      this.animating = false;
+      return this;
+    }
   };
 
-
-  ////////////////////////////////////////
-
+////////////////////////////////////////
 
   Canvallax.extend = function(target) {
     target = target || {};
@@ -226,8 +217,6 @@
     }
 
     return target;
-  };
-
 
   ////////////////////////////////////////
 
@@ -295,7 +284,4 @@
   Canvallax.Element = Canvallax.createElement();
 
   ////////////////////////////////////////
-
-  W.Canvallax = Canvallax;
-
-})();
+  };

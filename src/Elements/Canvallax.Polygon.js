@@ -1,5 +1,3 @@
-(function(Canvallax){
-
   var twoPI = 2 * Math.PI,
       rad = Math.PI / 180;
 
@@ -39,5 +37,3 @@
       }
     }
   });
-
-})(Canvallax);

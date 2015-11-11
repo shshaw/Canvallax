@@ -1,0 +1,29 @@
+{
+  "name": "canvallax",
+  "title": "Canvallax",
+  "version": "1.0.1",
+  "description": "Easy parallax effects on canvas",
+  "main": "dist/Canvallax.min.js",
+  "author": {
+    "name": "Shaw",
+    "url": "https://github.com/shshaw"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shshaw/Canvallax.js"
+  },
+  "homepage": "https://github.com/shshaw/Canvallax.js",
+  "bugs": "https://github.com/shshaw/Canvallax.js/issues",
+  "license": "MIT",
+  "keywords": [
+    "javascript",
+    "canvas",
+    "library"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-uglify": "0.5.*",
+    "grunt-contrib-watch": "~0.6.1"
+  }
+}
