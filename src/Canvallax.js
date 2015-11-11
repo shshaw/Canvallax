@@ -106,7 +106,7 @@
 
   ////////////////////////////////////////
 
-  function zIndexSort(a,b){
+  function _zIndexSort(a,b){
     return (a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
   }
 
@@ -125,7 +125,7 @@
         this.elements.push(elements[i]);
       }
 
-      this.elements.sort(zIndexSort);
+      this.elements.sort(_zIndexSort);
       return this;
     },
 

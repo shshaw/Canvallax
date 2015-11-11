@@ -1,4 +1,3 @@
-
   function _getTransformPoint(el){
 
     var checksum = _makePointChecksum(el);
@@ -15,14 +14,15 @@
     return [el.transformOrigin,el.x,el.y,el.width,el.height,el.size].join(' ');
   }
 
-
   var rad = Math.PI / 180,
       elementPrototype = {
         x: 0,
         y: 0,
-        opacity: 1,
-        distance: 1,
         fixed: false,
+        distance: 1,
+
+        fill: '#000',
+        opacity: 1,
 
         scale: 1,
         rotation: 0,
@@ -81,9 +81,7 @@
           }
 
           if ( !el.fixed ) { C.ctx.translate(x, y); }
-
           if ( el.scale !== false ) { C.ctx.scale(el.scale, el.scale); }
-
           if ( el.rotation ) { C.ctx.rotate(el.rotation * rad); }
 
           C.ctx.translate(-transformPoint.x, -transformPoint.y);

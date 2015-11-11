@@ -31,9 +31,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.config('concat', {
     options: {
-      banner: globalConfig.banner + '\n(function(){\n',
-      footer: '\n\n})();',
+      banner: globalConfig.banner + '\n(function(){\n\n',
       separator: '\n\n////////////////////////////////////////\n\n',
+      footer: '\n\n})();',
     },
     dist: {
       files: {
