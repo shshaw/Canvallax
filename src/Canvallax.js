@@ -115,11 +115,11 @@
     _x: 0,
     _y: 0,
 
-    add: function(elements){
-      elements = elements.length ? elements : [elements];
+    add: function(el){
 
-      var i = 0,
-          len = elements.length;
+      var elements = el.length ? el : arguments,
+          len = elements.length,
+          i = 0;
 
       for ( ; i < len; i++ ) {
         this.elements.push(elements[i]);
