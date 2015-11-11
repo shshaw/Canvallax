@@ -1,5 +1,4 @@
-  var twoPI = 2 * Math.PI,
-      rad = Math.PI / 180;
+  var twoPI = 2 * Math.PI;
 
   Canvallax.Polygon = Canvallax.createElement({
     sides: 6,
@@ -11,7 +10,6 @@
       var i = this.sides;
 
       ctx.translate(this.x,this.y);
-      ctx.rotate(this.rotation * rad);
 
       ctx.beginPath();
       ctx.moveTo(this.size, 0);
