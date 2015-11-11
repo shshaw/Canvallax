@@ -4,6 +4,7 @@
   }
 
   Canvallax.Image = Canvallax.createElement({
+    fill: false,
     init: function(options){
 
       this.image = ( this.image ? this.image : options.nodeType ? options : (new Image) ).cloneNode();
