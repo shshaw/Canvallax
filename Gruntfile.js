@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   var globalConfig = {
         today: grunt.template.today("yyyy-mm-dd"),
-        banner: '/*! <%= pkg.title %>, v<%= pkg.version %> (built <%= globalConfig.today %>) */'
+        banner: '/*! <%= pkg.title %>, v<%= pkg.version %> (built <%= globalConfig.today %>) <%= pkg.homepage %> @preserve */\n'
       };
 
   grunt.initConfig({
@@ -15,10 +15,9 @@ module.exports = function(grunt) {
   grunt.config('uglify', {
 
     options: {
-      sourceMap: true,
+      //sourceMap: true,
       //wrap: true,
-      banner: globalConfig.banner,// + '\n(function(){ ',
-      //footer: ' })();'
+      banner: globalConfig.banner
     },
 
     dist: {
@@ -31,7 +30,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.config('concat', {
     options: {
-      banner: globalConfig.banner + '\n(function(){\n\n',
+      banner: globalConfig.banner + '(function(){\n\n',
       separator: '\n\n////////////////////////////////////////\n\n',
       footer: '\n\n})();',
     },

@@ -4,7 +4,23 @@
   }
 
   Canvallax.Image = Canvallax.createElement({
-    fill: false,
+
+    src: null,
+    // (String)
+    // URL of the image to be rendered. Not necessary if an image node is provided
+
+    image: null,
+    // (Node)
+    // Image node to be drawn on the canvas. If not provided, a new Image node will be created.
+
+    width: null,
+    // (Number)
+    // Width to render the image. Will be set to the `src` image's width if not provided.
+
+    height: null,
+    // (Number)
+    // Height to render the image. Will be set to the `src` image's height if not provided.
+
     init: function(options){
 
       this.image = ( this.image ? this.image : options.nodeType ? options : (new Image) ).cloneNode();
@@ -16,6 +32,7 @@
       this.image.src = this.image.src || options.src || options;
 
     },
+
     render: function(ctx){
       if ( this.image ) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);

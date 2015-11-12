@@ -1,9 +1,15 @@
   var twoPI = 2 * Math.PI;
 
   Canvallax.Polygon = Canvallax.createElement({
+
     sides: 6,
+    // (Number)
+    // Number of the polygon's sides. `3` is a triangle, `4` is a square, etc.
+
     size: 20,
-    rotation: 30,
+    // (Number)
+    // Radius of the polygon.
+
     render: function(ctx) {
       // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
       var i = this.sides;
@@ -22,4 +28,5 @@
 
       ctx.closePath();
     }
+
   });

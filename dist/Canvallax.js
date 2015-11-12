@@ -1,4 +1,4 @@
-/*! Canvallax, v1.1.0 (built 2015-11-12) */
+/*! Canvallax, v1.1.1 (built 2015-11-12) https://github.com/shshaw/Canvallax.js @preserve */
 (function(){
 
   var W = window,
@@ -242,25 +242,84 @@
 
   var rad = Math.PI / 180,
       elementPrototype = {
-        x: 0,
-        y: 0,
-        fixed: false,
-        distance: 1,
 
-        fill: '#000',
+        x: 0,
+        // (Number)
+        // Horizontal position within the Canvallax canvas
+
+        y: 0,
+        // (Number)
+        // Vertical position within the Canvallax canvas
+
+        distance: 1,
+        // (Number)
+        // How far away from the camera, essentially controlling the speed of the elements movement.
+        // If `scale` is not set to `false`, the element's distance value also affects the size, making elements appear closer or farther away.
+        // `1` means the element will move at the same speed as the Canvallax instance, `0.5` means half speed, `2` means twice the speed.
+
+        fixed: false,
+        // (Boolean)
+        // If `false`, the element will move with Canvallax
+        // If `true`, the element will remain locked into its `x` and `y` positions.
+
         opacity: 1,
+        // (Number)
+        // Element's transparency. `0` is invisible, `1` is fully visible.
+
+        fill: false,
+        // (Color||`false`)
+        // Fill in the element with a color.
+
+        stroke: false,
+        // (Color||`false`)
+        // Add a stroke to the element.
+
+        lineWidth: false,
+        // (Number)
+        // Width of the stroke.
+
+        transformOrigin: 'center center',
+        // (String)
+        // Where the element's transforms will occur, two keywords separated by a space.
+        // The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center of the element.
+        // The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
+        // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
 
         scale: 1,
+        // (Number||`false`)
+        // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
+        // Scaling will be in addition to the `distance` property's scaling.
+        // If `false`, the element will not be scaled with the `distance` property.
+
         rotation: 0,
-        transformOrigin: 'center center',
+        // (Number)
+        // Amount of rotation in degrees (0-360), affected by the `transformOrigin` property.
 
         preRender: noop,
-        postRender: noop,
-        render: noop,
-        init: noop,
+        // (Function)
+        // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
+        // Callback function triggered before the element is rendered.
 
-        _pointChecksum: false,
-        _pointCache: false,
+        render: noop,
+        // (Function)
+        // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
+        // Callback function to actually draw the element.
+        // If you're using a built-in element type, you usually won't want to overwrite this.
+
+        postRender: noop,
+        // (Function)
+        // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
+        // Callback function triggered after the element is rendered.
+
+        init: noop,
+        // (Function)
+        // Callback function triggered when the element is first created.
+        // Receives all arguments passed to the element's creation function.
+
+        crop: false,
+        // (Object||Function)
+        // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
+        // A callback function can also be used to draw the path for cropping the element.
 
         getTransformPoint: function(){
           var el = this,
@@ -383,12 +442,17 @@
   var twoPI = 2 * Math.PI;
 
   Canvallax.Circle = Canvallax.createElement({
+
     size: 20,
+    // (Number)
+    // Radius of the circle.
+
     render: function(ctx) {
       ctx.beginPath();
-      ctx.arc(this.x + this.size, this.y + + this.size, this.size, 0, twoPI);
+      ctx.arc(this.x + this.size, this.y + this.size, this.size, 0, twoPI);
       ctx.closePath();
     }
+
   });
 
 ////////////////////////////////////////
@@ -399,7 +463,23 @@
   }
 
   Canvallax.Image = Canvallax.createElement({
-    fill: false,
+
+    src: null,
+    // (String)
+    // URL of the image to be rendered. Not necessary if an image node is provided
+
+    image: null,
+    // (Node)
+    // Image node to be drawn on the canvas. If not provided, a new Image node will be created.
+
+    width: null,
+    // (Number)
+    // Width to render the image. Will be set to the `src` image's width if not provided.
+
+    height: null,
+    // (Number)
+    // Height to render the image. Will be set to the `src` image's height if not provided.
+
     init: function(options){
 
       this.image = ( this.image ? this.image : options.nodeType ? options : (new Image) ).cloneNode();
@@ -411,6 +491,7 @@
       this.image.src = this.image.src || options.src || options;
 
     },
+
     render: function(ctx){
       if ( this.image ) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -423,9 +504,15 @@
   var twoPI = 2 * Math.PI;
 
   Canvallax.Polygon = Canvallax.createElement({
+
     sides: 6,
+    // (Number)
+    // Number of the polygon's sides. `3` is a triangle, `4` is a square, etc.
+
     size: 20,
-    rotation: 30,
+    // (Number)
+    // Radius of the polygon.
+
     render: function(ctx) {
       // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
       var i = this.sides;
@@ -444,18 +531,27 @@
 
       ctx.closePath();
     }
+
   });
 
 ////////////////////////////////////////
 
   Canvallax.Rectangle = Canvallax.createElement({
+
     width: 100,
+    // (Number)
+    // Width of the rectangle.
+
     height: 100,
+    // (Number)
+    // Height of the rectangle.
+
     render: function(ctx) {
       ctx.beginPath();
       ctx.rect(this.x, this.y, this.width, this.height);
       ctx.closePath();
     }
+
   });
 
 })();
