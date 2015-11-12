@@ -97,6 +97,14 @@
             ctx.closePath();
           }
 
+          if ( el.outline ) {
+            ctx.beginPath();
+            ctx.rect(el.x, el.y, el.width || el.size * 2, el.height || el.size * 2);
+            ctx.closePath();
+            ctx.strokeStyle = el.outline;
+            ctx.stroke();
+          }
+
           el.render.call(el,ctx,C);
 
           if ( this.fill ) {
