@@ -1,7 +1,7 @@
 # Canvallax.js
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small (1.7kb gzipped) Javascript library with no dependencies for managing elements on `<canvas>`, with built in support for:
+Canvallax is a small (5.4kb minified, 2kb gzipped) Javascript library with no dependencies for managing elements on `<canvas>`, with built in support for:
 
 - Parallax Scrolling, with optional damping to smooth motions
 - Images on Canvas, from URLs or nodes (`<img />`, `<canvas />`, etc) with `Canvallax.Image`
@@ -16,6 +16,7 @@ Canvallax is primarily meant to help with unifying positioning, scale and scroll
 
 - [Basic Example](http://codepen.io/shshaw/pen/EVdzLV)
 - [With Content](http://codepen.io/shshaw/pen/ojQvyB)
+- [Header Image Slice](http://codepen.io/shshaw/pen/bVQROG)
 - [Parallax Sky Background](http://codepen.io/shshaw/pen/ZbExyV)
 - [Falling Hexagon Mask](http://codepen.io/shshaw/pen/dYdvww)
 
