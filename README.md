@@ -1,10 +1,9 @@
 # Canvallax.js
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(5.8kb minified, 2.1kb gzipped)* dependency-free Javascript library for managing elements on `<canvas>`. Support is built-in for:
+Canvallax is a small *(5.5kb minified, 2kb gzipped)* dependency-free Javascript library for managing elements on `<canvas>`. Support is built-in for:
 
 - Parallax Scrolling, with optional damping to smooth motions
-- Pointer Tracking
 - Distance/scaling
 - Images on Canvas, from URLs or nodes (`<img />`, `<canvas />`, etc) with `Canvallax.Image`
 - Common shapes (`Canvallax.Circle`, `Canvallax.Polygon` and `Canvallax.Rectangle`)
@@ -17,13 +16,9 @@ The Canvallax library is primarily meant to help with managing individual elemen
 
 ## Examples
 
-- [Basic Example](http://codepen.io/shshaw/pen/EVdzLV)
-- [With Content](http://codepen.io/shshaw/pen/ojQvyB)
-- [Header Image Slice](http://codepen.io/shshaw/pen/bVQROG)
-- [Pointer Tracking](http://codepen.io/shshaw/pen/RWEJMG)
-- [transformOrigin](http://codepen.io/shshaw/pen/LpMbvZ)
-- [Parallax Sky Background](http://codepen.io/shshaw/pen/ZbExyV)
-- [Falling Hexagon Mask](http://codepen.io/shshaw/pen/dYdvww)
+[![Starfield](http://brokensquare.com/Code/Canvallax.js/img/starfield.gif)](http://codepen.io/shshaw/pen/EVdzLV) [![Header Image Slice](http://brokensquare.com/Code/Canvallax.js/img/header-slice.gif)](http://codepen.io/shshaw/pen/bVQROG) [![Parallax Sky Background](http://brokensquare.com/Code/Canvallax.js/img/sky.gif)](http://codepen.io/shshaw/pen/ZbExyV) [![Falling Hexagon Mask](http://brokensquare.com/Code/Canvallax.js/img/hexagons.gif)](http://codepen.io/shshaw/pen/dYdvww) [![transformOrigin](http://brokensquare.com/Code/Canvallax.js/img/transform-origin.gif)](http://codepen.io/shshaw/pen/LpMbvZ)
+
+View the [CodePen collection of Canvallax demos](http://codepen.io/collection/DrxbPo/)
 
 
 ## Basic Usage
