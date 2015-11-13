@@ -23,7 +23,7 @@
 
     init: function(options){
 
-      this.image = ( this.image ? this.image : options.nodeType ? options : (new Image) ).cloneNode();
+      this.image = ( this.image && this.image.nodeType === 1 ? this.image : options && options.nodeType === 1 ? options : (new Image) );
 
       // Ensure we get width/height of image for best draw performance
       imageOnload.bind(this)();

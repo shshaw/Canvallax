@@ -1,4 +1,4 @@
-/*! Canvallax, v1.2.0 (built 2015-11-13) https://github.com/shshaw/Canvallax.js @preserve */
+/*! Canvallax, v1.2.1 (built 2015-11-13) https://github.com/shshaw/Canvallax.js @preserve */
 (function(){
 
   var win = window,
@@ -540,7 +540,7 @@
 
     init: function(options){
 
-      this.image = ( this.image ? this.image : options.nodeType ? options : (new Image) ).cloneNode();
+      this.image = ( this.image && this.image.nodeType === 1 ? this.image : options && options.nodeType === 1 ? options : (new Image) );
 
       // Ensure we get width/height of image for best draw performance
       imageOnload.bind(this)();

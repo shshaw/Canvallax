@@ -1,7 +1,7 @@
 {
   "name": "canvallax",
   "title": "Canvallax",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Easy parallax effects on canvas",
   "main": "dist/Canvallax.min.js",
   "author": {
