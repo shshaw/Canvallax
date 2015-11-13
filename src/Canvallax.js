@@ -33,6 +33,10 @@
         // (Node)
         // Use Canvallax on an existing canvas node, otherwise one is created.
 
+        className: '',
+        // (String)
+        // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
+
         parent: document.body,
         // (Node)
         // Canvas is prepended to document.body by default. Override with your own node if you want it within a certain container.
@@ -81,7 +85,7 @@
     Canvallax.extend(this,defaults,options);
 
     C.canvas = C.canvas || doc.createElement('canvas');
-    C.canvas.className = 'canvallax ' + C.className;
+    C.canvas.className += ' canvallax ' + C.className;
 
     C.parent.insertBefore(C.canvas, C.parent.firstChild);
 
