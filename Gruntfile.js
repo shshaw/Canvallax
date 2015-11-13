@@ -15,8 +15,6 @@ module.exports = function(grunt) {
   grunt.config('uglify', {
 
     options: {
-      //sourceMap: true,
-      //wrap: true,
       banner: globalConfig.banner
     },
 
@@ -38,8 +36,8 @@ module.exports = function(grunt) {
       files: {
         'dist/<%= pkg.name %>.js': [
           'src/Canvallax.js',
-          'src/Canvallax.Element.js',
-          'src/Elements/*.js'
+          'src/Utilities/**/*.js',
+          'src/Elements/**/*.js'
         ]
       }
     }
