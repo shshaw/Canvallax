@@ -1,8 +1,8 @@
-  var W = window,
-      D = document,
-      R = D.documentElement,
-      B = D.body,
-      requestAnimationFrame = W.requestAnimationFrame || W.mozRequestAnimationFrame || W.webkitRequestAnimationFrame || W.msRequestAnimationFrame || W.oRequestAnimationFrame || function(callback){ W.setTimeout(callback, 20); },
+  var win = window,
+      doc = document,
+      root = doc.documentElement,
+      body = doc.body,
+      requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); },
 
       noop = function(){},
 
@@ -61,18 +61,18 @@
 
       // Only one scroll tracker that works for every Canvallax instance
       watchingScroll = false,
-      Wscrollx = 0,
-      Wscrolly = 0,
+      winScrollX = 0,
+      winScrollY = 0,
       onScroll = function(){
-        Wscrollx = R.scrollLeft || B.scrollLeft;
-        Wscrolly = R.scrollTop || B.scrollTop;
+        winScrollX = root.scrollLeft || body.scrollLeft;
+        winScrollY = root.scrollTop || body.scrollTop;
       };
 
 
   // Check for canvas support, exit out if no supprt
-  if ( !W.CanvasRenderingContext2D ) { return W.Canvallax = function(){ return false; }; }
+  if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
 
-  W.Canvallax = function Canvallax(options) {
+  win.Canvallax = function Canvallax(options) {
     // Make new instance if not called with `new Canvallax`
     if ( !(this instanceof Canvallax) ) { return new Canvallax(options); }
 
@@ -80,14 +80,14 @@
 
     Canvallax.extend(this,defaults,options);
 
-    C.canvas = C.canvas || D.createElement('canvas');
+    C.canvas = C.canvas || doc.createElement('canvas');
     C.canvas.className = 'canvallax ' + C.className;
 
     C.parent.insertBefore(C.canvas, C.parent.firstChild);
 
     if ( C.fullscreen ) {
       C.resizeFullscreen();
-      W.addEventListener('resize', C.resizeFullscreen.bind(C));
+      win.addEventListener('resize', C.resizeFullscreen.bind(C));
     } else {
       C.resize(C.width,C.height);
     }
@@ -104,7 +104,7 @@
     return C;
   }
 
-  ////////////////////////////////////////
+////////////////////////////////////////
 
   function _zIndexSort(a,b){
     return (a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
@@ -149,11 +149,11 @@
         if ( !watchingScroll ) {
           watchingScroll = true;
           onScroll();
-          W.addEventListener('scroll', onScroll);
-          W.addEventListener('touchmove', onScroll);
+          win.addEventListener('scroll', onScroll);
+          win.addEventListener('touchmove', onScroll);
         }
-        C.x = ( C.scroll === 'invert' || C.scroll === 'invertx' ? -Wscrollx : Wscrollx );
-        C.y = ( C.scroll === 'invert' || C.scroll === 'inverty' ? -Wscrolly : Wscrolly );
+        C.x = ( C.scroll === 'invert' || C.scroll === 'invertx' ? -winScrollX : winScrollX );
+        C.y = ( C.scroll === 'invert' || C.scroll === 'inverty' ? -winScrollY : winScrollY );
       }
 
       C._x += ( -C.x - C._x ) / C.damping;
@@ -182,7 +182,7 @@
     },
 
     resizeFullscreen: function() {
-      return this.resize(W.innerWidth,W.innerHeight);
+      return this.resize(win.innerWidth,win.innerHeight);
     },
 
     play: function(){
