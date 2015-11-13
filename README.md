@@ -1,16 +1,17 @@
 # Canvallax.js
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(5.4kb minified, 2kb gzipped)* Javascript library with no dependencies for managing elements on `<canvas>`, with built in support for:
+Canvallax is a small *(5.5kb minified, 2kb gzipped)* dependency-free Javascript library for managing elements on `<canvas>`. Support is built-in for:
 
 - Parallax Scrolling, with optional damping to smooth motions
+- Distance/scaling
 - Images on Canvas, from URLs or nodes (`<img />`, `<canvas />`, etc) with `Canvallax.Image`
+- Common shapes (`Canvallax.Circle`, `Canvallax.Polygon` and `Canvallax.Rectangle`)
 - Element stacking with zIndex
 - Fixed position Elements
-- Distance/scaling
 - Element cloning
 
-Canvallax is primarily meant to help with unifying positioning, scale and scroll effects for elements drawn on canvas, and some canvas knowledge will be needed for more advanced implementations like custom elements and animation.
+The Canvallax library is primarily meant to help with managing individual elements on canvas with unified positioning, scale and scroll effects. Some canvas knowledge will be needed for more advanced implementations like custom elements and animation, though most effects can be achieved with the built-in functionality.
 
 
 ## Examples
@@ -25,7 +26,7 @@ Canvallax is primarily meant to help with unifying positioning, scale and scroll
 
 ## Basic Usage
 
-Create a new Canvallax instance either by calling `new Canvallax` or `Canvallax`, either will work. First variable is an optional object containing options, the default values are shown below.
+Create a new Canvallax instance either by calling `new Canvallax()` or `Canvallax()`, either will work. First variable is an optional object containing options, the default values are shown below.
 
 ```javascript
 
