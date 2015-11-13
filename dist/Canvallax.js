@@ -1,31 +1,37 @@
-/*! Canvallax, v1.1.1 (built 2015-11-12) https://github.com/shshaw/Canvallax.js @preserve */
+/*! Canvallax, v1.2.0 (built 2015-11-13) https://github.com/shshaw/Canvallax.js @preserve */
 (function(){
 
-  var W = window,
-      D = document,
-      R = D.documentElement,
-      B = D.body,
-      requestAnimationFrame = W.requestAnimationFrame || W.mozRequestAnimationFrame || W.webkitRequestAnimationFrame || W.msRequestAnimationFrame || W.oRequestAnimationFrame || function(callback){ W.setTimeout(callback, 20); },
+  var win = window,
+      doc = document,
+      root = doc.documentElement,
+      body = doc.body,
+      requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); },
 
       noop = function(){},
 
       // Default options
       defaults = {
 
-        scroll: true,
-        // (Boolean||'invert'||'invertx'||'inverty')
-        // If true, the X and Y of the scene are tied to document's scroll for a typical parallax experience.
-        // If 'invert'||'invertx'||'inverty', the appropriate axes will be reversed on scroll.
+        tracking: 'scroll',
+        // (false||'scroll'||'pointer')
+        // If 'scroll', the `x` and `y` of the scene are tied to document's scroll for a typical parallax experience.
+        // If 'pointer', the `x` and `y` of the scene will be tied to the pointer (mouse or touch)
         // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
+
+        trackingInvert: false,
+        // (true||'invertx'||'inverty')
+        // Inversion of the tracking values.
+        // If true, 'invertx' or 'inverty', the appropriate axes will be reversed on scroll.
 
         x: 0,
         // (Number)
         // Starting x position.
-        // If tied to scroll, this will be overridden on render.
+        // If `tracking` is enabled, this will be overridden on render.
 
-        y: 0, // (Number)
+        y: 0,
+        // (Number)
         // Starting y position.
-        // If tied to scroll, this will be overridden on render.
+        // If `tracking` is enabled, this will be overridden on render.
 
         damping: 1,
         // (Number)
@@ -35,6 +41,10 @@
         canvas: undefined,
         // (Node)
         // Use Canvallax on an existing canvas node, otherwise one is created.
+
+        className: '',
+        // (String)
+        // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
 
         parent: document.body,
         // (Node)
@@ -64,18 +74,27 @@
 
       // Only one scroll tracker that works for every Canvallax instance
       watchingScroll = false,
-      Wscrollx = 0,
-      Wscrolly = 0,
+      winScrollX = 0,
+      winScrollY = 0,
       onScroll = function(){
-        Wscrollx = R.scrollLeft || B.scrollLeft;
-        Wscrolly = R.scrollTop || B.scrollTop;
+        winScrollX = root.scrollLeft || body.scrollLeft;
+        winScrollY = root.scrollTop || body.scrollTop;
+      },
+
+      // Only one pointer tracker that works for every Canvallax instance
+      watchingPointer = false,
+      winPointerX = 0,
+      winPointerY = 0,
+      onPointerMove = function(e){
+        winPointerX = ( e.touches ? e.touches[0].clientX : e.clientX ); // touch support
+        winPointerY = ( e.touches ? e.touches[0].clientY : e.clientY ); // touch support
       };
 
 
   // Check for canvas support, exit out if no supprt
-  if ( !W.CanvasRenderingContext2D ) { return W.Canvallax = function(){ return false; }; }
+  if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
 
-  W.Canvallax = function Canvallax(options) {
+  win.Canvallax = function Canvallax(options) {
     // Make new instance if not called with `new Canvallax`
     if ( !(this instanceof Canvallax) ) { return new Canvallax(options); }
 
@@ -83,14 +102,14 @@
 
     Canvallax.extend(this,defaults,options);
 
-    C.canvas = C.canvas || D.createElement('canvas');
-    C.canvas.className = 'canvallax ' + C.className;
+    C.canvas = C.canvas || doc.createElement('canvas');
+    C.canvas.className += ' canvallax ' + C.className;
 
     C.parent.insertBefore(C.canvas, C.parent.firstChild);
 
     if ( C.fullscreen ) {
       C.resizeFullscreen();
-      W.addEventListener('resize', C.resizeFullscreen.bind(C));
+      win.addEventListener('resize', C.resizeFullscreen.bind(C));
     } else {
       C.resize(C.width,C.height);
     }
@@ -107,7 +126,7 @@
     return C;
   }
 
-  ////////////////////////////////////////
+////////////////////////////////////////
 
   function _zIndexSort(a,b){
     return (a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
@@ -144,19 +163,52 @@
     render: function() {
       var C = this,
           i = 0,
-          len = C.elements.length;
+          len = C.elements.length,
+          offsetLeft = 0,
+          offsetTop = 0,
+          inBounds = C.fullscreen || C.tracking !== 'pointer';
 
       if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
 
-      if ( C.scroll ) {
-        if ( !watchingScroll ) {
-          watchingScroll = true;
-          onScroll();
-          W.addEventListener('scroll', onScroll);
-          W.addEventListener('touchmove', onScroll);
+      if ( C.tracking ) {
+
+        if ( C.tracking === 'scroll' ) {
+
+          if ( !watchingScroll ) {
+            watchingScroll = true;
+            onScroll();
+            win.addEventListener('scroll', onScroll);
+            win.addEventListener('touchmove', onScroll);
+          }
+
+          C.x = winScrollX;
+          C.y = winScrollY;
+
+        } else if ( C.tracking === 'pointer' ) {
+
+          if ( !watchingPointer ) {
+            watchingPointer = true;
+            win.addEventListener('mousemove', onPointerMove);
+            win.addEventListener('touchmove', onPointerMove);
+          }
+
+          if ( !inBounds ) {
+            offsetLeft = C.canvas.offsetLeft;
+            offsetTop = C.canvas.offsetTop;
+
+            inBounds = winPointerX >= offsetLeft && winPointerX <= offsetLeft + C.width && winPointerY >= offsetTop && winPointerY <= offsetTop + C.height;
+          }
+
+          if ( inBounds ) {
+            C.x = -winPointerX + offsetLeft;
+            C.y = -winPointerY + offsetTop;
+          }
+
         }
-        C.x = ( C.scroll === 'invert' || C.scroll === 'invertx' ? -Wscrollx : Wscrollx );
-        C.y = ( C.scroll === 'invert' || C.scroll === 'inverty' ? -Wscrolly : Wscrolly );
+
+        C.x = ( inBounds && (C.trackingInvert === true || C.trackingInvert === 'invertx') ? -C.x : C.x );
+        C.y = ( inBounds && (C.trackingInvert === true || C.trackingInvert === 'inverty') ? -C.y : C.y );
+
       }
 
       C._x += ( -C.x - C._x ) / C.damping;
@@ -185,7 +237,7 @@
     },
 
     resizeFullscreen: function() {
-      return this.resize(W.innerWidth,W.innerHeight);
+      return this.resize(win.innerWidth,win.innerHeight);
     },
 
     play: function(){
@@ -198,6 +250,223 @@
       return this;
     }
   };
+
+////////////////////////////////////////
+
+  Canvallax.createElement = (function(){
+
+    function _getTransformPoint(el){
+
+      var checksum = _makePointChecksum(el);
+
+      if ( !el._pointCache || el._pointChecksum !== checksum ) {
+        el._pointCache = el.getTransformPoint();
+        el._pointChecksum = checksum;
+      }
+
+      return el._pointCache;
+    }
+
+    function _makePointChecksum(el){
+      return [el.transformOrigin,el.x,el.y,el.width,el.height,el.size].join(' ');
+    }
+
+    var rad = Math.PI / 180,
+        elementPrototype = {
+
+          x: 0,
+          // (Number)
+          // Horizontal position within the Canvallax canvas
+
+          y: 0,
+          // (Number)
+          // Vertical position within the Canvallax canvas
+
+          distance: 1,
+          // (Number)
+          // How far away from the camera, essentially controlling the speed of the elements movement.
+          // If `scale` is not set to `false`, the element's distance value also affects the size, making elements appear closer or farther away.
+          // `1` means the element will move at the same speed as the Canvallax instance, `0.5` means half speed, `2` means twice the speed.
+
+          fixed: false,
+          // (Boolean)
+          // If `false`, the element will move with Canvallax
+          // If `true`, the element will remain locked into its `x` and `y` positions.
+
+          opacity: 1,
+          // (Number)
+          // Element's transparency. `0` is invisible, `1` is fully visible.
+
+          fill: false,
+          // (Color||`false`)
+          // Fill in the element with a color.
+
+          stroke: false,
+          // (Color||`false`)
+          // Add a stroke to the element.
+
+          lineWidth: false,
+          // (Number)
+          // Width of the stroke.
+
+          transformOrigin: 'center center',
+          // (String)
+          // Where the element's transforms will occur, two keywords separated by a space.
+          // The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center of the element.
+          // The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
+          // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
+
+          scale: 1,
+          // (Number||`false`)
+          // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
+          // Scaling will be in addition to the `distance` property's scaling.
+          // If `false`, the element will not be scaled with the `distance` property.
+
+          rotation: 0,
+          // (Number)
+          // Amount of rotation in degrees (0-360), affected by the `transformOrigin` property.
+
+          preRender: noop,
+          // (Function)
+          // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
+          // Callback function triggered before the element is rendered.
+
+          render: noop,
+          // (Function)
+          // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
+          // Callback function to actually draw the element.
+          // If you're using a built-in element type, you usually won't want to overwrite this.
+
+          postRender: noop,
+          // (Function)
+          // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
+          // Callback function triggered after the element is rendered.
+
+          init: noop,
+          // (Function)
+          // Callback function triggered when the element is first created.
+          // Receives all arguments passed to the element's creation function.
+
+          crop: false,
+          // (Object||Function)
+          // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
+          // A callback function can also be used to draw the path for cropping the element.
+
+          getTransformPoint: function(){
+            var el = this,
+                origin = el.transformOrigin.split(' '),
+                point = {
+                  x: el.x,
+                  y: el.y
+                };
+
+            if ( origin[0] === 'center' ) {
+              point.x += ( el.width ? el.width / 2 : el.size );
+            } else if ( origin[0] === 'right' ) {
+              point.x += ( el.width ? el.width : el.size * 2 );
+            }
+
+            if ( origin[1] === 'center' ) {
+              point.y += ( el.height ? el.height / 2 : el.size );
+            } else if ( origin[1] === 'bottom' ) {
+              point.y += ( el.height ? el.height : el.size * 2 );
+            }
+
+            return point;
+          },
+
+          _render: function(ctx,C) {
+            var el = this,
+                distance = el.distance || 1,
+                x = C._x,
+                y = C._y,
+                transformPoint = _getTransformPoint(el);
+
+            el.preRender.call(el,ctx,C);
+
+            if ( el.blend ) { C.ctx.globalCompositeOperation = el.blend; }
+            C.ctx.globalAlpha = el.opacity;
+
+            C.ctx.translate(transformPoint.x, transformPoint.y);
+
+            if ( el.scale === false ) {
+              x *= distance;
+              y *= distance;
+            } else {
+              C.ctx.scale(distance, distance);
+            }
+
+            if ( !el.fixed ) { C.ctx.translate(x, y); }
+            if ( el.scale !== false ) { C.ctx.scale(el.scale, el.scale); }
+            if ( el.rotation ) { C.ctx.rotate(el.rotation * rad); }
+
+            C.ctx.translate(-transformPoint.x, -transformPoint.y);
+
+            if ( el.crop ) {
+              ctx.beginPath();
+              if ( typeof el.crop === 'function' ) {
+                el.crop.call(el,ctx,C);
+              } else {
+                ctx.rect(el.crop.x, el.crop.y, el.crop.width, el.crop.height);
+              }
+              ctx.clip();
+              ctx.closePath();
+            }
+
+            if ( el.outline ) {
+              ctx.beginPath();
+              ctx.rect(el.x, el.y, el.width || el.size * 2, el.height || el.size * 2);
+              ctx.closePath();
+              ctx.strokeStyle = el.outline;
+              ctx.stroke();
+            }
+
+            el.render.call(el,ctx,C);
+
+            if ( this.fill ) {
+              ctx.fillStyle = this.fill;
+              ctx.fill();
+            }
+
+            if ( this.stroke ) {
+              if ( this.lineWidth ) { ctx.lineWidth = this.lineWidth; }
+              ctx.strokeStyle = this.stroke;
+              ctx.stroke();
+            }
+
+            el.postRender.call(el,ctx,C);
+
+            return el;
+          },
+
+          clone: function(props){
+
+            var props = Canvallax.extend({}, this, props);
+
+            return new this.constructor(props);
+          }
+
+        };
+
+    return function(defaults){
+
+      function El(options) {
+        if ( !(this instanceof El) ) { return new El(options); }
+
+        Canvallax.extend(this,options);
+        this.init.apply(this,arguments);
+
+        return this;
+      }
+
+      El.prototype = Canvallax.extend({},elementPrototype,defaults);
+      El.prototype.constructor = El;
+      El.clone = El.prototype.clone;
+
+      return El;
+    };
+
+  })();
 
 ////////////////////////////////////////
 
@@ -224,221 +493,6 @@
 
 ////////////////////////////////////////
 
-  function _getTransformPoint(el){
-
-    var checksum = _makePointChecksum(el);
-
-    if ( !el._pointCache || el._pointChecksum !== checksum ) {
-      el._pointCache = el.getTransformPoint();
-      el._pointChecksum = checksum;
-    }
-
-    return el._pointCache;
-  }
-
-  function _makePointChecksum(el){
-    return [el.transformOrigin,el.x,el.y,el.width,el.height,el.size].join(' ');
-  }
-
-  var rad = Math.PI / 180,
-      elementPrototype = {
-
-        x: 0,
-        // (Number)
-        // Horizontal position within the Canvallax canvas
-
-        y: 0,
-        // (Number)
-        // Vertical position within the Canvallax canvas
-
-        distance: 1,
-        // (Number)
-        // How far away from the camera, essentially controlling the speed of the elements movement.
-        // If `scale` is not set to `false`, the element's distance value also affects the size, making elements appear closer or farther away.
-        // `1` means the element will move at the same speed as the Canvallax instance, `0.5` means half speed, `2` means twice the speed.
-
-        fixed: false,
-        // (Boolean)
-        // If `false`, the element will move with Canvallax
-        // If `true`, the element will remain locked into its `x` and `y` positions.
-
-        opacity: 1,
-        // (Number)
-        // Element's transparency. `0` is invisible, `1` is fully visible.
-
-        fill: false,
-        // (Color||`false`)
-        // Fill in the element with a color.
-
-        stroke: false,
-        // (Color||`false`)
-        // Add a stroke to the element.
-
-        lineWidth: false,
-        // (Number)
-        // Width of the stroke.
-
-        transformOrigin: 'center center',
-        // (String)
-        // Where the element's transforms will occur, two keywords separated by a space.
-        // The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center of the element.
-        // The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
-        // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
-
-        scale: 1,
-        // (Number||`false`)
-        // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
-        // Scaling will be in addition to the `distance` property's scaling.
-        // If `false`, the element will not be scaled with the `distance` property.
-
-        rotation: 0,
-        // (Number)
-        // Amount of rotation in degrees (0-360), affected by the `transformOrigin` property.
-
-        preRender: noop,
-        // (Function)
-        // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-        // Callback function triggered before the element is rendered.
-
-        render: noop,
-        // (Function)
-        // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-        // Callback function to actually draw the element.
-        // If you're using a built-in element type, you usually won't want to overwrite this.
-
-        postRender: noop,
-        // (Function)
-        // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-        // Callback function triggered after the element is rendered.
-
-        init: noop,
-        // (Function)
-        // Callback function triggered when the element is first created.
-        // Receives all arguments passed to the element's creation function.
-
-        crop: false,
-        // (Object||Function)
-        // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
-        // A callback function can also be used to draw the path for cropping the element.
-
-        getTransformPoint: function(){
-          var el = this,
-              origin = el.transformOrigin.split(' '),
-              point = {
-                x: el.x,
-                y: el.y
-              };
-
-          if ( origin[0] === 'center' ) {
-            point.x += ( el.width ? el.width / 2 : el.size );
-          } else if ( origin[0] === 'right' ) {
-            point.x += ( el.width ? el.width : el.size * 2 );
-          }
-
-          if ( origin[1] === 'center' ) {
-            point.y += ( el.height ? el.height / 2 : el.size );
-          } else if ( origin[1] === 'bottom' ) {
-            point.y += ( el.height ? el.height : el.size * 2 );
-          }
-
-          return point;
-        },
-
-        _render: function(ctx,C) {
-          var el = this,
-              distance = el.distance || 1,
-              x = C._x,
-              y = C._y,
-              transformPoint = _getTransformPoint(el);
-
-          el.preRender.call(el,ctx,C);
-
-          if ( el.blend ) { C.ctx.globalCompositeOperation = el.blend; }
-          C.ctx.globalAlpha = el.opacity;
-
-          C.ctx.translate(transformPoint.x, transformPoint.y);
-
-          if ( el.scale === false ) {
-            x *= distance;
-            y *= distance;
-          } else {
-            C.ctx.scale(distance, distance);
-          }
-
-          if ( !el.fixed ) { C.ctx.translate(x, y); }
-          if ( el.scale !== false ) { C.ctx.scale(el.scale, el.scale); }
-          if ( el.rotation ) { C.ctx.rotate(el.rotation * rad); }
-
-          C.ctx.translate(-transformPoint.x, -transformPoint.y);
-
-          if ( el.crop ) {
-            ctx.beginPath();
-            if ( typeof el.crop === 'function' ) {
-              el.crop.call(el,ctx,C);
-            } else {
-              ctx.rect(el.crop.x, el.crop.y, el.crop.width, el.crop.height);
-            }
-            ctx.clip();
-            ctx.closePath();
-          }
-
-          if ( el.outline ) {
-            ctx.beginPath();
-            ctx.rect(el.x, el.y, el.width || el.size * 2, el.height || el.size * 2);
-            ctx.closePath();
-            ctx.strokeStyle = el.outline;
-            ctx.stroke();
-          }
-
-          el.render.call(el,ctx,C);
-
-          if ( this.fill ) {
-            ctx.fillStyle = this.fill;
-            ctx.fill();
-          }
-
-          if ( this.stroke ) {
-            if ( this.lineWidth ) { ctx.lineWidth = this.lineWidth; }
-            ctx.strokeStyle = this.stroke;
-            ctx.stroke();
-          }
-
-          el.postRender.call(el,ctx,C);
-
-          return el;
-        },
-
-        clone: function(props){
-
-          var props = Canvallax.extend({}, this, props);
-
-          return new this.constructor(props);
-        }
-
-      };
-
-  Canvallax.createElement = function(defaults){
-
-    function El(options) {
-      if ( !(this instanceof El) ) { return new El(options); }
-
-      Canvallax.extend(this,options);
-      this.init.apply(this,arguments);
-
-      return this;
-    }
-
-    El.prototype = Canvallax.extend({},elementPrototype,defaults);
-    El.prototype.constructor = El;
-    El.clone = El.prototype.clone;
-
-    return El;
-  };
-
-  Canvallax.Element = Canvallax.createElement();
-
-////////////////////////////////////////
-
   var twoPI = 2 * Math.PI;
 
   Canvallax.Circle = Canvallax.createElement({
@@ -454,6 +508,10 @@
     }
 
   });
+
+////////////////////////////////////////
+
+  Canvallax.Element = Canvallax.createElement();
 
 ////////////////////////////////////////
 
