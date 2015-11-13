@@ -9,20 +9,26 @@
       // Default options
       defaults = {
 
-        scroll: true,
-        // (Boolean||'invert'||'invertx'||'inverty')
-        // If true, the X and Y of the scene are tied to document's scroll for a typical parallax experience.
-        // If 'invert'||'invertx'||'inverty', the appropriate axes will be reversed on scroll.
+        tracking: 'scroll',
+        // (false||'scroll'||'pointer')
+        // If 'scroll', the `x` and `y` of the scene are tied to document's scroll for a typical parallax experience.
+        // If 'pointer', the `x` and `y` of the scene will be tied to the pointer (mouse or touch)
         // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
+
+        trackingInvert: false,
+        // (true||'invertx'||'inverty')
+        // Inversion of the tracking values.
+        // If true, 'invertx' or 'inverty', the appropriate axes will be reversed on scroll.
 
         x: 0,
         // (Number)
         // Starting x position.
-        // If tied to scroll, this will be overridden on render.
+        // If `tracking` is enabled, this will be overridden on render.
 
-        y: 0, // (Number)
+        y: 0,
+        // (Number)
         // Starting y position.
-        // If tied to scroll, this will be overridden on render.
+        // If `tracking` is enabled, this will be overridden on render.
 
         damping: 1,
         // (Number)
@@ -70,6 +76,15 @@
       onScroll = function(){
         winScrollX = root.scrollLeft || body.scrollLeft;
         winScrollY = root.scrollTop || body.scrollTop;
+      },
+
+      // Only one pointer tracker that works for every Canvallax instance
+      watchingPointer = false,
+      winPointerX = 0,
+      winPointerY = 0,
+      onPointerMove = function(e){
+        winPointerX = ( e.touches ? e.touches[0].clientX : e.clientX ); // touch support
+        winPointerY = ( e.touches ? e.touches[0].clientY : e.clientY ); // touch support
       };
 
 
@@ -145,19 +160,52 @@
     render: function() {
       var C = this,
           i = 0,
-          len = C.elements.length;
+          len = C.elements.length,
+          offsetLeft = 0,
+          offsetTop = 0,
+          inBounds = C.fullscreen || C.tracking !== 'pointer';
 
       if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
 
-      if ( C.scroll ) {
-        if ( !watchingScroll ) {
-          watchingScroll = true;
-          onScroll();
-          win.addEventListener('scroll', onScroll);
-          win.addEventListener('touchmove', onScroll);
+      if ( C.tracking ) {
+
+        if ( C.tracking === 'scroll' ) {
+
+          if ( !watchingScroll ) {
+            watchingScroll = true;
+            onScroll();
+            win.addEventListener('scroll', onScroll);
+            win.addEventListener('touchmove', onScroll);
+          }
+
+          C.x = winScrollX;
+          C.y = winScrollY;
+
+        } else if ( C.tracking === 'pointer' ) {
+
+          if ( !watchingPointer ) {
+            watchingPointer = true;
+            win.addEventListener('mousemove', onPointerMove);
+            win.addEventListener('touchmove', onPointerMove);
+          }
+
+          if ( !inBounds ) {
+            offsetLeft = C.canvas.offsetLeft;
+            offsetTop = C.canvas.offsetTop;
+
+            inBounds = winPointerX >= offsetLeft && winPointerX <= offsetLeft + C.width && winPointerY >= offsetTop && winPointerY <= offsetTop + C.height;
+          }
+
+          if ( inBounds ) {
+            C.x = -winPointerX + offsetLeft;
+            C.y = -winPointerY + offsetTop;
+          }
+
         }
-        C.x = ( C.scroll === 'invert' || C.scroll === 'invertx' ? -winScrollX : winScrollX );
-        C.y = ( C.scroll === 'invert' || C.scroll === 'inverty' ? -winScrollY : winScrollY );
+
+        C.x = ( inBounds && (C.trackingInvert === true || C.trackingInvert === 'invertx') ? -C.x : C.x );
+        C.y = ( inBounds && (C.trackingInvert === true || C.trackingInvert === 'inverty') ? -C.y : C.y );
+
       }
 
       C._x += ( -C.x - C._x ) / C.damping;
