@@ -23,23 +23,23 @@
 
           _render: function() {
 
-            var results = this.render.apply(this,arguments);
+            var pos = this.render.apply(this,arguments);
 
-            if ( results ) {
-              results.x = (this.invert === true || this.invert === 'invertx') ? -results.x : results.x;
-              results.y = (this.invert === true || this.invert === 'inverty') ? -results.y : results.y;
+            if ( pos ) {
+              pos.x = (this.invert === true || this.invert === 'invertx') ? -pos.x : pos.x;
+              pos.y = (this.invert === true || this.invert === 'inverty') ? -pos.y : pos.y;
             } else {
               return false;
             }
 
-            if ( !this._tempResults ) {
-              this._tempResults = { x: results.x, y: results.y };
+            if ( !this._pos ) {
+              this._pos = { x: pos.x, y: pos.y };
             }
 
-            this._tempResults.x += ( -results.x - this._tempResults.x ) / this.damping;
-            this._tempResults.y += ( -results.y - this._tempResults.y ) / this.damping;
+            this._pos.x += ( -pos.x - this._pos.x ) / this.damping;
+            this._pos.y += ( -pos.y - this._pos.y ) / this.damping;
 
-            return this._tempResults;
+            return this._pos;
           },
 
           clone: Canvallax.clone
