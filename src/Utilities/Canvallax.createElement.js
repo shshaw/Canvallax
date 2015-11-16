@@ -127,6 +127,14 @@
                 y = C.y,
                 transformPoint = _getTransformPoint(el);
 
+            if ( el.tracker ) {
+              var pos = el.tracker._render(C,el);
+              if ( pos ) {
+                el.x = pos.x;
+                el.y = pos.y;
+              }
+            }
+
             el.preRender.call(el,ctx,C);
 
             if ( el.blend ) { C.ctx.globalCompositeOperation = el.blend; }
