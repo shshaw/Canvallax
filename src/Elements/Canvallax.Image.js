@@ -25,6 +25,10 @@
 
       this.image = ( this.image && this.image.nodeType === 1 ? this.image : options && options.nodeType === 1 ? options : (new Image) );
 
+      if ( !(this.image instanceof HTMLCanvasElement) ) {
+        this.image = this.image.cloneNode();
+      }
+
       // Ensure we get width/height of image for best draw performance
       imageOnload.bind(this)();
       this.image.onload = imageOnload.bind(this);
