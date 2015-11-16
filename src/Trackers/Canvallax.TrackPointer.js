@@ -9,8 +9,6 @@
 
   Canvallax.TrackPointer = Canvallax.createTracker({
 
-    invert: true,
-
     render: function(C,el){
 
       var pos = false,
@@ -38,8 +36,8 @@
         };
 
         if ( el ) {
-          pos.x -= C.x;
-          pos.y -= C.y;
+          pos.x += C.x;
+          pos.y += C.y;
         }
       }
 

@@ -2,6 +2,11 @@
 
     var trackerPrototype = {
 
+          damping: 1,
+          // (Number)
+          // The 'easing' of the x & y position when updated. 1 = none, higher is longer.
+          // If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
+
           init: noop,
           // (Function)
           // Callback function triggered when the element is first created.
@@ -23,9 +28,18 @@
             if ( results ) {
               results.x = (this.invert === true || this.invert === 'invertx') ? -results.x : results.x;
               results.y = (this.invert === true || this.invert === 'inverty') ? -results.y : results.y;
+            } else {
+              return false;
             }
 
-            return results;
+            if ( !this._tempResults ) {
+              this._tempResults = { x: results.x, y: results.y };
+            }
+
+            this._tempResults.x += ( -results.x - this._tempResults.x ) / this.damping;
+            this._tempResults.y += ( -results.y - this._tempResults.y ) / this.damping;
+
+            return this._tempResults;
           },
 
           clone: Canvallax.clone

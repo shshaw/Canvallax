@@ -123,8 +123,8 @@
           _render: function(ctx,C) {
             var el = this,
                 distance = el.distance || 1,
-                x = C._x,
-                y = C._y,
+                x = C.x,
+                y = C.y,
                 transformPoint = _getTransformPoint(el);
 
             el.preRender.call(el,ctx,C);

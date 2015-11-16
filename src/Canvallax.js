@@ -23,11 +23,6 @@
         // Starting y position.
         // If `tracking` is enabled, this will be overridden on render.
 
-        damping: 1,
-        // (Number)
-        // The 'easing' of the x & y position when updated. 1 = none, higher is longer.
-        // If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
-
         canvas: undefined,
         // (Node)
         // Use Canvallax on an existing canvas node, otherwise one is created.
@@ -90,8 +85,6 @@
     C.elements = [];
     if ( options && options.elements ) { C.addElements(options.elements); }
 
-    C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
-
     C.render();
 
     return C;
@@ -104,9 +97,6 @@
   }
 
   Canvallax.prototype = {
-
-    _x: 0,
-    _y: 0,
 
     add: function(el){
 
@@ -141,17 +131,13 @@
 
       if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
 
+      C.ctx.clearRect(0, 0, C.width, C.height);
+
       if ( C.tracker ) {
         var pos = C.tracker._render(C);
         C.x = pos.x;
         C.y = pos.y;
       }
-
-      C._x += ( -C.x - C._x ) / C.damping;
-      C._y += ( -C.y - C._y ) / C.damping;
-
-      C.ctx.clearRect(0, 0, C.width, C.height);
-      //C.ctx.scale(C.zoom,C.zoom);
 
       C.preRender(C.ctx,C);
 
