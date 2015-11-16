@@ -1,5 +1,9 @@
-  var win = window,
-      doc = document,
+  var win = window;
+
+  // Check for canvas support, exit out if no supprt
+  if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
+
+  var doc = document,
       root = doc.documentElement,
       body = doc.body,
       requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); },
@@ -56,9 +60,6 @@
         // Callback after elements are rendered.
 
       };
-
-  // Check for canvas support, exit out if no supprt
-  if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
 
   win.Canvallax = function Canvallax(options) {
     // Make new instance if not called with `new Canvallax`
