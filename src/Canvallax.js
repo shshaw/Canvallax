@@ -9,16 +9,9 @@
       // Default options
       defaults = {
 
-        tracking: 'scroll',
+        tracker: false,
         // (false||'scroll'||'pointer')
-        // If 'scroll', the `x` and `y` of the scene are tied to document's scroll for a typical parallax experience.
-        // If 'pointer', the `x` and `y` of the scene will be tied to the pointer (mouse or touch)
         // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
-
-        trackingInvert: false,
-        // (true||'invertx'||'inverty')
-        // Inversion of the tracking values.
-        // If true, 'invertx' or 'inverty', the appropriate axes will be reversed on scroll.
 
         x: 0,
         // (Number)
@@ -67,26 +60,7 @@
         // (Function)
         // Callback after elements are rendered.
 
-      },
-
-      // Only one scroll tracker that works for every Canvallax instance
-      watchingScroll = false,
-      winScrollX = 0,
-      winScrollY = 0,
-      onScroll = function(){
-        winScrollX = root.scrollLeft || body.scrollLeft;
-        winScrollY = root.scrollTop || body.scrollTop;
-      },
-
-      // Only one pointer tracker that works for every Canvallax instance
-      watchingPointer = false,
-      winPointerX = 0,
-      winPointerY = 0,
-      onPointerMove = function(e){
-        winPointerX = ( e.touches ? e.touches[0].clientX : e.clientX ); // touch support
-        winPointerY = ( e.touches ? e.touches[0].clientY : e.clientY ); // touch support
       };
-
 
   // Check for canvas support, exit out if no supprt
   if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
@@ -167,45 +141,10 @@
 
       if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
 
-      if ( C.tracking ) {
-
-        if ( C.tracking === 'scroll' ) {
-
-          if ( !watchingScroll ) {
-            watchingScroll = true;
-            onScroll();
-            win.addEventListener('scroll', onScroll);
-            win.addEventListener('touchmove', onScroll);
-          }
-
-          C.x = winScrollX;
-          C.y = winScrollY;
-
-        } else if ( C.tracking === 'pointer' ) {
-
-          if ( !watchingPointer ) {
-            watchingPointer = true;
-            win.addEventListener('mousemove', onPointerMove);
-            win.addEventListener('touchmove', onPointerMove);
-          }
-
-          if ( !inBounds ) {
-            offsetLeft = C.canvas.offsetLeft;
-            offsetTop = C.canvas.offsetTop;
-
-            inBounds = winPointerX >= offsetLeft && winPointerX <= offsetLeft + C.width && winPointerY >= offsetTop && winPointerY <= offsetTop + C.height;
-          }
-
-          if ( inBounds ) {
-            C.x = -winPointerX + offsetLeft;
-            C.y = -winPointerY + offsetTop;
-          }
-
-        }
-
-        C.x = ( inBounds && (C.trackingInvert === true || C.trackingInvert === 'invertx') ? -C.x : C.x );
-        C.y = ( inBounds && (C.trackingInvert === true || C.trackingInvert === 'inverty') ? -C.y : C.y );
-
+      if ( C.tracker ) {
+        var pos = C.tracker._render(C);
+        C.x = pos.x;
+        C.y = pos.y;
       }
 
       C._x += ( -C.x - C._x ) / C.damping;
