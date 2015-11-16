@@ -11,20 +11,6 @@ module.exports = function(grunt) {
     globalConfig: globalConfig,
   });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.config('uglify', {
-
-    options: {
-      banner: globalConfig.banner
-    },
-
-    dist: {
-      files: {
-        'dist/<%= pkg.name %>.min.js': ['dist/<%= pkg.name %>.js']
-      }
-    }
-  });
-
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.config('concat', {
     options: {
@@ -34,11 +20,41 @@ module.exports = function(grunt) {
     },
     dist: {
       files: {
-        'dist/<%= pkg.name %>.js': [
+        'dist/<%= pkg.title %>.js': [
           'src/Canvallax.js',
           'src/Utilities/**/*.js',
           'src/Elements/**/*.js'
         ]
+      }
+    },
+    dev: {
+      files: {
+        'dev/<%= pkg.title %>.js': [
+          'src/Canvallax.js',
+          'src/Utilities/**/*.js',
+          'src/Trackers/**/*.js',
+          'src/Elements/**/*.js'
+        ]
+      }
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.config('uglify', {
+
+    options: {
+      banner: globalConfig.banner
+    },
+
+    dist: {
+      files: {
+        'dist/<%= pkg.title %>.min.js': ['dist/<%= pkg.name %>.js']
+      }
+    },
+
+    dev: {
+      files: {
+        'dev/<%= pkg.title %>.min.js': ['dev/<%= pkg.name %>.js']
       }
     }
   });
@@ -52,6 +68,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['concat','uglify']);
+  grunt.registerTask('default', ['concat:dist','uglify:dist']);
+  grunt.registerTask('dev', ['concat:dev','uglify:dev']);
 
 };
