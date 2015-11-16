@@ -48,13 +48,13 @@ module.exports = function(grunt) {
 
     dist: {
       files: {
-        'dist/<%= pkg.title %>.min.js': ['dist/<%= pkg.name %>.js']
+        'dist/<%= pkg.title %>.min.js': ['dist/<%= pkg.title %>.js']
       }
     },
 
     dev: {
       files: {
-        'dev/<%= pkg.title %>.min.js': ['dev/<%= pkg.name %>.js']
+        'dev/<%= pkg.title %>.min.js': ['dev/<%= pkg.title %>.js']
       }
     }
   });
