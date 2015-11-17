@@ -3,7 +3,7 @@
     this.height = ( this.height ? this.height : this.image.height );
   }
 
-  Canvallax.Image = Canvallax.createElement({
+  Canvallax.Image = createClass(Canvallax.Element,{
 
     src: null,
     // (String)

@@ -1,4 +1,4 @@
-  Canvallax.Rectangle = Canvallax.createElement({
+  Canvallax.Rectangle = createClass(Canvallax.Element,{
 
     width: 100,
     // (Number)
@@ -9,9 +9,7 @@
     // Height of the rectangle.
 
     render: function(ctx) {
-      ctx.beginPath();
       ctx.rect(this.x, this.y, this.width, this.height);
-      ctx.closePath();
     }
 
   });

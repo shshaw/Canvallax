@@ -7,7 +7,7 @@
         winPointerY = ( e.touches ? e.touches[0].clientY : e.clientY ); // touch support
       };
 
-  Canvallax.TrackPointer = Canvallax.createTracker({
+  Canvallax.TrackPointer = createClass(Canvallax.Tracker,{
 
     render: function(C,el){
 

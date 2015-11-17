@@ -1,6 +1,6 @@
   var twoPI = 2 * Math.PI;
 
-  Canvallax.Polygon = Canvallax.createElement({
+  Canvallax.Polygon = createClass(Canvallax.Element,{
 
     sides: 6,
     // (Number)
@@ -16,7 +16,6 @@
 
       ctx.translate(this.x + this.size,this.y + this.size);
 
-      ctx.beginPath();
       ctx.moveTo(this.size, 0);
 
       while (i--) {
@@ -26,7 +25,6 @@
         );
       }
 
-      ctx.closePath();
     }
 
   });

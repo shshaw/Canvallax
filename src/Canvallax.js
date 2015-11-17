@@ -1,17 +1,16 @@
-  var win = window;
+  var win = window,
+      doc = document,
+      root = doc.documentElement,
+      body = doc.body,
+      noop = function(){},
+      slice = Array.prototype.slice,
+      requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); };
 
   // Check for canvas support, exit out if no supprt
   if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
 
-  var doc = document,
-      root = doc.documentElement,
-      body = doc.body,
-      requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); },
-
-      noop = function(){},
-
-      // Default options
-      defaults = {
+  // Default options
+  var defaults = {
 
         tracker: false,
         // (false||Canvallax.TrackScroll()||Canvallax.TrackPointer())
@@ -61,32 +60,57 @@
 
       };
 
-  win.Canvallax = function Canvallax(options) {
-    // Make new instance if not called with `new Canvallax`
-    if ( !(this instanceof Canvallax) ) { return new Canvallax(options); }
+  function extend(target) {
+    target = target || {};
 
-    var C = this;
+    var length = arguments.length,
+        i = 1;
 
-    Canvallax.extend(this,defaults,options);
-
-    C.canvas = C.canvas || doc.createElement('canvas');
-    C.canvas.className += ' canvallax ' + C.className;
-
-    C.parent.insertBefore(C.canvas, C.parent.firstChild);
-
-    if ( C.fullscreen ) {
-      C.resizeFullscreen();
-      win.addEventListener('resize', C.resizeFullscreen.bind(C));
-    } else {
-      C.resize(C.width,C.height);
+    if ( arguments.length === 1 ) {
+      target = this;
+      i = 0;
     }
 
-    C.ctx = C.canvas.getContext('2d');
+    for ( ; i < length; i++ ) {
+      if ( !arguments[i] ) { continue; }
+      for ( var key in arguments[i] ) {
+        if ( arguments[i].hasOwnProperty(key) ) { target[key] = arguments[i][key]; }
+      }
+    }
 
-    C.elements = [];
-    if ( options && options.elements ) { C.addElements(options.elements); }
+    return target;
+  };
 
-    C.render();
+  function clone(props){
+    var props = extend({}, this, props);
+    return new this.constructor(props);
+  };
+
+  function createClass(){
+
+    function C(options) {
+      if ( !(this instanceof C) ) { return new C(options); }
+
+      extend(this,options);
+      this.init.apply(this,arguments);
+
+      return this;
+    }
+
+    var args = slice.call(arguments),
+        parent = null,
+        fn = C.prototype = { init: noop };
+
+    if ( args.length > 1 && args[0].prototype ) {
+      parent = args[0];
+      args[0] = args[0].prototype;
+      fn._parent = parent;
+    }
+
+    args.unshift(fn);
+    extend.apply(fn, args);
+
+    fn.constructor = C;
 
     return C;
   }
@@ -97,7 +121,34 @@
     return (a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
   }
 
-  Canvallax.prototype = {
+  win.Canvallax = Canvallax = createClass({
+
+    init: function(options){
+      var C = this;
+
+      Canvallax.extend(this,defaults,options);
+
+      C.canvas = C.canvas || doc.createElement('canvas');
+      C.canvas.className += ' canvallax ' + C.className;
+
+      C.parent.insertBefore(C.canvas, C.parent.firstChild);
+
+      if ( C.fullscreen ) {
+        C.resizeFullscreen();
+        win.addEventListener('resize', C.resizeFullscreen.bind(C));
+      } else {
+        C.resize(C.width,C.height);
+      }
+
+      C.ctx = C.canvas.getContext('2d');
+
+      C.elements = [];
+      if ( options && options.elements ) { C.addElements(options.elements); }
+
+      C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
+
+      C.render();
+    },
 
     add: function(el){
 
@@ -172,4 +223,9 @@
       this.animating = false;
       return this;
     }
-  };
+  });
+
+  // Utility functions outside of prototype.
+  Canvallax.createClass = createClass;
+  Canvallax.extend = extend;
+  Canvallax.clone = clone;

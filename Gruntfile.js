@@ -22,7 +22,8 @@ module.exports = function(grunt) {
       files: {
         'dist/<%= pkg.title %>.js': [
           'src/Canvallax.js',
-          'src/Utilities/**/*.js',
+          'src/Core/**/*.js',
+          'src/Trackers/**/*.js',
           'src/Elements/**/*.js'
         ]
       }
@@ -31,7 +32,7 @@ module.exports = function(grunt) {
       files: {
         'dev/<%= pkg.title %>.js': [
           'src/Canvallax.js',
-          'src/Utilities/**/*.js',
+          'src/Core/**/*.js',
           'src/Trackers/**/*.js',
           'src/Elements/**/*.js'
         ]
