@@ -12,6 +12,11 @@
           // How slow or fast the tracker should move.
           // 2 is twice as fast as the tracked values, 0.5 is half the speed of the tracked values
 
+          invert: false,
+          // (true||'invertx'||'inverty')
+          // Inversion of the tracking values.
+          // If true, 'invertx' or 'inverty', the appropriate axes will be reversed relative to what's provided in the `render` function.
+
           init: noop,
           // (Function)
           // Callback function triggered when the element is first created.
@@ -20,12 +25,6 @@
           render: noop,
           // (Function)
           // Callback function run for each Canvallax instance using the tracker.
-
-          invert: false,
-          // (true||'invertx'||'inverty')
-          // Inversion of the tracking values.
-          // If true, 'invertx' or 'inverty', the appropriate axes will be reversed relative to what's provided in the `render` function.
-
           _render: function(C,el) {
 
             var pos = this.render.apply(this,arguments);

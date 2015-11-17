@@ -14,7 +14,7 @@
       defaults = {
 
         tracker: false,
-        // (false||'scroll'||'pointer')
+        // (false||Canvallax.TrackScroll()||Canvallax.TrackPointer())
         // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
 
         x: 0,
