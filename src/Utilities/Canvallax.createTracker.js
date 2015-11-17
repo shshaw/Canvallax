@@ -7,6 +7,11 @@
           // The 'easing' of the x & y position when updated. 1 = none, higher is longer.
           // If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
 
+          speed: 1,
+          // (Number)
+          // How slow or fast the tracker should move.
+          // 2 is twice as fast as the tracked values, 0.5 is half the speed of the tracked values
+
           init: noop,
           // (Function)
           // Callback function triggered when the element is first created.
@@ -26,8 +31,8 @@
             var pos = this.render.apply(this,arguments);
 
             if ( pos ) {
-              pos.x = (this.invert === true || this.invert === 'invertx') ? -pos.x : pos.x;
-              pos.y = (this.invert === true || this.invert === 'inverty') ? -pos.y : pos.y;
+              pos.x = ((this.invert === true || this.invert === 'invertx') ? -pos.x : pos.x) * this.speed;
+              pos.y = ((this.invert === true || this.invert === 'inverty') ? -pos.y : pos.y) * this.speed;
             } else {
               return false;
             }
