@@ -21,7 +21,7 @@
           // Inversion of the tracking values.
           // If true, 'invertx' or 'inverty', the appropriate axes will be reversed relative to what's provided in the `render` function.
 
-          _render: function() {
+          _render: function(C,el) {
 
             var pos = this.render.apply(this,arguments);
 
@@ -33,7 +33,9 @@
             }
 
             if ( !this._pos ) {
-              this._pos = { x: pos.x, y: pos.y };
+              el = el || {};
+              C = C || {};
+              this._pos = { x: el.x || C.x || pos.x, y: el.y || C.y || pos.y };
             }
 
             this._pos.x += ( -pos.x - this._pos.x ) / this.damping;
