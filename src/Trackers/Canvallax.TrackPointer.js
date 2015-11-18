@@ -1,7 +1,7 @@
-  // Only one pointer tracker that works for every Canvallax instance
-  var watchingPointer = false,
-      winPointerX = 0,
+  var winPointerX = 0,
       winPointerY = 0,
+      // Only one pointer tracker that works for every instance
+      watchingPointer = false,
       onPointerMove = function(e){
         winPointerX = ( e.touches ? e.touches[0].clientX : e.clientX ); // touch support
         winPointerY = ( e.touches ? e.touches[0].clientY : e.clientY ); // touch support

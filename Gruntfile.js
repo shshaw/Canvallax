@@ -22,9 +22,10 @@ module.exports = function(grunt) {
       files: {
         'dist/<%= pkg.title %>.js': [
           'src/Canvallax.js',
-          'src/Core/**/*.js',
-          'src/Trackers/**/*.js',
-          'src/Elements/**/*.js'
+          'src/Canvallax.Element.js',
+          'src/Elements/**/*.js',
+          'src/Canvallax.Tracker.js',
+          'src/Trackers/**/*.js'
         ]
       }
     },
@@ -32,9 +33,10 @@ module.exports = function(grunt) {
       files: {
         'dev/<%= pkg.title %>.js': [
           'src/Canvallax.js',
-          'src/Core/**/*.js',
-          'src/Trackers/**/*.js',
-          'src/Elements/**/*.js'
+          'src/Canvallax.Element.js',
+          'src/Elements/**/*.js',
+          'src/Canvallax.Tracker.js',
+          'src/Trackers/**/*.js'
         ]
       }
     }

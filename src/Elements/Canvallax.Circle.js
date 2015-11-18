@@ -2,7 +2,7 @@
 
   Canvallax.Circle = createClass(Canvallax.Element,{
 
-    size: 20,
+    radius: 20,
     // (Number)
     // Radius of the circle.
 

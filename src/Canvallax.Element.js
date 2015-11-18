@@ -11,7 +11,7 @@
   }
 
   function _makePointChecksum(el){
-    return [el.transformOrigin,el.x,el.y,el.width,el.height,el.size].join(' ');
+    return [el.transformOrigin,el.x,el.y,el.width,el.height,el.radius].join(' ');
   }
 
   var rad = Math.PI / 180;
@@ -114,15 +114,15 @@
           };
 
       if ( origin[0] === 'center' ) {
-        point.x += ( el.width ? el.width / 2 : el.size );
+        point.x += ( el.width ? el.width / 2 : el.radius );
       } else if ( origin[0] === 'right' ) {
-        point.x += ( el.width ? el.width : el.size * 2 );
+        point.x += ( el.width ? el.width : el.radius * 2 );
       }
 
       if ( origin[1] === 'center' ) {
-        point.y += ( el.height ? el.height / 2 : el.size );
+        point.y += ( el.height ? el.height / 2 : el.radius );
       } else if ( origin[1] === 'bottom' ) {
-        point.y += ( el.height ? el.height : el.size * 2 );
+        point.y += ( el.height ? el.height : el.radius * 2 );
       }
 
       return point;
@@ -202,6 +202,6 @@
       return el;
     },
 
-    clone: Canvallax.clone
+    clone: clone
 
   });
