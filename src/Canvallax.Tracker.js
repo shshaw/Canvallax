@@ -20,13 +20,13 @@
     // Callback function triggered when the tracker is first created.
     // Receives all arguments passed to the tracker's creation function.
 
-    render: noop,
+    _render: noop,
     // (Function)
     // Callback function run for each Canvallax instance using the tracker.
 
-    _render: function(C,el) {
+    render: function(C,el) {
 
-      var pos = this.render.apply(this,arguments);
+      var pos = this._render.apply(this,arguments);
 
       if ( !pos ) { return false; }
 

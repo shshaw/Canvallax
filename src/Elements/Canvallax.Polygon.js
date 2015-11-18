@@ -10,7 +10,7 @@
     // (Number)
     // Radius of the polygon.
 
-    render: function(ctx) {
+    _render: function(ctx) {
       // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
       var i = this.sides;
 

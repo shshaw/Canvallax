@@ -206,7 +206,7 @@
       C.ctx.clearRect(0, 0, C.width, C.height);
 
       if ( C.tracker ) {
-        var pos = C.tracker._render(C);
+        var pos = C.tracker.render(C);
         C.x = pos.x;
         C.y = pos.y;
       }
@@ -215,7 +215,7 @@
 
       for ( ; i < len; i++ ){
         C.ctx.save();
-        C.elements[i]._render(C.ctx,C);
+        C.elements[i].render(C.ctx,C);
         C.ctx.restore();
       }
 

@@ -37,7 +37,7 @@
 
     },
 
-    render: function(ctx){
+    _render: function(ctx){
       if ( this.image ) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
       }

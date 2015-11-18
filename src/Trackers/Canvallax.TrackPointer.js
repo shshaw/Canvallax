@@ -9,7 +9,7 @@
 
   Canvallax.TrackPointer = createClass(Canvallax.Tracker,{
 
-    render: function(C,el){
+    _render: function(C,el){
 
       var pos = false,
           inBounds = C.fullscreen,

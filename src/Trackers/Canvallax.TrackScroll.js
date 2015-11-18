@@ -9,7 +9,7 @@
 
   Canvallax.TrackScroll = createClass(Canvallax.Tracker,{
 
-    render: function(C,el){
+    _render: function(C,el){
 
       if ( !watchingScroll ) {
         watchingScroll = true;

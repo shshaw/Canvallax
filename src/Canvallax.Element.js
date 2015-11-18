@@ -71,7 +71,7 @@
     // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
 
     scale: 1,
-    // (Number||`false`)
+    // (Number)
     // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
     // Scaling will be in addition to the `z` property's scaling.
 
@@ -84,7 +84,7 @@
     // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
     // Callback function triggered before the element is rendered.
 
-    render: noop,
+    _render: noop,
     // (Function)
     // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
     // Callback function to actually draw the element.
@@ -128,15 +128,15 @@
       return point;
     },
 
-    _render: function(ctx,C) {
+    render: function(ctx,C) {
       var el = this,
           x = C.x,
           y = C.y,
-          z = (el.z + 100)/100,
+          z = this.getZScale(),
           transformPoint = _getTransformPoint(el);
 
       if ( el.tracker ) {
-        var pos = el.tracker._render(C,el);
+        var pos = el.tracker.render(C,el);
         if ( pos ) {
           el.x = pos.x;
           el.y = pos.y;
@@ -183,7 +183,7 @@
       }
 
       ctx.beginPath();
-      el.render.call(el,ctx,C);
+      el._render.call(el,ctx,C);
       ctx.closePath();
 
       if ( this.fill ) {
