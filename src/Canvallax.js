@@ -10,7 +10,8 @@
   if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
 
   // Default options
-  var defaults = {
+  var Canvallax,
+      defaults = {
 
         tracker: false,
         // (`false`||Canvallax.TrackScroll()||Canvallax.TrackPointer())
@@ -34,7 +35,7 @@
         // (String)
         // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
 
-        parent: document.body,
+        parent: body,
         // (Node)
         // Canvas is prepended to document.body by default. Override with your own Node if you want it within a certain container.
 
@@ -125,8 +126,8 @@
     return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
   }
 
-  function clone(props){
-    var props = extend({}, this, props);
+  function clone(properties){
+    var props = extend({}, this, properties);
     return new this.constructor(props);
   }
 
@@ -196,10 +197,7 @@
     render: function() {
       var C = this,
           i = 0,
-          len = C.elements.length,
-          offsetLeft = 0,
-          offsetTop = 0,
-          inBounds = C.fullscreen || C.tracking !== 'pointer';
+          len = C.elements.length;
 
       if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
 

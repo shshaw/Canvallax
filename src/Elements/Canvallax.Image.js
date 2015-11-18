@@ -23,7 +23,7 @@
 
     init: function(options){
 
-      this.image = ( this.image && this.image.nodeType === 1 ? this.image : options && options.nodeType === 1 ? options : (new Image) );
+      this.image = ( this.image && this.image.nodeType === 1 ? this.image : options && options.nodeType === 1 ? options : new Image() );
 
       if ( !(this.image instanceof HTMLCanvasElement) ) {
         this.image = this.image.cloneNode();

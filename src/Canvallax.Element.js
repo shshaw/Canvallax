@@ -1,3 +1,4 @@
+  // Cache the getTransformPoint value until the checksumed values change.
   function _getTransformPoint(el){
 
     var checksum = _makePointChecksum(el);
@@ -28,14 +29,15 @@
 
     z: 0,
     // (Number)
-    // Element proximity to the Canvallax 'camera', typically within the range of -100 to 100.
-    // `z` will affect the scale of the element and speed of the element relative to the Canvallax instance's `x` & `y`.
-    // `0` means the element will move at the same speed as the Canvallax instance, `-50` will move half speed, `100` will move twice as fast.
+    // Element proximity to the Canvallax 'camera', typically within the range of -1 to 1.
+    // `z` affects speed of the element relative to the Canvallax instance's `x` & `y`.
+    // `0` means the element will move at the same speed as the Canvallax instance
+    // `-0.5` will move half speed, `1` will move twice as fast.
 
     zIndex: false,
     // (`false`||Boolean)
     // Stacking order of the element.
-    // Lower numbers are rendered first, higher numbers are rendered last making them appear on top of lower numbered elements.
+    // Higher numbers are rendered last making them appear on top of lower zIndex elements.
     // If `false`, the element's `z` property will be used.
 
     zScale: true,
@@ -105,6 +107,9 @@
     // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
     // A callback function can also be used to draw the path for cropping the element.
 
+    getZScale: function(){ return (this.z+1)/1; },
+    // Returns the element's scale
+
     getTransformPoint: function(){
       var el = this,
           origin = el.transformOrigin.split(' '),
@@ -150,6 +155,7 @@
 
       C.ctx.translate(transformPoint.x, transformPoint.y);
 
+      // The canvas coordinates are scaled, even if the element is not
       if ( el.zScale === false ) {
         x *= z;
         y *= z;
@@ -158,7 +164,7 @@
       }
 
       if ( !el.fixed ) { C.ctx.translate(x, y); }
-      if ( el.scale !== false ) { C.ctx.scale(el.scale, el.scale); }
+      C.ctx.scale(el.scale, el.scale);
       if ( el.rotation ) { C.ctx.rotate(el.rotation * rad); }
 
       C.ctx.translate(-transformPoint.x, -transformPoint.y);
