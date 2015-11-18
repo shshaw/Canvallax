@@ -1,5 +1,3 @@
-
-
   function _getTransformPoint(el){
 
     var checksum = _makePointChecksum(el);
@@ -28,11 +26,21 @@
     // (Number)
     // Vertical position within the Canvallax canvas
 
-    distance: 1,
+    z: 0,
     // (Number)
-    // How far away from the camera, essentially controlling the speed of the elements movement.
-    // If `scale` is not set to `false`, the element's distance value also affects the size, making elements appear closer or farther away.
-    // `1` means the element will move at the same speed as the Canvallax instance, `0.5` means half speed, `2` means twice the speed.
+    // Element proximity to the Canvallax 'camera', typically within the range of -100 to 100.
+    // `z` will affect the scale of the element and speed of the element relative to the Canvallax instance's `x` & `y`.
+    // `0` means the element will move at the same speed as the Canvallax instance, `-50` will move half speed, `100` will move twice as fast.
+
+    zIndex: false,
+    // (`false`||Boolean)
+    // Stacking order of the element.
+    // Lower numbers are rendered first, higher numbers are rendered last making them appear on top of lower numbered elements.
+    // If `false`, the element's `z` property will be used.
+
+    zScale: true,
+    // (Boolean)
+    // Scale based on the `z` property, making elements appear closer or farther away.
 
     fixed: false,
     // (Boolean)
@@ -65,8 +73,7 @@
     scale: 1,
     // (Number||`false`)
     // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
-    // Scaling will be in addition to the `distance` property's scaling.
-    // If `false`, the element will not be scaled with the `distance` property.
+    // Scaling will be in addition to the `z` property's scaling.
 
     rotation: 0,
     // (Number)
@@ -123,9 +130,9 @@
 
     _render: function(ctx,C) {
       var el = this,
-          distance = el.distance || 1,
           x = C.x,
           y = C.y,
+          z = (el.z + 100)/100,
           transformPoint = _getTransformPoint(el);
 
       if ( el.tracker ) {
@@ -143,11 +150,11 @@
 
       C.ctx.translate(transformPoint.x, transformPoint.y);
 
-      if ( el.scale === false ) {
-        x *= distance;
-        y *= distance;
+      if ( el.zScale === false ) {
+        x *= z;
+        y *= z;
       } else {
-        C.ctx.scale(distance, distance);
+        C.ctx.scale(z, z);
       }
 
       if ( !el.fixed ) { C.ctx.translate(x, y); }
@@ -169,7 +176,7 @@
 
       if ( el.outline ) {
         ctx.beginPath();
-        ctx.rect(el.x, el.y, el.width || el.size * 2, el.height || el.size * 2);
+        ctx.rect(el.x, el.y, el.width || el.radius * 2, el.height || el.radius * 2);
         ctx.closePath();
         ctx.strokeStyle = el.outline;
         ctx.stroke();

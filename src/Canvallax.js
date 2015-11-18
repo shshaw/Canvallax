@@ -13,7 +13,7 @@
   var defaults = {
 
         tracker: false,
-        // (false||Canvallax.TrackScroll()||Canvallax.TrackPointer())
+        // (`false`||Canvallax.TrackScroll()||Canvallax.TrackPointer())
         // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
 
         x: 0,
@@ -36,7 +36,7 @@
 
         parent: document.body,
         // (Node)
-        // Canvas is prepended to document.body by default. Override with your own node if you want it within a certain container.
+        // Canvas is prepended to document.body by default. Override with your own Node if you want it within a certain container.
 
         elements: undefined,
         // (Array)
@@ -48,7 +48,15 @@
 
         fullscreen: true,
         // (Boolean)
-        // Set the canvas width and height to the size of the window, and update on window resize. Otherwise, the provided with and height will be used.
+        // Set the canvas width and height to the size of the window, and update on window resize.
+
+        width: null,
+        // (Number)
+        // Canvas width, overridden if `fullscreen` is true.
+
+        height: null,
+        // (Number)
+        // Canvas height, overridden if `fullscreen` is true.
 
         preRender: noop,
         // (Function)
@@ -79,12 +87,7 @@
     }
 
     return target;
-  };
-
-  function clone(props){
-    var props = extend({}, this, props);
-    return new this.constructor(props);
-  };
+  }
 
   function createClass(){
 
@@ -117,11 +120,29 @@
 
 ////////////////////////////////////////
 
-  function _zIndexSort(a,b){
-    return (a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
+  function zIndexSort(a,b){
+    var sort = ( a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
+    return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
+  }
+
+  function clone(props){
+    var props = extend({}, this, props);
+    return new this.constructor(props);
   }
 
   win.Canvallax = Canvallax = createClass({
+
+    add: function(el){
+      var elements = el.length ? el : arguments,
+          len = elements.length,
+          i = 0;
+
+      for ( ; i < len; i++ ) {
+        this.elements.push(elements[i]);
+      }
+
+      return this.sort();
+    },
 
     init: function(options){
       var C = this;
@@ -148,19 +169,17 @@
       C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
 
       C.render();
+
+      return this;
     },
 
-    add: function(el){
+    play: function(){
+      this.animating = true;
+      return this.render();
+    },
 
-      var elements = el.length ? el : arguments,
-          len = elements.length,
-          i = 0;
-
-      for ( ; i < len; i++ ) {
-        this.elements.push(elements[i]);
-      }
-
-      this.elements.sort(_zIndexSort);
+    pause: function(){
+      this.animating = false;
       return this;
     },
 
@@ -170,6 +189,7 @@
       if ( index > -1 ) {
         this.elements.splice(index, 1);
       }
+
       return this;
     },
 
@@ -214,15 +234,12 @@
       return this.resize(win.innerWidth,win.innerHeight);
     },
 
-    play: function(){
-      this.animating = true;
-      return this.render();
+    sort: function(){
+      this.elements.sort(zIndexSort);
+      return this;
     },
 
-    pause: function(){
-      this.animating = false;
-      return this;
-    }
+    clone: clone
   });
 
   // Utility functions outside of prototype.
