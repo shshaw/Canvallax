@@ -134,12 +134,14 @@
   win.Canvallax = Canvallax = createClass({
 
     add: function(el){
-      var elements = el.length ? el : arguments,
+      var elements = el && el.length ? el : arguments,
           len = elements.length,
           i = 0;
 
       for ( ; i < len; i++ ) {
-        this.elements.push(elements[i]);
+        if ( elements[i] ) { // Prevent adding `false` or `undefined` elements
+          this.elements.push(elements[i]);
+        }
       }
 
       return this.sort();
