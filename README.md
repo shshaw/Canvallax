@@ -1,7 +1,7 @@
 # Canvallax.js
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(5.8kb minified, 2.1kb gzipped)* dependency-free Javascript library for managing elements on `<canvas>`. Support is built-in for:
+Canvallax is a small *(6.4kb minified, 2.4kb gzipped)* dependency-free Javascript library for managing elements on `<canvas>`. Support is built-in for:
 
 - Parallax Scrolling, with optional damping to smooth motions
 - Pointer Tracking

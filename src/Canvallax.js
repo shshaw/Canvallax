@@ -1,16 +1,17 @@
+  'use strict';
+
   var win = window,
       doc = document,
       root = doc.documentElement,
       body = doc.body,
       noop = function(){},
-      slice = Array.prototype.slice,
       requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); };
 
-  // Check for canvas support, exit out if no supprt
-  if ( !win.CanvasRenderingContext2D ) { return win.Canvallax = function(){ return false; }; }
+  // Exit if browser does not support canvas
+  if ( !win.CanvasRenderingContext2D ) { win.Canvallax = function(){ return false; }; return false; }
 
-  // Default options
   var Canvallax,
+      // Default options
       defaults = {
 
         tracker: false,
