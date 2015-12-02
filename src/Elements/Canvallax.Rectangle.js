@@ -1,4 +1,4 @@
-  Canvallax.Rectangle = createClass(Canvallax.Element,{
+  Canvallax.Rectangle = createElement({
 
     width: 100,
     // (Number)

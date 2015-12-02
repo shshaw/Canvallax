@@ -7,7 +7,7 @@
         winScrollY = root.scrollTop || body.scrollTop;
       };
 
-  Canvallax.TrackScroll = createClass(Canvallax.Tracker,{
+  Canvallax.TrackScroll = createTracker({
 
     _render: function(C,el){
 

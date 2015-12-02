@@ -1,6 +1,6 @@
   var twoPI = 2 * Math.PI;
 
-  Canvallax.Polygon = createClass(Canvallax.Element,{
+  Canvallax.Polygon = createElement({
 
     sides: 6,
     // (Number)

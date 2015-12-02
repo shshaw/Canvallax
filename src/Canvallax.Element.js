@@ -211,3 +211,5 @@
     clone: clone
 
   });
+
+  var createElement = Canvallax.createElement = createClass.bind(null,Canvallax.Element);

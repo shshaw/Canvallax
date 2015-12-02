@@ -46,3 +46,5 @@
     clone: clone
 
   });
+
+  var createTracker = Canvallax.createTracker = createClass.bind(null,Canvallax.Tracker);
