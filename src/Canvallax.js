@@ -101,11 +101,15 @@
       return this;
     }
 
-    var args = slice.call(arguments),
+    var args = [],
         parent = null,
-        fn = C.prototype = { init: noop };
+        fn = C.prototype = { init: noop },
+        length = arguments.length,
+        i = 0;
 
-    if ( args.length > 1 && args[0].prototype ) {
+    for ( ; i < length; i++ ) { args[i] = arguments[i]; }
+
+    if ( length > 1 && args[0].prototype ) {
       parent = args[0];
       args[0] = args[0].prototype;
       fn._parent = parent;
