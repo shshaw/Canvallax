@@ -11,7 +11,7 @@
 
     _render: function(C,el){
 
-      var pos = false,
+      var pos = { x: 0, y: 0 },
           inBounds = C.fullscreen,
           offsetLeft = 0,
           offsetTop = 0;
