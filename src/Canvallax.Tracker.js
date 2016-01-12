@@ -1,9 +1,9 @@
   Canvallax.Tracker = createClass({
 
-    damping: 1,
+    ease: 1,
     // (Number)
-    // The 'easing' of the x & y position when updated. 1 = none, higher is longer.
-    // If you're syncing parallax items to regular items in the scroll, then you'll probably want a low damping.
+    // The easing of the x & y position when updated. 1 = none, higher is longer.
+    // If you're syncing parallax items to regular items in the scroll, then you'll probably want a low ease.
 
     scale: 1,
     // (Number)
@@ -37,8 +37,10 @@
         this._pos = { x: ( el ? el.x : C ? C.x : pos.x ), y: ( el ? el.y : C ? C.y : pos.y ) };
       }
 
-      this._pos.x += ( -pos.x - this._pos.x ) / this.damping;
-      this._pos.y += ( -pos.y - this._pos.y ) / this.damping;
+      if ( this.ease > 0 ) {
+        _pos.x += ( -pos.x - _pos.x ) / this.ease;
+        _pos.y += ( -pos.y - _pos.y ) / this.ease;
+      }
 
       return this._pos;
     },
