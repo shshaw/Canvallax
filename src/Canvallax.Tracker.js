@@ -1,3 +1,4 @@
+
   Canvallax.Tracker = createClass({
 
     ease: 1,
@@ -20,21 +21,31 @@
     // Callback function triggered when the tracker is first created.
     // Receives all arguments passed to the tracker's creation function.
 
+    offset: false,
+    // (Number||Object)
+    // Offset(s) to be applied to the tracker's values.
+
     _render: noop,
     // (Function)
     // Callback function run for each Canvallax instance using the tracker.
 
     render: function(C,el) {
 
-      var pos = this._render.apply(this,arguments);
+      var pos = this._render.apply(this,arguments),
+          _pos = this.pos;
 
       if ( !pos ) { return false; }
 
       pos.x = ((this.invert === true || this.invert === 'invertx') ? -pos.x : pos.x) * this.scale;
       pos.y = ((this.invert === true || this.invert === 'inverty') ? -pos.y : pos.y) * this.scale;
 
-      if ( !this._pos ) {
-        this._pos = { x: ( el ? el.x : C ? C.x : pos.x ), y: ( el ? el.y : C ? C.y : pos.y ) };
+      if ( this.offset ) {
+        pos.x += ( this.offset.x !== undefined ? this.offset.x : this.offset);
+        pos.y += ( this.offset.y !== undefined ? this.offset.y : this.offset);
+      }
+
+      if ( !_pos ) {
+        _pos = { x: ( el ? el.x : C ? C.x : pos.x ), y: ( el ? el.y : C ? C.y : pos.y ) };
       }
 
       if ( this.ease > 0 ) {
@@ -42,7 +53,7 @@
         _pos.y += ( -pos.y - _pos.y ) / this.ease;
       }
 
-      return this._pos;
+      return this._pos = _pos;
     },
 
     clone: clone
