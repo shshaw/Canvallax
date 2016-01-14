@@ -1,20 +1,3 @@
-  // Cache the getTransformPoint value until the checksumed values change.
-  function _getTransformPoint(el){
-
-    var checksum = _makePointChecksum(el);
-
-    if ( !el._pointCache || el._pointChecksum !== checksum ) {
-      el._pointCache = el.getTransformPoint();
-      el._pointChecksum = checksum;
-    }
-
-    return el._pointCache;
-  }
-
-  function _makePointChecksum(el){
-    return [el.transformOrigin,el.x,el.y,el.width,el.height,el.radius].join(' ');
-  }
-
   var rad = Math.PI / 180;
 
   Canvallax.Element = createClass({
@@ -112,22 +95,31 @@
 
     getTransformPoint: function(){
       var el = this,
-          origin = el.transformOrigin.split(' '),
-          point = {
-            x: el.x,
-            y: el.y
-          };
+          point = el._transformPoint,
+          origin;
 
-      if ( origin[0] === 'center' ) {
-        point.x += ( el.width ? el.width / 2 : el.radius );
-      } else if ( origin[0] === 'right' ) {
-        point.x += ( el.width ? el.width : el.radius * 2 );
-      }
+      if ( !point || el._transformOrigin !== el.transformOrigin ) {
 
-      if ( origin[1] === 'center' ) {
-        point.y += ( el.height ? el.height / 2 : el.radius );
-      } else if ( origin[1] === 'bottom' ) {
-        point.y += ( el.height ? el.height : el.radius * 2 );
+        origin = el.transformOrigin.split(' ');
+        point = {
+          x: el.x,
+          y: el.y
+        };
+
+        if ( origin[0] === 'center' ) {
+          point.x += ( el.width ? el.width / 2 : el.radius );
+        } else if ( origin[0] === 'right' ) {
+          point.x += ( el.width ? el.width : el.radius * 2 );
+        }
+
+        if ( origin[1] === 'center' ) {
+          point.y += ( el.height ? el.height / 2 : el.radius );
+        } else if ( origin[1] === 'bottom' ) {
+          point.y += ( el.height ? el.height : el.radius * 2 );
+        }
+
+        el._transformOrigin = el.transformOrigin;
+        el._transformPoint = point;
       }
 
       return point;
@@ -137,8 +129,8 @@
       var el = this,
           x = C.x,
           y = C.y,
-          z = this.getZScale(),
-          transformPoint = _getTransformPoint(el);
+          z = el.getZScale(),
+          transformPoint = el.getTransformPoint();
 
       if ( el.tracker ) {
         var pos = el.tracker.render(C,el);
