@@ -23,21 +23,25 @@
 
     init: function(options){
 
-      this.image = ( this.image && this.image.nodeType === 1 ? this.image : options && options.nodeType === 1 ? options : new Image() );
+      var img = this.image;
 
-      if ( !(this.image instanceof HTMLCanvasElement) ) {
-        this.image = this.image.cloneNode();
+      img = ( img && img.nodeType === 1 ? img : options && options.nodeType === 1 ? options : new Image() );
+
+      if ( !(img instanceof HTMLCanvasElement) ) {
+        img = img.cloneNode();
       }
 
       // Ensure we get width/height of image for best draw performance
       imageOnload.bind(this)();
-      this.image.onload = imageOnload.bind(this);
+      img.onload = imageOnload.bind(this);
 
-      this.image.src = this.image.src || options.src || options;
+      img.src = img.src || options.src || options;
+
+      this.image = img;
 
     },
 
-    _render: function(ctx){
+    draw: function(ctx){
       if ( this.image ) {
         ctx.drawImage(this.image, 0, 0, this.width, this.height);
       }

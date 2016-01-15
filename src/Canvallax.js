@@ -91,54 +91,25 @@ var Canvallax = win.Canvallax = createClass(Core,{
 
       C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
 
-      C.render();
+      C.render(C.ctx,C);
 
       return this;
     },
 
     preTranslate: false,
 
-    render: function() {
-      var C = this,
+    _render: function(ctx,C) {
+      var el = this,
           i = 0,
-          len = C.elements.length,
-          pos,
-          scale;
+          len = el.elements.length;
 
-      if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
+      if ( el.animating ) { el.animating = requestAnimationFrame(el.render.bind(el,ctx,C)); }
 
-      C.ctx.clearRect(0, 0, C.width, C.height);
-
-      if ( C.tracker ) {
-        pos = C.tracker.render(C);
-        // Allow tracker to set many properties.
-        for ( var key in pos ) {
-          if ( pos.hasOwnProperty(key) ) { C[key] = pos[key]; }
-        }
-      }
-
-      C.ctx.save();
-//      C.transform(C.ctx,C.getZScale());
-
-/*
-      if ( C.z ) {
-        scale = C.getZScale();
-        C.ctx.translate(C.width / 2, C.height / 2);
-        C.ctx.scale(scale, scale);
-        C.ctx.translate(C.width / -2, C.height / -2);
-      }
-*/
-
-      C.preRender(C.ctx);
+      ctx.clearRect(0, 0, el.width, el.height);
 
       for ( ; i < len; i++ ){
-        C.ctx.save();
-        C.elements[i].render(C.ctx,C);
-        C.ctx.restore();
+        el.elements[i].render(ctx,C);
       }
-
-      C.postRender(C.ctx);
-      C.ctx.restore();
 
       return this;
     },
@@ -149,7 +120,7 @@ var Canvallax = win.Canvallax = createClass(Core,{
 
     play: function(){
       this.animating = true;
-      return this.render();
+      return this.render(this.ctx,this);
     },
 
     pause: function(){

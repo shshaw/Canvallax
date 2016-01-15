@@ -8,7 +8,7 @@
     // (Number)
     // Height of the rectangle.
 
-    _render: function(ctx) {
+    draw: function(ctx) {
       ctx.rect(0, 0, this.width, this.height);
     }
 

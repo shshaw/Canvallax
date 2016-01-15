@@ -29,7 +29,32 @@ var Core = createClass({
     // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
     // Callback function triggered before the element is rendered.
 
-    render: noop,
+    render: function(ctx,C) {
+
+      var el = this,
+          pos;
+
+      ctx = ctx || el.ctx;
+      C = C || el;
+
+      if ( !ctx ) { return; }
+
+      if ( el.tracker ) {
+        pos = el.tracker.render(C,el);
+        // Allow tracker to set many properties.
+        for ( var key in pos ) {
+          if ( pos.hasOwnProperty(key) ) { el[key] = pos[key]; }
+        }
+      }
+
+      ctx.save();
+      el.preRender(ctx,C);
+      el._render(ctx,C);
+      el.postRender(ctx,C);
+      ctx.restore();
+
+      return el;
+    },
 
     postRender: noop,
     // (Function)

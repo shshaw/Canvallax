@@ -43,25 +43,11 @@
     // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
     // A callback function can also be used to draw the path for cropping the element.
 
-    _render: noop,
-    // (Function)
-    // Arguments: (context)
-    // Callback function to actually draw the element.
+    draw: noop,
 
-    render: function(ctx,C) {
+    _render: function(ctx,C){
 
-      var el = this,
-          pos;
-
-      if ( el.tracker ) {
-        pos = el.tracker.render(C,el);
-        if ( pos ) {
-          el.x = pos.x;
-          el.y = pos.y;
-        }
-      }
-
-      el.preRender(ctx,C);
+      var el = this;
 
       if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
       ctx.globalAlpha = el.opacity;
@@ -89,7 +75,7 @@
       }
 
       ctx.beginPath();
-      el._render(ctx,C);
+      el.draw(ctx,C);
       ctx.closePath();
 
       if ( this.fill ) {
@@ -102,11 +88,10 @@
         ctx.strokeStyle = this.stroke;
         ctx.stroke();
       }
-
-      el.postRender(ctx,C);
-
-      return el;
     }
+    // (Function)
+    // Arguments: (context)
+    // Callback function to actually draw the element.
 
   });
 
