@@ -1,143 +1,47 @@
-  'use strict';
+var Canvallax = win.Canvallax = createClass(Core,{
 
-  var win = window,
-      doc = document,
-      root = doc.documentElement,
-      body = doc.body,
-      noop = function(){},
-      requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); };
+    canvas: undefined,
+    // (Node)
+    // Use Canvallax on an existing canvas node, otherwise one is created.
 
-  // Exit if browser does not support canvas
-  if ( !win.CanvasRenderingContext2D ) { win.Canvallax = function(){ return false; }; return false; }
+    className: '',
+    // (String)
+    // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
 
-  var Canvallax,
-      // Default options
-      defaults = {
+    parent: body,
+    // (Node)
+    // Canvas is prepended to document.body by default. Override with your own Node if you want it within a certain container.
 
-        tracker: false,
-        // (`false`||Canvallax.TrackScroll()||Canvallax.TrackPointer())
-        // Tracker instance to tie coordinates to scroll, pointer, etc.
-        // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
+    fullscreen: true,
+    // (Boolean)
+    // Set the canvas width and height to the size of the window, and update on window resize.
 
-        x: 0,
-        // (Number)
-        // Starting x position.
-        // If `tracking` is enabled, this will be overridden on render.
+    width: null,
+    // (Number)
+    // Canvas width, overridden if `fullscreen` is true.
 
-        y: 0,
-        // (Number)
-        // Starting y position.
-        // If `tracking` is enabled, this will be overridden on render.
+    height: null,
+    // (Number)
+    // Canvas height, overridden if `fullscreen` is true.
 
-        canvas: undefined,
-        // (Node)
-        // Use Canvallax on an existing canvas node, otherwise one is created.
-
-        className: '',
-        // (String)
-        // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
-
-        parent: body,
-        // (Node)
-        // Canvas is prepended to document.body by default. Override with your own Node if you want it within a certain container.
-
-        elements: undefined,
-        // (Array)
-        // Collection of elements to render on the Canvallax instance
-
-        animating: true,
-        // (Boolean)
-        // Update canvas every requestAnimationFrame call.
-
-        fullscreen: true,
-        // (Boolean)
-        // Set the canvas width and height to the size of the window, and update on window resize.
-
-        width: null,
-        // (Number)
-        // Canvas width, overridden if `fullscreen` is true.
-
-        height: null,
-        // (Number)
-        // Canvas height, overridden if `fullscreen` is true.
-
-        preRender: noop,
-        // (Function)
-        // Callback before elements are rendered.
-
-        postRender: noop
-        // (Function)
-        // Callback after elements are rendered.
-
-      };
-
-  function extend(target) {
-    target = target || {};
-
-    var length = arguments.length,
-        i = 1;
-
-    if ( arguments.length === 1 ) {
-      target = this;
-      i = 0;
-    }
-
-    for ( ; i < length; i++ ) {
-      if ( !arguments[i] ) { continue; }
-      for ( var key in arguments[i] ) {
-        if ( arguments[i].hasOwnProperty(key) ) { target[key] = arguments[i][key]; }
-      }
-    }
-
-    return target;
-  }
-
-  function createClass(){
-
-    function C(options) {
-      if ( !(this instanceof C) ) { return new C(options); }
-
-      extend(this,options);
-      this.init.apply(this,arguments);
-
+    resize: function(width,height){
+      this.width = this.canvas.width = width;
+      this.height = this.canvas.height = height;
       return this;
-    }
+    },
 
-    var args = [],
-        parent = null,
-        fn = C.prototype = { init: noop },
-        length = arguments.length,
-        i = 0;
+    resizeFullscreen: function() {
+      return this.resize(win.innerWidth,win.innerHeight);
+    },
 
-    for ( ; i < length; i++ ) { args[i] = arguments[i]; }
+    elements: undefined,
+    // (Array)
+    // Collection of elements to render on the Canvallax instance
 
-    if ( length > 1 && args[0].prototype ) {
-      parent = args[0];
-      args[0] = args[0].prototype;
-      fn._parent = parent;
-    }
-
-    args.unshift(fn);
-    extend.apply(fn, args);
-
-    fn.constructor = C;
-
-    return C;
-  }
-
-////////////////////////////////////////
-
-  function zIndexSort(a,b){
-    var sort = ( a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
-    return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
-  }
-
-  function clone(properties){
-    var props = extend({}, this, properties);
-    return new this.constructor(props);
-  }
-
-  win.Canvallax = Canvallax = createClass({
+    sort: function(){
+      this.elements.sort(zIndexSort);
+      return this;
+    },
 
     add: function(el){
       var elements = el && el.length ? el : arguments,
@@ -153,10 +57,20 @@
       return this.sort();
     },
 
+    remove: function(element){
+      var index = this.elements.indexOf(element);
+
+      if ( index > -1 ) {
+        this.elements.splice(index, 1);
+      }
+
+      return this;
+    },
+
     init: function(options){
       var C = this;
 
-      Canvallax.extend(this,defaults,options);
+      Canvallax.extend(this,options);
 
       C.canvas = C.canvas || doc.createElement('canvas');
       C.canvas.className += ' canvallax ' + C.className;
@@ -182,66 +96,7 @@
       return this;
     },
 
-    play: function(){
-      this.animating = true;
-      return this.render();
-    },
-
-    pause: function(){
-      this.animating = false;
-      return this;
-    },
-
-    remove: function(element){
-      var index = this.elements.indexOf(element);
-
-      if ( index > -1 ) {
-        this.elements.splice(index, 1);
-      }
-
-      return this;
-    },
-
-    transformOrigin: 'center center',
-    // (String)
-    // Where the element's transforms will occur, two keywords separated by a space.
-    // The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center of the element.
-    // The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
-    // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
-
-    getTransformPoint: function(){
-      var el = this,
-          point = el._transformPoint,
-          origin;
-
-      if ( !point || el._transformOrigin !== el.transformOrigin ) {
-
-        origin = el.transformOrigin.split(' ');
-        point = {
-          x: 0,
-          y: 0
-        };
-
-        if ( (!el.width && !el.height) && !el.radius ) { return point; }
-
-        if ( origin[0] === 'center' ) {
-          point.x += ( el.width ? el.width / 2 : el.radius );
-        } else if ( origin[0] === 'right' ) {
-          point.x += ( el.width ? el.width : el.radius * 2 );
-        }
-
-        if ( origin[1] === 'center' ) {
-          point.y += ( el.height ? el.height / 2 : el.radius );
-        } else if ( origin[1] === 'bottom' ) {
-          point.y += ( el.height ? el.height : el.radius * 2 );
-        }
-
-        el._transformOrigin = el.transformOrigin;
-        el._transformPoint = point;
-      }
-
-      return point;
-    },
+    preTranslate: false,
 
     render: function() {
       var C = this,
@@ -263,7 +118,16 @@
       }
 
       C.ctx.save();
+//      C.transform(C.ctx,C.getZScale());
+
+/*
+      if ( C.z ) {
+        scale = C.getZScale();
+        C.ctx.translate(C.width / 2, C.height / 2);
+        C.ctx.scale(scale, scale);
+        C.ctx.translate(C.width / -2, C.height / -2);
       }
+*/
 
       C.preRender(C.ctx);
 
@@ -279,25 +143,23 @@
       return this;
     },
 
-    resize: function(width,height){
-      this.width = this.canvas.width = width;
-      this.height = this.canvas.height = height;
+    animating: true,
+    // (Boolean)
+    // Update canvas every requestAnimationFrame call.
+
+    play: function(){
+      this.animating = true;
+      return this.render();
+    },
+
+    pause: function(){
+      this.animating = false;
       return this;
     },
-
-    resizeFullscreen: function() {
-      return this.resize(win.innerWidth,win.innerHeight);
-    },
-
-    sort: function(){
-      this.elements.sort(zIndexSort);
-      return this;
-    },
-
-    clone: clone
   });
 
   // Utility functions outside of prototype.
   Canvallax.createClass = createClass;
+  Canvallax.Core = Core;
   Canvallax.extend = extend;
   Canvallax.clone = clone;

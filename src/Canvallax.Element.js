@@ -1,21 +1,27 @@
-  var rad = Math.PI / 180;
 
-  Canvallax.Element = createClass({
 
-    x: 0,
+  Canvallax.Element = createClass(Core,{
+
+    fill: false,
+    // (Color||`false`)
+    // Fill in the element with a color.
+
+    stroke: false,
+    // (Color||`false`)
+    // Add a stroke to the element.
+
+    lineWidth: false,
     // (Number)
-    // Horizontal position within the Canvallax canvas
+    // Width of the stroke.
 
-    y: 0,
+    opacity: 1,
     // (Number)
-    // Vertical position within the Canvallax canvas
+    // Element's transparency. `0` is invisible, `1` is fully visible.
 
-    z: 0,
+    scale: 1,
     // (Number)
-    // Element proximity to the Canvallax 'camera', typically within the range of -1 to 1.
-    // `z` affects speed of the element relative to the Canvallax instance's `x` & `y`.
-    // `0` means the element will move at the same speed as the Canvallax instance
-    // `-0.5` will move half speed, `1` will move twice as fast.
+    // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
+    // Scaling will be in addition to the `z` property's scaling.
 
     zIndex: false,
     // (`false`||Boolean)
@@ -32,142 +38,15 @@
     // If `false`, the element will move with Canvallax
     // If `true`, the element will remain locked into its `x` and `y` positions.
 
-    opacity: 1,
-    // (Number)
-    // Element's transparency. `0` is invisible, `1` is fully visible.
-
-    fill: false,
-    // (Color||`false`)
-    // Fill in the element with a color.
-
-    stroke: false,
-    // (Color||`false`)
-    // Add a stroke to the element.
-
-    lineWidth: false,
-    // (Number)
-    // Width of the stroke.
-
-    transformOrigin: 'center center',
-    // (String)
-    // Where the element's transforms will occur, two keywords separated by a space.
-    // The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center of the element.
-    // The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
-    // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
-
-    scale: 1,
-    // (Number)
-    // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
-    // Scaling will be in addition to the `z` property's scaling.
-
-    rotation: 0,
-    // (Number)
-    // Amount of rotation in degrees (0-360), affected by the `transformOrigin` property.
-
-    preRender: noop,
-    // (Function)
-    // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-    // Callback function triggered before the element is rendered.
-
-    _render: noop,
-    // (Function)
-    // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-    // Callback function to actually draw the element.
-    // If you're using a built-in element type, you usually won't want to overwrite this.
-
-    postRender: noop,
-    // (Function)
-    // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-    // Callback function triggered after the element is rendered.
-
-    init: noop,
-    // (Function)
-    // Callback function triggered when the element is first created.
-    // Receives all arguments passed to the element's creation function.
-
     crop: false,
     // (Object||Function)
     // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
     // A callback function can also be used to draw the path for cropping the element.
 
-    getZScale: function(){ return (this.z+1)/1; },
-    // Returns the element's scale
-
-    getTransformPoint: function(){
-      var el = this,
-          point = el._transformPoint,
-          origin;
-
-      if ( !point || el._transformOrigin !== el.transformOrigin ) {
-
-        origin = el.transformOrigin.split(' ');
-        point = {
-          x: 0,
-          y: 0
-        };
-
-        if ( (!el.width && !el.height) && !el.radius ) { return point; }
-
-        if ( origin[0] === 'center' ) {
-          point.x += ( el.width ? el.width / 2 : el.radius );
-        } else if ( origin[0] === 'right' ) {
-          point.x += ( el.width ? el.width : el.radius * 2 );
-        }
-
-        if ( origin[1] === 'center' ) {
-          point.y += ( el.height ? el.height / 2 : el.radius );
-        } else if ( origin[1] === 'bottom' ) {
-          point.y += ( el.height ? el.height : el.radius * 2 );
-        }
-
-        el._transformOrigin = el.transformOrigin;
-        el._transformPoint = point;
-      }
-
-      return point;
-    },
-
-    transformCanvas: function(ctx,C) {
-
-      var el = this,
-          x = C.x,
-          y = C.y,
-          z = el.getZScale(),
-          transformPoint;
-
-      if ( z < 0 || el.scale < 0 ) { return false; }
-
-      if ( !el.fixed ) {
-        if ( el.zScale !== false ) {
-          transformPoint = C.getTransformPoint();
-          ctx.translate(transformPoint.x, transformPoint.y);
-          //C.ctx.translate(x, y);
-          ctx.scale(z, z);
-          ctx.translate(-transformPoint.x, -transformPoint.y);
-        } else {
-          // The canvas coordinates are scaled if the element is not
-          x *= z;
-          y *= z;
-          //C.ctx.translate(x, y);
-        }
-
-        C.ctx.translate(x, y);
-
-      }
-
-      ctx.translate(el.x,el.y);
-
-      if ( el.scale !== 1 || el.rotation !== 0 ) {
-        transformPoint = el.getTransformPoint();
-        ctx.translate(transformPoint.x, transformPoint.y);
-        if ( el.rotation ) { ctx.rotate(el.rotation * rad); }
-        ctx.scale(el.scale, el.scale);
-        ctx.translate(-transformPoint.x, -transformPoint.y);
-      }
-
-
-      return el;
-    },
+    _render: noop,
+    // (Function)
+    // Arguments: (context)
+    // Callback function to actually draw the element.
 
     render: function(ctx,C) {
 
@@ -187,7 +66,8 @@
       if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
       ctx.globalAlpha = el.opacity;
 
-      if ( !el.transformCanvas(ctx,C) ) { return el; }
+      if ( !el.fixed && !C.transform(ctx,el.getZScale()) ) { return el; }
+      if ( !el.transform(ctx) ) { return el; }
 
       if ( el.crop ) {
         ctx.beginPath();
@@ -226,9 +106,7 @@
       el.postRender(ctx,C);
 
       return el;
-    },
-
-    clone: clone
+    }
 
   });
 

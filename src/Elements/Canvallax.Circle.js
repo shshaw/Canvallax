@@ -1,5 +1,3 @@
-  var twoPI = 2 * Math.PI;
-
   Canvallax.Circle = createElement({
 
     radius: 20,
