@@ -32,25 +32,28 @@
     render: function(C,el) {
 
       var pos = this._render.apply(this,arguments),
-          _pos = this.pos;
+          _pos = this.pos || {};
 
       if ( !pos ) { return false; }
 
-      pos.x = ((this.invert === true || this.invert === 'invertx') ? -pos.x : pos.x) * this.scale;
-      pos.y = ((this.invert === true || this.invert === 'inverty') ? -pos.y : pos.y) * this.scale;
+      for ( var key in pos ) {
+        if ( pos.hasOwnProperty(key) ) {
 
-      if ( this.offset ) {
-        pos.x += ( this.offset.x !== undefined ? this.offset.x : this.offset);
-        pos.y += ( this.offset.y !== undefined ? this.offset.y : this.offset);
-      }
+          pos[key] = ((this.invert === true || this.invert === 'invertx') ? -pos[key] : pos[key]) * this.scale;
 
-      if ( !_pos ) {
-        _pos = { x: ( el ? el.x : C ? C.x : pos.x ), y: ( el ? el.y : C ? C.y : pos.y ) };
-      }
+          if ( this.offset ) {
+            pos[key] += ( !isNaN(this.offset[key]) ? this.offset[key] : !isNaN(this.offset) ? this.offset : 0 );
+          }
 
-      if ( this.ease > 0 ) {
-        _pos.x += ( -pos.x - _pos.x ) / this.ease;
-        _pos.y += ( -pos.y - _pos.y ) / this.ease;
+          if ( !_pos[key] ) {
+            _pos[key] = ( el ? el[key] : parent ? parent[key] : pos[key] );
+          }
+
+          if ( this.ease > 0 ) {
+            _pos[key] += ( -pos[key] - _pos[key] ) / this.ease;
+          }
+
+        }
       }
 
       return this._pos = _pos;
