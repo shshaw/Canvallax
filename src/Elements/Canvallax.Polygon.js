@@ -14,7 +14,7 @@
       // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
       var i = this.sides;
 
-      ctx.translate(this.x + this.radius,this.y + this.radius);
+      ctx.translate(this.radius,this.radius);
 
       ctx.moveTo(this.radius, 0);
 

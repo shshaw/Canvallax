@@ -7,7 +7,7 @@
     // Radius of the circle.
 
     _render: function(ctx) {
-      ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, twoPI);
+      ctx.arc(this.radius, this.radius, this.radius, 0, twoPI);
     }
 
   });

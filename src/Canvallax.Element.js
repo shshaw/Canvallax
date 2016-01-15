@@ -102,9 +102,11 @@
 
         origin = el.transformOrigin.split(' ');
         point = {
-          x: el.x,
-          y: el.y
+          x: 0,
+          y: 0
         };
+
+        if ( (!el.width && !el.height) && !el.radius ) { return point; }
 
         if ( origin[0] === 'center' ) {
           point.x += ( el.width ? el.width / 2 : el.radius );
@@ -125,46 +127,72 @@
       return point;
     },
 
-    render: function(ctx,C) {
+    transformCanvas: function(ctx,C) {
+
       var el = this,
           x = C.x,
           y = C.y,
           z = el.getZScale(),
-          transformPoint = el.getTransformPoint();
+          transformPoint;
+
+      if ( z < 0 || el.scale < 0 ) { return false; }
+
+      if ( !el.fixed ) {
+        if ( el.zScale !== false ) {
+          transformPoint = C.getTransformPoint();
+          ctx.translate(transformPoint.x, transformPoint.y);
+          //C.ctx.translate(x, y);
+          ctx.scale(z, z);
+          ctx.translate(-transformPoint.x, -transformPoint.y);
+        } else {
+          // The canvas coordinates are scaled if the element is not
+          x *= z;
+          y *= z;
+          //C.ctx.translate(x, y);
+        }
+
+        C.ctx.translate(x, y);
+
+      }
+
+      ctx.translate(el.x,el.y);
+
+      if ( el.scale !== 1 || el.rotation !== 0 ) {
+        transformPoint = el.getTransformPoint();
+        ctx.translate(transformPoint.x, transformPoint.y);
+        if ( el.rotation ) { ctx.rotate(el.rotation * rad); }
+        ctx.scale(el.scale, el.scale);
+        ctx.translate(-transformPoint.x, -transformPoint.y);
+      }
+
+
+      return el;
+    },
+
+    render: function(ctx,C) {
+
+      var el = this,
+          pos;
 
       if ( el.tracker ) {
-        var pos = el.tracker.render(C,el);
+        pos = el.tracker.render(C,el);
         if ( pos ) {
           el.x = pos.x;
           el.y = pos.y;
         }
       }
 
-      el.preRender.call(el,ctx,C);
+      el.preRender(ctx,C);
 
-      if ( el.blend ) { C.ctx.globalCompositeOperation = el.blend; }
-      C.ctx.globalAlpha = el.opacity;
+      if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
+      ctx.globalAlpha = el.opacity;
 
-      C.ctx.translate(transformPoint.x, transformPoint.y);
-
-      // The canvas coordinates are scaled, even if the element is not
-      if ( el.zScale === false ) {
-        x *= z;
-        y *= z;
-      } else {
-        C.ctx.scale(z, z);
-      }
-
-      if ( !el.fixed ) { C.ctx.translate(x, y); }
-      C.ctx.scale(el.scale, el.scale);
-      if ( el.rotation ) { C.ctx.rotate(el.rotation * rad); }
-
-      C.ctx.translate(-transformPoint.x, -transformPoint.y);
+      if ( !el.transformCanvas(ctx,C) ) { return el; }
 
       if ( el.crop ) {
         ctx.beginPath();
         if ( typeof el.crop === 'function' ) {
-          el.crop.call(el,ctx,C);
+          el.crop(ctx,C);
         } else {
           ctx.rect(el.crop.x, el.crop.y, el.crop.width, el.crop.height);
         }
@@ -174,14 +202,14 @@
 
       if ( el.outline ) {
         ctx.beginPath();
-        ctx.rect(el.x, el.y, el.width || el.radius * 2, el.height || el.radius * 2);
+        ctx.rect(0, 0, el.width || el.radius * 2, el.height || el.radius * 2);
         ctx.closePath();
         ctx.strokeStyle = el.outline;
         ctx.stroke();
       }
 
       ctx.beginPath();
-      el._render.call(el,ctx,C);
+      el._render(ctx,C);
       ctx.closePath();
 
       if ( this.fill ) {
@@ -195,7 +223,7 @@
         ctx.stroke();
       }
 
-      el.postRender.call(el,ctx,C);
+      el.postRender(ctx,C);
 
       return el;
     },

@@ -16,6 +16,7 @@
 
         tracker: false,
         // (`false`||Canvallax.TrackScroll()||Canvallax.TrackPointer())
+        // Tracker instance to tie coordinates to scroll, pointer, etc.
         // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
 
         x: 0,
@@ -201,22 +202,70 @@
       return this;
     },
 
+    transformOrigin: 'center center',
+    // (String)
+    // Where the element's transforms will occur, two keywords separated by a space.
+    // The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center of the element.
+    // The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
+    // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
+
+    getTransformPoint: function(){
+      var el = this,
+          point = el._transformPoint,
+          origin;
+
+      if ( !point || el._transformOrigin !== el.transformOrigin ) {
+
+        origin = el.transformOrigin.split(' ');
+        point = {
+          x: 0,
+          y: 0
+        };
+
+        if ( (!el.width && !el.height) && !el.radius ) { return point; }
+
+        if ( origin[0] === 'center' ) {
+          point.x += ( el.width ? el.width / 2 : el.radius );
+        } else if ( origin[0] === 'right' ) {
+          point.x += ( el.width ? el.width : el.radius * 2 );
+        }
+
+        if ( origin[1] === 'center' ) {
+          point.y += ( el.height ? el.height / 2 : el.radius );
+        } else if ( origin[1] === 'bottom' ) {
+          point.y += ( el.height ? el.height : el.radius * 2 );
+        }
+
+        el._transformOrigin = el.transformOrigin;
+        el._transformPoint = point;
+      }
+
+      return point;
+    },
+
     render: function() {
       var C = this,
           i = 0,
-          len = C.elements.length;
+          len = C.elements.length,
+          pos,
+          scale;
 
       if ( C.animating ) { C.animating = requestAnimationFrame(C.render.bind(C)); }
 
       C.ctx.clearRect(0, 0, C.width, C.height);
 
       if ( C.tracker ) {
-        var pos = C.tracker.render(C);
-        C.x = pos.x;
-        C.y = pos.y;
+        pos = C.tracker.render(C);
+        // Allow tracker to set many properties.
+        for ( var key in pos ) {
+          if ( pos.hasOwnProperty(key) ) { C[key] = pos[key]; }
+        }
       }
 
-      C.preRender(C.ctx,C);
+      C.ctx.save();
+      }
+
+      C.preRender(C.ctx);
 
       for ( ; i < len; i++ ){
         C.ctx.save();
@@ -224,7 +273,8 @@
         C.ctx.restore();
       }
 
-      C.postRender(C.ctx,C);
+      C.postRender(C.ctx);
+      C.ctx.restore();
 
       return this;
     },
