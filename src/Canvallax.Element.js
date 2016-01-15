@@ -45,20 +45,20 @@
 
     draw: noop,
 
-    _render: function(ctx,C){
+    _render: function(ctx,parent){
 
       var el = this;
 
       if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
       ctx.globalAlpha = el.opacity;
 
-      if ( !el.fixed && !C.transform(ctx,el.getZScale()) ) { return el; }
+      if ( !el.fixed && !parent.transform(ctx,el.getZScale()) ) { return el; }
       if ( !el.transform(ctx) ) { return el; }
 
       if ( el.crop ) {
         ctx.beginPath();
         if ( typeof el.crop === 'function' ) {
-          el.crop(ctx,C);
+          el.crop(ctx,parent);
         } else {
           ctx.rect(el.crop.x, el.crop.y, el.crop.width, el.crop.height);
         }
@@ -75,7 +75,7 @@
       }
 
       ctx.beginPath();
-      el.draw(ctx,C);
+      el.draw(ctx,parent);
       ctx.closePath();
 
       if ( this.fill ) {

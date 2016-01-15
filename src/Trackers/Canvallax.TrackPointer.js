@@ -9,10 +9,10 @@
 
   Canvallax.TrackPointer = createTracker({
 
-    _render: function(C,el){
+    _render: function(el,parent){
 
       var pos = { x: 0, y: 0 },
-          inBounds = C.fullscreen,
+          inBounds = parent.fullscreen,
           offsetLeft = 0,
           offsetTop = 0;
 
@@ -26,7 +26,7 @@
         offsetLeft = C.canvas.offsetLeft;
         offsetTop = C.canvas.offsetTop;
 
-        inBounds = winPointerX >= offsetLeft && winPointerX <= offsetLeft + C.width && winPointerY >= offsetTop && winPointerY <= offsetTop + C.height;
+        inBounds = winPointerX >= offsetLeft && winPointerX <= offsetLeft + parent.width && winPointerY >= offsetTop && winPointerY <= offsetTop + parent.height;
       }
 
       if ( inBounds ) {
@@ -35,9 +35,9 @@
           y: -winPointerY + offsetTop
         };
 
-        if ( el ) {
-          pos.x += C.x;
-          pos.y += C.y;
+        if ( parent && el !== parent ) {
+          pos.x += parent.x;
+          pos.y += parent.y;
         }
       }
 

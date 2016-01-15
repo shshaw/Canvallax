@@ -1,5 +1,4 @@
-// Shared properties between the main classes: Canvallax and Canvallax.Element
-
+// Shared properties between the main classes: Canvallax, Group and Canvallax.Element
 
 var Core = createClass({
 
@@ -29,18 +28,26 @@ var Core = createClass({
     // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
     // Callback function triggered before the element is rendered.
 
-    render: function(ctx,C) {
+    _render: noop,
+    // (Function)
+
+    postRender: noop,
+    // (Function)
+    // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
+    // Callback function triggered after the element is rendered.
+
+    render: function(ctx,parent) {
 
       var el = this,
-          pos;
+          pos, i, len;
 
       ctx = ctx || el.ctx;
-      C = C || el;
+      parent = parent || el.parent || el;
 
       if ( !ctx ) { return; }
 
       if ( el.tracker ) {
-        pos = el.tracker.render(C,el);
+        pos = el.tracker.render(el,parent);
         // Allow tracker to set many properties.
         for ( var key in pos ) {
           if ( pos.hasOwnProperty(key) ) { el[key] = pos[key]; }
@@ -48,18 +55,25 @@ var Core = createClass({
       }
 
       ctx.save();
-      el.preRender(ctx,C);
-      el._render(ctx,C);
-      el.postRender(ctx,C);
+
+      el.preRender(ctx,parent);
+
+      el._render(ctx,parent);
+
+      if ( el.children && el.children.length ) {
+        len = el.children.length;
+        i = 0;
+        for ( ; i < len; i++ ){
+          el.children[i].render(ctx,el);
+        }
+      }
+
+      el.postRender(ctx,parent);
+
       ctx.restore();
 
       return el;
     },
-
-    postRender: noop,
-    // (Function)
-    // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-    // Callback function triggered after the element is rendered.
 
     init: noop,
     // (Function)
