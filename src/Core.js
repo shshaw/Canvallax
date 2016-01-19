@@ -54,7 +54,7 @@ var Core = createClass({
         }
       }
 
-      ctx.save();
+      ctx.setTransform(1,0,0,1,0,0);
       el.preRender(ctx,parent);
       el._render(ctx,parent);
 
@@ -67,7 +67,6 @@ var Core = createClass({
       }
 
       el.postRender(ctx,parent);
-      ctx.restore();
 
       return el;
     },
