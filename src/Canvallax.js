@@ -1,4 +1,4 @@
-var Canvallax = win.Canvallax = createClass(Group,{
+Canvallax = win.Canvallax = createClass(Group,{
 
     canvas: undefined,
     // (Node)
@@ -67,21 +67,21 @@ var Canvallax = win.Canvallax = createClass(Group,{
     preTranslate: false,
 
     _render: function(ctx) {
-      var el = this;
 
-      if ( el.animating ) { el.animating = requestAnimationFrame(el.render.bind(el,ctx,el)); }
+      if ( this.animating ) { requestAnimationFrame(this.render); }
 
-      ctx.clearRect(0, 0, el.width, el.height);
+      ctx.clearRect(0, 0, this.width, this.height);
 
     },
 
     animating: true,
     // (Boolean)
-    // Update canvas every requestAnimationFrame call.
+    // Redraw canvas based on the fps setting.
 
     play: function(){
       this.animating = true;
-      return this.render(this.ctx,this);
+      requestAnimationFrame(this.render);
+      return this;
     },
 
     pause: function(){
@@ -90,9 +90,3 @@ var Canvallax = win.Canvallax = createClass(Group,{
     },
   });
 
-  // Utility functions outside of prototype.
-  Canvallax.Group = Group;
-  Canvallax.createClass = createClass;
-  Canvallax.Core = Core;
-  Canvallax.extend = extend;
-  Canvallax.clone = clone;

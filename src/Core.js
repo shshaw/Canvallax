@@ -1,6 +1,6 @@
 // Shared properties between the main classes: Canvallax, Group and Canvallax.Element
 
-var Core = createClass({
+var Core = util.Core = createClass({
 
     x: 0,
     // (Number)

@@ -1,14 +1,6 @@
-  var win = window,
-      doc = document,
-      root = doc.documentElement,
-      body = doc.body,
-      noop = function(){},
-      requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); },
-      rad = Math.PI / 180,
-      twoPI = 2 * Math.PI;
-
-  // Exit if browser does not support canvas
-  if ( !win.CanvasRenderingContext2D ) { win.Canvallax = function(){ return false; }; return false; }
+  var rad = Math.PI / 180,
+      twoPI = 2 * Math.PI,
+      noop = function(){};
 
 ////////////////////////////////////////
 
@@ -32,6 +24,8 @@
 
     return target;
   }
+
+  util.extend = extend;
 
   function createClass(){
 
@@ -66,14 +60,13 @@
     return C;
   }
 
-////////////////////////////////////////
+  util.createClass = createClass;
 
-  function zIndexSort(a,b){
-    var sort = ( a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
-    return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
-  }
+////////////////////////////////////////
 
   function clone(properties){
     var props = extend({}, this, properties);
     return new this.constructor(props);
   }
+
+  util.clone = clone;

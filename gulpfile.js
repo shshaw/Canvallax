@@ -8,6 +8,7 @@ var pkg = require('./package.json'),
     today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
 var files = [
+          'src/intro.js',
           'src/util.js',
           'src/Core.js',
           'src/Group.js',
@@ -15,7 +16,8 @@ var files = [
           'src/Canvallax.Element.js',
           'src/Elements/**/*.js',
           'src/Canvallax.Tracker.js',
-          'src/Trackers/**/*.js'
+          'src/Trackers/**/*.js',
+          'src/outro.js'
         ],
     dirs = {
       dev: 'dev',
@@ -28,10 +30,8 @@ var files = [
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat-util');
 
-var header = '/*! '+ pkg.title +', v'+ pkg.version +' (built '+ today +') '+ pkg.homepage +' @preserve */\n' +
-    '(function(){\n\n  \'use strict\';\n\n',
-    separator = '\n\n////////////////////////////////////////\n\n',
-    footer = '\n\n})();';
+var header = '/*! '+ pkg.title +', v'+ pkg.version +' (built '+ today +') '+ pkg.homepage +' @preserve */\n',
+    separator = '\n\n////////////////////////////////////////\n\n';
 
 gulp.task('default', function(){
 
@@ -45,7 +45,6 @@ gulp.task('default', function(){
   return gulp.src(files)
     .pipe(concat(pkg.title + '.js',{ sep: separator }))
     .pipe(concat.header(header))
-    .pipe(concat.footer(footer))
 /*
     .pipe(uglify({
           compress: false,
@@ -61,7 +60,7 @@ gulp.task('default', function(){
 });
 
 
-gulp.task('watch', function() {
+gulp.task('watch', function(){
   gulp.watch([files], ['default']);
 });
 
