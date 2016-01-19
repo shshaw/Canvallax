@@ -23,15 +23,15 @@ var Core = util.Core = createClass({
     // Tracker instance to tie coordinates to scroll, pointer, etc.
     // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
 
-    preRender: noop,
+    preRender: false,
     // (Function)
     // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
     // Callback function triggered before the element is rendered.
 
-    _render: noop,
+    _render: false,
     // (Function)
 
-    postRender: noop,
+    postRender: false,
     // (Function)
     // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
     // Callback function triggered after the element is rendered.
@@ -54,10 +54,9 @@ var Core = util.Core = createClass({
         }
       }
 
-      ctx.setTransform(1,0,0,1,0,0);
-      el.preRender(ctx,parent);
-      el._render(ctx,parent);
-
+      ctx.save();
+      if ( el.preRender ) { el.preRender(ctx,parent); }
+      if ( el._render ) { el._render(ctx,parent); }
       if ( el.children && el.children.length ) {
         len = el.children.length;
         i = 0;
@@ -65,8 +64,8 @@ var Core = util.Core = createClass({
           el.children[i].render(ctx,el);
         }
       }
-
-      el.postRender(ctx,parent);
+      if ( el.postRender ) { el.postRender(ctx,parent); }
+      ctx.restore();
 
       return el;
     },
