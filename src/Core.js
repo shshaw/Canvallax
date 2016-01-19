@@ -55,9 +55,7 @@ var Core = createClass({
       }
 
       ctx.save();
-
       el.preRender(ctx,parent);
-
       el._render(ctx,parent);
 
       if ( el.children && el.children.length ) {
@@ -69,7 +67,6 @@ var Core = createClass({
       }
 
       el.postRender(ctx,parent);
-
       ctx.restore();
 
       return el;

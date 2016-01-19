@@ -37,7 +37,7 @@ var Canvallax = win.Canvallax = createClass(Group,{
     init: function(options){
       var C = this;
 
-      Canvallax.extend(this,options);
+      extend(this,options);
 
       C.canvas = C.canvas || doc.createElement('canvas');
       C.canvas.className += ' canvallax ' + C.className;
@@ -58,7 +58,8 @@ var Canvallax = win.Canvallax = createClass(Group,{
 
       C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
 
-      C.render(C.ctx,C);
+      C.render = C.render.bind(C,C.ctx,C);
+      C.render();
 
       return this;
     },
