@@ -117,30 +117,34 @@ var Core = util.Core = createClass({
     getZScale: function(){ return (( this.z+1 )/1); },
     // Returns the element's scale
 
-    preTranslate: true,
-
-    transform: function(ctx,scale) {
+    transform: function(ctx,scale,translate) {
 
       var el = this,
           x = el.x,
           y = el.y,
           transformPoint;
 
-      scale = ( scale === undefined ? el.scale : scale ); //* el.getZScale()
+      scale = ( scale === undefined ? el.scale : scale );
 
-      if ( scale < 0 || scale === undefined ) { return false; }
+      if ( scale <= 0 || scale === undefined ) { return false; }
 
-      if ( el.preTranslate ) { ctx.translate(x,y); }
+      if ( translate ) {
+        scale *= el.getZScale();
+        x *= scale;
+        y *= scale;
+        ctx.translate(x,y);
+      }
 
       if ( scale !== 1 || el.rotation !== 0 ) {
         transformPoint = el.getTransformPoint();
-        ctx.translate(transformPoint[0], transformPoint[1]);
+        x += transformPoint[0];
+        y += transformPoint[1];
+        ctx.translate(x,y);
         if ( el.rotation ) { ctx.rotate(el.rotation * rad); }
         ctx.scale(scale,scale);
-        ctx.translate(-transformPoint[0], -transformPoint[1]);
+        ctx.translate(-x,-y);
       }
 
-      if ( ! el.preTranslate ) { ctx.translate(x,y); }
 
       return el;
     },

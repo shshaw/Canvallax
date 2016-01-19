@@ -10,16 +10,18 @@
 
     draw: function(ctx) {
       // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
-      var i = this.sides;
+      var i = this.sides,
+          radius = this.radius,
+          x = this.x + radius,
+          y = this.y + radius;
 
-      ctx.translate(this.radius,this.radius);
 
-      ctx.moveTo(this.radius, 0);
+      ctx.moveTo(x + radius, y);
 
       while (i--) {
         ctx.lineTo(
-          this.radius * Math.cos((i * twoPI) / this.sides),
-          this.radius * Math.sin((i * twoPI) / this.sides)
+          x+(radius * Math.cos((i * twoPI) / this.sides)),
+          y+(radius * Math.sin((i * twoPI) / this.sides))
         );
       }
 

@@ -43,7 +43,7 @@
 
     draw: function(ctx){
       if ( this.image ) {
-        ctx.drawImage(this.image, 0, 0, this.width, this.height);
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
     }
   });

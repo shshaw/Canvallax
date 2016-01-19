@@ -52,7 +52,7 @@
       if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
       ctx.globalAlpha = el.opacity;
 
-      if ( !el.fixed && !parent.transform(ctx,el.getZScale()) ) { return el; }
+      if ( !el.fixed && !parent.transform(ctx,el.getZScale(),true) ) { return el; }
       if ( !el.transform(ctx) ) { return el; }
 
       if ( el.crop ) {
@@ -68,7 +68,7 @@
 
       if ( el.outline ) {
         ctx.beginPath();
-        ctx.rect(0, 0, el.width || el.radius * 2, el.height || el.radius * 2);
+        ctx.rect(el.x, el.y, el.width || el.radius * 2, el.height || el.radius * 2);
         ctx.closePath();
         ctx.strokeStyle = el.outline;
         ctx.stroke();

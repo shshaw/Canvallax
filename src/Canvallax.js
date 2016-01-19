@@ -64,8 +64,6 @@ Canvallax = win.Canvallax = createClass(Group,{
       return this;
     },
 
-    preTranslate: false,
-
     _render: function(ctx) {
 
       if ( this.animating ) { requestAnimationFrame(this.render); }
