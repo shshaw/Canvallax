@@ -9,24 +9,29 @@
 
   Canvallax.TrackPointer = createTracker({
 
-    _render: function(el,parent){
-
-      var pos = { x: 0, y: 0 },
-          inBounds = parent.fullscreen,
-          offsetLeft = 0,
-          offsetTop = 0;
-
+    init: function(){
       if ( !watchingPointer ) {
         watchingPointer = true;
         win.addEventListener('mousemove', onPointerMove);
         win.addEventListener('touchmove', onPointerMove);
+        win.addEventListener('touchstart', onPointerMove);
       }
+    },
+
+    _render: function(el,parent){
+
+      var pos = false,
+          inBounds = parent.fullscreen,
+          offsetLeft = 0,
+          offsetTop = 0,
+          canvas;
 
       if ( !inBounds ) {
-        offsetLeft = C.canvas.offsetLeft;
-        offsetTop = C.canvas.offsetTop;
+        canvas = ( el.canvas || parent.canvas );
+        offsetLeft = canvas.offsetLeft;
+        offsetTop = canvas.offsetTop;
 
-        inBounds = winPointerX >= offsetLeft && winPointerX <= offsetLeft + parent.width && winPointerY >= offsetTop && winPointerY <= offsetTop + parent.height;
+        inBounds = winPointerX >= offsetLeft && winPointerX <= offsetLeft + canvas.width && winPointerY >= offsetTop && winPointerY <= offsetTop + canvas.height;
       }
 
       if ( inBounds ) {

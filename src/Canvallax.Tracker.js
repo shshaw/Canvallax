@@ -39,7 +39,7 @@
       for ( var key in pos ) {
         if ( pos.hasOwnProperty(key) ) {
 
-          pos[key] = ((this.invert === true || this.invert === 'invertx') ? -pos[key] : pos[key]) * this.scale;
+          pos[key] = ( this.invert === true || this.invert === 'invert'+key ? -pos[key] : pos[key]) * this.scale;
 
           if ( this.offset ) {
             pos[key] += ( !isNaN(this.offset[key]) ? this.offset[key] : !isNaN(this.offset) ? this.offset : 0 );
