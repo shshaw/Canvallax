@@ -113,25 +113,40 @@ var Core = util.Core = createClass({
       return point;
     },
 
-    getZScale: function(){ return (( this.z+1 )/1); },
-    // Returns the element's scale
+    getZScale: function(){ return ( ( this.z+1 ) / 1 ); },
+    // Returns the element's scale, relative to the z value
 
-    transform: function(ctx,scale,translate) {
+    getCoords: function(parent){
+      var x = this.x,
+          y = this.y,
+          zScale;
+
+      if ( parent ) {
+        zScale = this.getZScale();
+        x += ( parent.x * zScale );
+        y += ( parent.y * zScale );
+      }
+
+      return [x,y];
+    },
+
+
+    transform: function(ctx, hasCoords, scale) {
 
       var el = this,
-          x = el.x,
-          y = el.y,
+          coords = ( hasCoords ? hasCoords : el.getCoords() ),
+          x = coords ? coords[0] : el.x,
+          y = coords ? coords[1] : el.y,
           transformPoint;
 
       scale = ( scale === undefined ? el.scale : scale );
 
       if ( scale <= 0 || scale === undefined ) { return false; }
 
-      if ( translate ) {
+      if ( !hasCoords ) {
         scale *= el.getZScale();
         x *= scale;
         y *= scale;
-        ctx.translate(x,y);
       }
 
       if ( scale !== 1 || el.rotation !== 0 ) {
@@ -139,8 +154,8 @@ var Core = util.Core = createClass({
         x += transformPoint[0];
         y += transformPoint[1];
         ctx.translate(x,y);
-        if ( el.rotation ) { ctx.rotate(el.rotation * rad); }
         ctx.scale(scale,scale);
+        if ( el.rotation ) { ctx.rotate(el.rotation * rad); }
         ctx.translate(-x,-y);
       }
 

@@ -1,5 +1,4 @@
 
-
   Canvallax.Element = createClass(Core,{
 
     fill: false,
@@ -43,17 +42,18 @@
     // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
     // A callback function can also be used to draw the path for cropping the element.
 
-    draw: noop,
+    draw: false,
 
     _render: function(ctx,parent){
 
-      var el = this;
+      var el = this,
+          coords = el.getCoords(parent);
 
       if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
       ctx.globalAlpha = el.opacity;
 
-      if ( !el.fixed && !parent.transform(ctx,el.getZScale(),true) ) { return el; }
-      if ( !el.transform(ctx) ) { return el; }
+      if ( !el.fixed && !parent.transform(ctx,false,el.getZScale()) ) { return el; }
+      if ( !el.transform(ctx,coords) ) { return el; }
 
       if ( el.crop ) {
         ctx.beginPath();
@@ -68,15 +68,17 @@
 
       if ( el.outline ) {
         ctx.beginPath();
-        ctx.rect(el.x, el.y, el.width || el.radius * 2, el.height || el.radius * 2);
+        ctx.rect(coords[0], coords[1], el.width || el.radius * 2, el.height || el.radius * 2);
         ctx.closePath();
         ctx.strokeStyle = el.outline;
         ctx.stroke();
       }
 
-      ctx.beginPath();
-      el.draw(ctx,parent);
-      ctx.closePath();
+      if ( el.draw ) {
+        ctx.beginPath();
+        el.draw(ctx,coords,parent);
+        ctx.closePath();
+      }
 
       if ( this.fill ) {
         ctx.fillStyle = this.fill;

@@ -41,9 +41,9 @@
 
     },
 
-    draw: function(ctx){
+    draw: function(ctx,coords){
       if ( this.image ) {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.image, coords[0], coords[1], this.width, this.height);
       }
     }
   });

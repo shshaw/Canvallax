@@ -8,12 +8,12 @@
     // (Number)
     // Radius of the polygon.
 
-    draw: function(ctx) {
+    draw: function(ctx,coords) {
       // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
       var i = this.sides,
           radius = this.radius,
-          x = this.x + radius,
-          y = this.y + radius;
+          x = coords[0] + radius,
+          y = coords[1] + radius;
 
 
       ctx.moveTo(x + radius, y);

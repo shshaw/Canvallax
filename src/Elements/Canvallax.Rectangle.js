@@ -8,8 +8,8 @@
     // (Number)
     // Height of the rectangle.
 
-    draw: function(ctx) {
-      ctx.rect(this.x, this.y, this.width, this.height);
+    draw: function(ctx,coords) {
+      ctx.rect(coords[0], coords[1], this.width, this.height);
     }
 
   });
