@@ -1,9 +1,8 @@
-(function(){
+(function(win){
 
   'use strict';
 
   var util = {},
-      win = window,
       doc = document,
       root = doc.documentElement,
       body = doc.body;
