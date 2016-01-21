@@ -87,25 +87,32 @@ var Core = util.Core = createClass({
           point = el._transformPoint,
           origin;
 
+      // Cache values to avoid recalculation
       if ( !point || el._transformOrigin !== el.transformOrigin ) {
 
-        origin = el.transformOrigin.split(' ');
-        point = [0,0];
+        if ( Array.isArray(el.transformOrigin) ) {
+          point = el.transformOrigin;
+        } else {
 
-        if ( (!el.width && !el.height) && !el.radius ) { return point; }
+          point = [0,0];
 
-        if ( origin[0] === 'center' ) {
-          point[0] += ( el.width ? el.width / 2 : el.radius );
-        } else if ( origin[0] === 'right' ) {
-          point[0] += ( el.width ? el.width : el.radius * 2 );
+          origin = el.transformOrigin.split(' ');
+
+          if ( (!el.width && !el.height) && !el.radius ) { return point; }
+
+          if ( origin[0] === 'center' ) {
+            point[0] += ( el.width ? el.width / 2 : el.radius );
+          } else if ( origin[0] === 'right' ) {
+            point[0] += ( el.width ? el.width : el.radius * 2 );
+          }
+
+          if ( origin[1] === 'center' ) {
+            point[1] += ( el.height ? el.height / 2 : el.radius );
+          } else if ( origin[1] === 'bottom' ) {
+            point[1] += ( el.height ? el.height : el.radius * 2 );
+          }
+
         }
-
-        if ( origin[1] === 'center' ) {
-          point[1] += ( el.height ? el.height / 2 : el.radius );
-        } else if ( origin[1] === 'bottom' ) {
-          point[1] += ( el.height ? el.height : el.radius * 2 );
-        }
-
         el._transformOrigin = el.transformOrigin;
         el._transformPoint = point;
       }
