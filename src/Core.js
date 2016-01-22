@@ -137,7 +137,6 @@ var Core = util.Core = createClass({
       return [x,y];
     },
 
-
     transform: function(ctx, hasCoords, scale) {
 
       var el = this,
@@ -161,8 +160,8 @@ var Core = util.Core = createClass({
         x += transformPoint[0];
         y += transformPoint[1];
         ctx.translate(x,y);
-        ctx.scale(scale,scale);
         if ( el.rotation ) { ctx.rotate(el.rotation * rad); }
+        ctx.scale(scale,scale);
         ctx.translate(-x,-y);
       }
 
