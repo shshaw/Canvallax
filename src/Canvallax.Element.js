@@ -50,6 +50,8 @@
           coords = el.getCoords(parent);
 
       if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
+
+      if ( el.opacity <= 0 ) { return el; }
       ctx.globalAlpha = el.opacity;
 
       if ( !el.fixed && !parent.transform(ctx,false,el.getZScale()) ) { return el; }
