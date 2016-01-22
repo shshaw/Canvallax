@@ -34,7 +34,7 @@ var Group = util.Group = createClass(Core,{
       var index = this.children.indexOf(element);
 
       if ( index > -1 ) {
-        this.elements.splice(index, 1);
+        this.children.splice(index, 1);
       }
 
       return this;
