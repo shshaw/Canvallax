@@ -46,39 +46,29 @@
 
     _render: function(ctx,parent){
 
-      var el = this,
-          coords = el.getCoords(parent);
+      var coords = this.getCoords(parent);
 
-      if ( el.blend ) { ctx.globalCompositeOperation = el.blend; }
+      if ( this.blend ) { ctx.globalCompositeOperation = this.blend; }
 
-      if ( el.opacity <= 0 ) { return el; }
-      ctx.globalAlpha = el.opacity;
+      if ( this.opacity <= 0 ) { return this; }
+      ctx.globalAlpha = this.opacity;
 
-      if ( !el.fixed && !parent.transform(ctx,false,el.getZScale()) ) { return el; }
-      if ( !el.transform(ctx,coords) ) { return el; }
+      if ( !this.fixed && !parent.transform(ctx,false,this.getZScale()) ) { return this; }
+      if ( !this.transform(ctx,coords) ) { return this; }
 
-      if ( el.crop ) {
+      if ( this.crop ) { this._crop(ctx,parent); }
+
+      if ( this.outline ) {
         ctx.beginPath();
-        if ( typeof el.crop === 'function' ) {
-          el.crop(ctx,parent);
-        } else {
-          ctx.rect(el.crop.x, el.crop.y, el.crop.width, el.crop.height);
-        }
-        ctx.clip();
+        ctx.rect(coords[0], coords[1], this.width || this.radius * 2, this.height || this.radius * 2);
         ctx.closePath();
-      }
-
-      if ( el.outline ) {
-        ctx.beginPath();
-        ctx.rect(coords[0], coords[1], el.width || el.radius * 2, el.height || el.radius * 2);
-        ctx.closePath();
-        ctx.strokeStyle = el.outline;
+        ctx.strokeStyle = this.outline;
         ctx.stroke();
       }
 
-      if ( el.draw ) {
+      if ( this.draw ) {
         ctx.beginPath();
-        el.draw(ctx,coords,parent);
+        this.draw(ctx,coords,parent);
         ctx.closePath();
       }
 
