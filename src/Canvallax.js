@@ -1,4 +1,4 @@
-Canvallax = win.Canvallax = createClass(Group,{
+var Canvallax = win.Canvallax = createClass(Group,{
 
     canvas: undefined,
     // (Node)
