@@ -35,11 +35,11 @@ var header = '/*! '+ pkg.title +', v'+ pkg.version +' (built '+ today +') '+ pkg
 
 gulp.task('default', function(){
 
-  var destination = dirs.dist;
+  var destination = dirs.dev;
   //console.log(process.argv);
 
-  if (process.argv.indexOf('--dev') > -1){
-    destination = dirs.dev;
+  if (process.argv.indexOf('--dist') > -1){
+    destination = dirs.dist;
   }
 
   return gulp.src(files)
