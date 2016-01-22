@@ -59,7 +59,8 @@ var Canvallax = win.Canvallax = createClass(Group,{
       C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
 
       C.render = C.render.bind(C,C.ctx,C);
-      C.render();
+
+      if ( C.animating ) { C.play(); }
 
       return this;
     },
