@@ -1,5 +1,5 @@
 
-  var kappa = .5522848,
+  var kappa = 0.5522848,
 
       // Detect support for native canvas ellipses
       ellipseSupport = (function(){
