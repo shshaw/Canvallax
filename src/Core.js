@@ -155,7 +155,7 @@ var Core = util.Core = createClass({
         y *= scale;
       }
 
-      if ( scale !== 1 || el.rotation !== 0 ) {
+      if ( scale !== 1 || (el.rotation % 360) !== 0 ) {
         transformPoint = el.getTransformPoint();
         x += transformPoint[0];
         y += transformPoint[1];
