@@ -5,7 +5,7 @@ function zIndexSort(a,b){
 
 var Group = util.Group = createClass(Core,{
 
-    children: undefined,
+    children: null,
     // (Array)
     // Collection of elements to render on the Canvallax instance
 

@@ -1,6 +1,6 @@
 var Canvallax = win.Canvallax = createClass(Group,{
 
-    canvas: undefined,
+    canvas: null,
     // (Node)
     // Use Canvallax on an existing canvas node, otherwise one is created.
 

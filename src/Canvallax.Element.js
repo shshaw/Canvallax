@@ -1,15 +1,15 @@
 
   Canvallax.Element = createClass(Core,{
 
-    fill: false,
+    fill: null,
     // (Color||`false`)
     // Fill in the element with a color.
 
-    stroke: false,
+    stroke: null,
     // (Color||`false`)
     // Add a stroke to the element.
 
-    lineWidth: false,
+    lineWidth: null,
     // (Number)
     // Width of the stroke.
 
@@ -22,7 +22,7 @@
     // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
     // Scaling will be in addition to the `z` property's scaling.
 
-    zIndex: false,
+    zIndex: null,
     // (`false`||Boolean)
     // Stacking order of the element.
     // Higher numbers are rendered last making them appear on top of lower zIndex elements.
@@ -37,12 +37,12 @@
     // If `false`, the element will move with Canvallax
     // If `true`, the element will remain locked into its `x` and `y` positions.
 
-    crop: false,
+    crop: null,
     // (Object||Function)
     // Crop the element by providing an object with the `x`, `y`, `width` and `height` of a rectangle, relative to the canvas origin.
     // A callback function can also be used to draw the path for cropping the element.
 
-    draw: false,
+    draw: null,
 
     _render: function(ctx,parent){
 
