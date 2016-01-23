@@ -16,7 +16,7 @@ var Group = util.Group = createClass(Core,{
 
     add: function(el){
       if ( !this.children ) { this.children = []; }
-      var elements = el && el.length ? el : arguments,
+      var elements = ( el && el.length > -1 ? el : arguments ),
           len = elements.length,
           i = 0;
 
