@@ -1,6 +1,6 @@
-  function imageOnload(){
-    this.width = ( this.width ? this.width : this.image.width );
-    this.height = ( this.height ? this.height : this.image.height );
+  function imageOnload(img){
+    img.width = ( img.width ? img.width : img.image.width );
+    img.height = ( img.height ? img.height : img.image.height );
   }
 
   Canvallax.Image = createElement({
@@ -31,13 +31,13 @@
         img = img.cloneNode();
       }
 
+      this.image = img;
+
       // Ensure we get width/height of image for best draw performance
-      imageOnload.bind(this)();
-      img.onload = imageOnload.bind(this);
+      imageOnload(this);
+      img.onload = imageOnload.bind(null,this);
 
       img.src = img.src || options.src || options;
-
-      this.image = img;
 
     },
 
