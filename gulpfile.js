@@ -44,14 +44,18 @@ gulp.task('default', function(){
 
   return gulp.src(files)
     .pipe(concat(pkg.title + '.js',{ sep: separator }))
-    .pipe(concat.header(header))
-/*
     .pipe(uglify({
+          mangle: false,
           compress: false,
-          preserveComments: 'license'
+          //preserveComments: 'license',
+          output: {
+            beautify: true,
+            comments: true,
+            indent_level: 2
+          }
         })
         .on('error', function(e){ console.log(e); }))
-*/
+    .pipe(concat.header(header))
     .pipe(gulp.dest(destination))
     .pipe(uglify({ preserveComments: 'license' })
         .on('error', function(e){ console.log(e); }))
