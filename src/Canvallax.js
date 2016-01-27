@@ -34,6 +34,10 @@ var Canvallax = win.Canvallax = createClass(Group,{
       return this.resize(win.innerWidth,win.innerHeight);
     },
 
+    /**
+     * Constructor
+     * @param {Object} [options] Options object
+     */
     init: function(options){
       var C = this;
 

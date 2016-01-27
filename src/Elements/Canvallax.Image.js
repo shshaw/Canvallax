@@ -3,6 +3,11 @@
     img.height = ( img.height ? img.height : img.image.height );
   }
 
+  /**
+   * Image class for drawing an <img> or <canvas> Element on a Canvallax scene
+   * @class Core
+   */
+
   Canvallax.Image = createElement({
 
     src: null,

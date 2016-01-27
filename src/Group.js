@@ -40,7 +40,7 @@ var Group = util.Group = createClass(Core,{
       return this;
     },
 
-    init: function(options){
+    init: function(){
       this.children = [];
       return this;
     }

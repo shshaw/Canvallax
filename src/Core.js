@@ -1,41 +1,82 @@
-// Shared properties between the main classes: Canvallax, Group and Canvallax.Element
+/**
+ * Core class used for most Canvallax objects
+ * @class Core
+ * @type {!number}
+ * @default
+ */
 
 var Core = util.Core = createClass({
 
+    /**
+     * `x` coordinate (horizontal offset from the left)
+     * @type {!number}
+     * @default
+     */
     x: 0,
-    // (Number)
-    // Horizontal position
 
+    /**
+     * `y` coordinate (vertical offset from the top)
+     * @type {!number}
+     * @default
+     */
     y: 0,
-    // (Number)
-    // Vertical position
 
+    /**
+     * `z` coordinate (distance from the camera)
+     * @type {!number}
+     * @default
+     */
     z: 0,
-    // (Number)
-    // Position on the Z axis
 
+    /**
+     * Amount of rotation in degrees (typically 0-360), affected by the `transformOrigin` property
+     * @type {!number} degrees
+     * @default
+     */
     rotation: 0,
-    // (Number)
-    // Amount of rotation in degrees (0-360), affected by the `transformOrigin` property.
 
-    tracker: false,
-    // (`false`||Canvallax.TrackScroll()||Canvallax.TrackPointer())
-    // Tracker instance to tie coordinates to scroll, pointer, etc.
-    // Set to false if you want to control the scene's X and Y manually, perfect for animating with GSAP.
+    /**
+     * Tracker instance to tie coordinates to scroll, pointer, etc, instead of manually controlling the `x` and `y`
+     * @type {!function}
+     * @default
+     */
+    tracker: null,
 
-    preRender: false,
-    // (Function)
-    // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-    // Callback function triggered before the element is rendered.
+    /**
+     * Callback function triggered before rendering
+     * @type {!function}
+     * @param ctx - 2d canvas context
+     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @default
+     */
+    preRender: null,
 
-    _render: false,
-    // (Function)
+    /**
+     * Callback function to render
+     * @type {!function}
+     * @param ctx - 2d canvas context
+     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @default
+     */
+    _render: null,
 
-    postRender: false,
-    // (Function)
-    // Arguments: (C.context,C) where C is the Canvallax instance that the element is being rendered on.
-    // Callback function triggered after the element is rendered.
+    /**
+     * Callback function triggered after rendering
+     * @type {!function}
+     * @param ctx - 2d canvas context
+     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @default
+     */
+    postRender: null,
 
+    /**
+     * Main rendering function
+     * @type {!function}
+     * @param ctx - 2d canvas context
+     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @returns {this}
+     * @default
+     */
     render: function(ctx,parent) {
 
       var el = this,
@@ -70,18 +111,31 @@ var Core = util.Core = createClass({
       return el;
     },
 
+    /**
+     * Callback function triggered when an intance is first created.
+     * Receives all arguments passed to the Object's creation function.
+     * @type {function}
+     * @default
+     */
     init: noop,
-    // (Function)
-    // Callback function triggered when the Object is first created.
-    // Receives all arguments passed to the Object's creation function.
 
+    /**
+     * Where the element's transforms will occur
+     * Array of coordinates  two keywords separated by a space.
+     * The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center.
+     * The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
+     * The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
+     * @type {{String|Array}}
+     * @default
+     */
     transformOrigin: 'center center',
-    // (String)
-    // Where the element's transforms will occur, two keywords separated by a space.
-    // The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center of the element.
-    // The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
-    // The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
 
+    /**
+     * Get the coordinates where the transforms should occur based on the transform origin.
+     * @type {{String|Array}}
+     * @returns {array} Array of x & y coordinates, relative to the object's top left.
+     * @default
+     */
     getTransformPoint: function(){
       var el = this,
           point = el._transformPoint,
@@ -120,9 +174,21 @@ var Core = util.Core = createClass({
       return point;
     },
 
-    getZScale: function(){ return ( ( this.z+1 ) / 1 ); },
-    // Returns the element's scale, relative to the z value
+    /**
+     * Returns the scale of the object based on it's current `z` value relative to a `z` of 0.
+     * @type {function}
+     * @returns {number}
+     * @default
+     */
+    getZScale: function(){ return ( ( this.z + 1 ) / 1 ); },
 
+    /**
+     * Returns the object's current `x` and `y` coordinates relative to the parent.
+     * @type {function}
+     * @params {!object} - Parent object to pull parent coordinates
+     * @returns {array}
+     * @default
+     */
     getCoords: function(parent){
       var x = this.x,
           y = this.y,
@@ -137,6 +203,15 @@ var Core = util.Core = createClass({
       return [x,y];
     },
 
+    /**
+     * Transforms the canvas context based on the object's properties.
+     * @type {function}
+     * @param ctx - 2d canvas context
+     * @params {!object} hasCoords - Coordinates to use, or if coordinates should be relative to this and scaled.
+     * @params {!number} scale - Scale of object
+     * @returns {this}
+     * @default
+     */
     transform: function(ctx, hasCoords, scale) {
 
       var el = this,
@@ -169,6 +244,13 @@ var Core = util.Core = createClass({
       return el;
     },
 
+    /**
+     * Create a clone of this object
+     * @type {function}
+     * @params {!object} - Properties to include on the clone
+     * @returns {cloned object}
+     * @default
+     */
     clone: clone
     // Create a copy with all the same properties
 
