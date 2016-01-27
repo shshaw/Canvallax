@@ -76,8 +76,6 @@ var Canvallax = win.Canvallax = createClass(Group,{
       if ( this.animating ) { requestAnimationFrame(this.render); }
       if ( this.clearFrames ) { ctx.clearRect(0, 0, this.width, this.height); }
 
-      ctx.clearRect(0, 0, this.width, this.height);
-
     },
 
     animating: true,
