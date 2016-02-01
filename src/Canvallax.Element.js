@@ -46,15 +46,16 @@
 
     _render: function(ctx,parent){
 
-      var coords = this.getCoords(parent);
+      var pCoords = parent.getCoords(),
+          coords = this.getCoords(pCoords, false);
 
       if ( this.blend ) { ctx.globalCompositeOperation = this.blend; }
 
       if ( this.opacity <= 0 ) { return this; }
       ctx.globalAlpha = this.opacity;
 
-      if ( !this.fixed && !parent.transform(ctx,false,this.getZScale()) ) { return this; }
-      if ( !this.transform(ctx,coords) ) { return this; }
+      if ( !this.fixed && parent && !parent.transform(ctx, false, this.getZScale()) ) { return this; }
+      if ( !this.transform(ctx,pCoords) ) { return this; }
 
       if ( this.crop ) { this._crop(ctx,parent); }
 

@@ -188,15 +188,18 @@ var Core = util.Core = createClass({
      * @returns {array}
      * @default
      */
-    getCoords: function(parent){
+    getCoords: function(offset,zScale){
       var x = this.x,
-          y = this.y,
-          zScale;
+          y = this.y;
 
-      if ( parent ) {
-        zScale = this.getZScale();
-        x += ( parent.x * zScale );
-        y += ( parent.y * zScale );
+      if ( offset ) {
+        x += offset[0];
+        y += offset[1];
+      }
+
+      if ( zScale ) {
+        x *= zScale;
+        y *= zScale;
       }
 
       return [x,y];
@@ -211,36 +214,25 @@ var Core = util.Core = createClass({
      * @returns {this}
      * @default
      */
-    transform: function(ctx, hasCoords, scale) {
+    transform: function(ctx, offset, zScale) {
 
-      var el = this,
-          coords = ( hasCoords ? hasCoords : el.getCoords() ),
-          x = coords ? coords[0] : el.x,
-          y = coords ? coords[1] : el.y,
+      var coords = this.getCoords(offset, zScale),
+          scale = ( zScale !== undefined ? zScale : this.scale ),
           transformPoint;
 
-      scale = ( scale === undefined ? el.scale : scale );
+      if ( scale <= 0 || Number.isNaN(scale) ) { return false; }
 
-      if ( scale <= 0 || scale === undefined ) { return false; }
-
-      if ( !hasCoords ) {
-        scale *= el.getZScale();
-        x *= scale;
-        y *= scale;
-      }
-
-      if ( scale !== 1 || (el.rotation % 360) !== 0 ) {
-        transformPoint = el.getTransformPoint();
-        x += transformPoint[0];
-        y += transformPoint[1];
-        ctx.translate(x,y);
-        if ( el.rotation ) { ctx.rotate(el.rotation * rad); }
+      if ( scale !== 1 || (this.rotation % 360) !== 0 ) {
+        transformPoint = this.getTransformPoint();
+        coords[0] += transformPoint[0];
+        coords[1] += transformPoint[1];
+        ctx.translate(coords[0],coords[1]);
+        if ( this.rotation ) { ctx.rotate(this.rotation * rad); }
         ctx.scale(scale,scale);
-        ctx.translate(-x,-y);
+        ctx.translate(-coords[0],-coords[1]);
       }
 
-
-      return el;
+      return this;
     },
 
     /**
