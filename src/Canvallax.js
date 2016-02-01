@@ -8,7 +8,7 @@ var Canvallax = win.Canvallax = createClass(Group,{
     // (String)
     // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
 
-    parent: body,
+    parentElement: body,
     // (Node)
     // Canvas is prepended to document.body by default. Override with your own Node if you want it within a certain container.
 
@@ -46,7 +46,7 @@ var Canvallax = win.Canvallax = createClass(Group,{
       C.canvas = C.canvas || doc.createElement('canvas');
       C.canvas.className += ' canvallax ' + C.className;
 
-      C.parent.insertBefore(C.canvas, C.parent.firstChild);
+      C.parentElement.insertBefore(C.canvas, C.parentElement.firstChild);
 
       if ( C.fullscreen ) {
         C.resizeFullscreen();
