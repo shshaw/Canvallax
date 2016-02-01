@@ -27,24 +27,52 @@
 
   util.extend = extend;
 
+
+////////////////////////////////////////
+
+
+  function clone(properties){
+    var props = extend({}, this, properties);
+    return new this.constructor(props);
+  }
+
+  util.clone = clone;
+
+
+////////////////////////////////////////
+
+
+  // Gets around using `.apply` for creating new instances of a class, adapted from http://stackoverflow.com/a/1608546/1012919
+  function construct(constructor, args) {
+    function C(){
+      return constructor.apply(this, args);
+    }
+    C.prototype = constructor.prototype;
+    return new C();
+  }
+
   function createClass(){
 
     function C(options) {
-      if ( !(this instanceof C) ) { return new C(options); }
+      var args = [],
+          length = arguments.length,
+          i = 0;
+      for ( ; i < length; i++ ) { args[i] = arguments[i]; }
+
+      if ( !(this instanceof C) ) { return construct(C,args); }
 
       extend(this,options);
-      this.init.apply(this,arguments);
-
+      this.init.apply(this,args);
       return this;
     }
 
     var args = [],
-        parent = null,
-        fn = C.prototype = { init: noop },
         length = arguments.length,
         i = 0;
-
     for ( ; i < length; i++ ) { args[i] = arguments[i]; }
+
+    var parent = null,
+        fn = C.prototype = { init: noop };
 
     if ( length > 1 && args[0].prototype ) {
       parent = args[0];
@@ -61,12 +89,3 @@
   }
 
   util.createClass = createClass;
-
-////////////////////////////////////////
-
-  function clone(properties){
-    var props = extend({}, this, properties);
-    return new this.constructor(props);
-  }
-
-  util.clone = clone;
