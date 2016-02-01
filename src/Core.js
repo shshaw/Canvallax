@@ -79,36 +79,35 @@ var Core = util.Core = createClass({
      */
     render: function(ctx,parent) {
 
-      var el = this,
-          pos, i, len;
+      var pos, i, len;
 
-      ctx = ctx || el.ctx;
-      parent = parent || el.parent || el;
+      ctx = ctx || this.ctx;
+      parent = parent || this.parent || this;
 
       if ( !ctx ) { return; }
 
-      if ( el.tracker ) {
-        pos = el.tracker.render(el,parent);
+      if ( this.tracker ) {
+        pos = this.tracker.render(this,parent);
         // Allow tracker to set many properties.
         for ( var key in pos ) {
-          if ( pos.hasOwnProperty(key) ) { el[key] = pos[key]; }
+          if ( pos.hasOwnProperty(key) ) { this[key] = pos[key]; }
         }
       }
 
       ctx.save();
-      if ( el.preRender ) { el.preRender(ctx,parent); }
-      if ( el._render ) { el._render(ctx,parent); }
-      if ( el.children && el.children.length ) {
-        len = el.children.length;
+      if ( this.preRender ) { this.preRender(ctx,parent); }
+      if ( this._render ) { this._render(ctx,parent); }
+      if ( this.children && this.children.length ) {
+        len = this.children.length;
         i = 0;
         for ( ; i < len; i++ ){
-          el.children[i].render(ctx,el);
+          this.children[i].render(ctx,this);
         }
       }
-      if ( el.postRender ) { el.postRender(ctx,parent); }
+      if ( this.postRender ) { this.postRender(ctx,parent); }
       ctx.restore();
 
-      return el;
+      return this;
     },
 
     /**
