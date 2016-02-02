@@ -15,33 +15,32 @@ var Group = util.Group = createClass(Core,{
     },
 
     add: function(el){
-      if ( !this.children ) { this.children = []; }
+      var me = this;
+      if ( !me.children ) { me.children = []; }
       var elements = ( el && el.length > -1 ? el : arguments ),
           len = elements.length,
           i = 0;
 
       for ( ; i < len; i++ ) {
         if ( elements[i] ) { // Prevent adding `false` or `undefined` elements
-          elements[i].parent = this;
-          this.children.push(elements[i]);
+          elements[i].parent = me;
+          me.children.push(elements[i]);
         }
       }
 
-      return this.sort();
+      return me.sort();
     },
 
     remove: function(element){
       var index = this.children.indexOf(element);
-
-      if ( index > -1 ) {
-        this.children.splice(index, 1);
-      }
-
+      if ( index > -1 ) { this.children.splice(index, 1); }
       return this;
     },
 
-    init: function(){
-      this.children = [];
-      return this;
+    init: function(options){
+      var me = this;
+      me.children = [];
+      if ( options && options.children ) { me.add(options.children); }
+      return me;
     }
   });

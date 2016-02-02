@@ -1,3 +1,4 @@
+
   var winPointerX = 0,
       winPointerY = 0,
       // Only one pointer tracker that works for every instance

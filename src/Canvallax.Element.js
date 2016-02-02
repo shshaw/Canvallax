@@ -15,7 +15,7 @@
 
     opacity: 1,
     // (Number)
-    // Element's transparency. `0` is invisible, `1` is fully visible.
+    // Element's transparency. `0` is fully transparent and Canvallax will skip rendering, `1` is fully opaque.
 
     scale: 1,
     // (Number)
@@ -46,43 +46,48 @@
 
     _render: function(ctx,parent){
 
-      var pCoords = parent.getCoords(),
-          coords = this.getCoords(pCoords, false);
+      var me = this,
+          pCoords = parent.getCoords(),
+          coords = me.getCoords(pCoords, false);
 
-      if ( this.blend ) { ctx.globalCompositeOperation = this.blend; }
+      if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
 
-      if ( this.opacity <= 0 ) { return this; }
-      ctx.globalAlpha = this.opacity;
+      if ( me.opacity <= 0 ) { return me; }
+      ctx.globalAlpha = me.opacity;
 
-      if ( !this.fixed && parent && !parent.transform(ctx, false, this.getZScale()) ) { return this; }
-      if ( !this.transform(ctx,pCoords) ) { return this; }
+      if ( !me.fixed && parent && !parent.transform(ctx, false, me.getZScale()) ) { return me; }
+      if ( !me.transform(ctx,pCoords) ) { return me; }
 
-      if ( this.crop ) { this._crop(ctx,parent); }
+      if ( me.crop ) { me._crop(ctx,parent); }
 
-      if ( this.outline ) {
+      if ( me.outline ) {
         ctx.beginPath();
-        ctx.rect(coords[0], coords[1], this.width || this.radius * 2, this.height || this.radius * 2);
+        ctx.rect(coords[0], coords[1], me.width || me.radius * 2, me.height || me.radius * 2);
         ctx.closePath();
-        ctx.strokeStyle = this.outline;
+        ctx.strokeStyle = me.outline;
         ctx.stroke();
       }
 
-      if ( this.draw ) {
+      if ( me.draw ) {
         ctx.beginPath();
-        this.draw(ctx,coords,parent);
+        me.draw(ctx,coords,parent);
         ctx.closePath();
       }
 
-      if ( this.fill ) {
-        ctx.fillStyle = this.fill;
+      if ( me.fill ) {
+        ctx.fillStyle = me.fill;
         ctx.fill();
       }
 
-      if ( this.stroke ) {
-        if ( this.lineWidth ) { ctx.lineWidth = this.lineWidth; }
-        ctx.strokeStyle = this.stroke;
+      if ( me.stroke ) {
+        if ( me.lineWidth ) { ctx.lineWidth = me.lineWidth; }
+        ctx.strokeStyle = me.stroke;
         ctx.stroke();
       }
+
+      if ( me.blend ) { ctx.globalCompositeOperation = "source-over"; }
+
+      return me;
     }
     // (Function)
     // Arguments: (context)

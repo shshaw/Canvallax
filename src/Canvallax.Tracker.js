@@ -16,47 +16,43 @@
     // Inversion of the tracking values.
     // If true, 'invertx' or 'inverty', the appropriate axes will be reversed relative to what's provided in the `render` function.
 
-    init: noop,
-    // (Function)
-    // Callback function triggered when the tracker is first created.
-    // Receives all arguments passed to the tracker's creation function.
-
     offset: false,
     // (Number||Object)
     // Offset(s) to be applied to the tracker's values.
 
-    _render: noop,
+    _render: null,
     // (Function)
     // Callback function run for each Canvallax instance using the tracker.
 
     render: function(el,parent) {
 
-      var pos = this._render.apply(this,arguments),
-          _pos = this.pos || {};
+      var me = this,
+          pos = me._render(el,parent),
+          _pos = me.pos || {};
 
       if ( !pos ) { return false; }
 
       for ( var key in pos ) {
         if ( pos.hasOwnProperty(key) ) {
 
-          pos[key] = ( this.invert === true || this.invert === 'invert'+key ? -pos[key] : pos[key]) * this.scale;
+          pos[key] = ( me.invert === true || me.invert === 'invert'+key ? -pos[key] : pos[key]) * me.scale;
 
-          if ( this.offset ) {
-            pos[key] += ( !isNaN(this.offset[key]) ? this.offset[key] : !isNaN(this.offset) ? this.offset : 0 );
+          if ( me.offset ) {
+            pos[key] += ( !isNaN(me.offset[key]) ? me.offset[key] : !isNaN(me.offset) ? me.offset : 0 );
           }
 
           if ( !_pos[key] ) {
             _pos[key] = ( el ? el[key] : parent ? parent[key] : pos[key] );
           }
 
-          if ( this.ease > 0 ) {
-            _pos[key] += ( -pos[key] - _pos[key] ) / this.ease;
+          if ( me.ease > 0 ) {
+            _pos[key] += ( -pos[key] - _pos[key] ) / me.ease;
           }
 
         }
       }
 
-      return this._pos = _pos;
+      return me._pos = _pos;
     },
 
     clone: clone

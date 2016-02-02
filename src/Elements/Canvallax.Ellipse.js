@@ -38,9 +38,9 @@
 
     width: 30,
     // (Number)
-    // Radius of the circle.
 
     height: 10,
+    // (Number)
 
     draw: drawEllipse
 

@@ -10,20 +10,16 @@
   Canvallax.TrackScroll = createTracker({
 
     init: function(){
-
       if ( !watchingScroll ) {
         watchingScroll = true;
         onScroll();
         win.addEventListener('scroll', onScroll);
         win.addEventListener('touchmove', onScroll);
       }
-
     },
 
     _render: function(){
-
       return { x: winScrollX, y: winScrollY };
-
     }
 
   });

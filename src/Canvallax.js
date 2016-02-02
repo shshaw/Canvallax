@@ -39,34 +39,29 @@ var Canvallax = win.Canvallax = createClass(Group,{
      * @param {Object} [options] Options object
      */
     init: function(options){
-      var C = this;
+      var me = this;
 
-      extend(this,options);
+      if ( !me.canvas ) {
+        me.canvas = doc.createElement('canvas');
+        me.parentElement.insertBefore(me.canvas, me.parentElement.firstchild);
+      }
+      me.canvas.className += ' canvallax ' + me.className;
+      me.ctx = me.canvas.getContext('2d');
 
-      C.canvas = C.canvas || doc.createElement('canvas');
-      C.canvas.className += ' canvallax ' + C.className;
-
-      C.parentElement.insertBefore(C.canvas, C.parentElement.firstChild);
-
-      if ( C.fullscreen ) {
-        C.resizeFullscreen();
-        win.addEventListener('resize', C.resizeFullscreen.bind(C));
+      if ( me.fullscreen ) {
+        me.resizeFullscreen();
+        win.addEventListener('resize', me.resizeFullscreen.bind(me));
       } else {
-        C.resize(C.width,C.height);
+        me.resize(me.width || me.canvas.width, me.height || me.canvas.height);
       }
 
-      C.ctx = C.canvas.getContext('2d');
+      me.children = [];
+      if ( options && options.children ) { me.add(options.children); }
 
-      C.children = [];
-      if ( options && options.elements ) { C.addElements(options.elements); }
+      me.render = me.render.bind(me,me.ctx);
+      if ( me.animating ) { me.play(); }
 
-      C.damping = ( !C.damping || C.damping < 1 ? 1 : C.damping );
-
-      C.render = C.render.bind(C,C.ctx,C);
-
-      if ( C.animating ) { C.play(); }
-
-      return this;
+      return me;
     },
 
     clearFrames: true,
@@ -76,7 +71,6 @@ var Canvallax = win.Canvallax = createClass(Group,{
       if ( this.animating ) { requestAnimationFrame(this.render); }
       if ( this.clearFrames ) { ctx.clearRect(0, 0, this.width, this.height); }
 
-      if ( !this.transform(ctx,false,this.getZScale()) ) { return this; }
     },
 
     animating: true,

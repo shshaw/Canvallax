@@ -51,28 +51,33 @@
     return new C();
   }
 
+
   function createClass(){
 
     function C(options) {
-      var args = [],
+      var me = this,
+          args = [],
           length = arguments.length,
           i = 0;
       for ( ; i < length; i++ ) { args[i] = arguments[i]; }
 
-      if ( !(this instanceof C) ) { return construct(C,args); }
+      if ( !(me instanceof C) ) { return construct(C,args); }
 
-      extend(this,options);
-      this.init.apply(this,args);
-      return this;
+      extend(me,options);
+      if ( me.init ) { me.init.apply(me,args); }
+      return me;
     }
 
     var args = [],
         length = arguments.length,
-        i = 0;
-    for ( ; i < length; i++ ) { args[i] = arguments[i]; }
+        i = 0,
+        parent = null,
+        fn = C.prototype = {
+          init: noop,
+          extend: extend
+        };
 
-    var parent = null,
-        fn = C.prototype = { init: noop };
+    for ( ; i < length; i++ ) { args[i] = arguments[i]; }
 
     if ( length > 1 && args[0].prototype ) {
       parent = args[0];

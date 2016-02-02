@@ -52,7 +52,7 @@ var Core = util.Core = createClass({
     preRender: null,
 
     /**
-     * Callback function to render
+     * Callback function for object specific rendering
      * @type {!function}
      * @param ctx - 2d canvas context
      * @param {object} parent - Parent object, usually a Canvallax instance
@@ -79,35 +79,36 @@ var Core = util.Core = createClass({
      */
     render: function(ctx,parent) {
 
-      var pos, i, len;
+      var me = this,
+          pos, i, len;
 
-      ctx = ctx || this.ctx;
-      parent = parent || this.parent || this;
+      ctx = ctx || me.ctx;
+      parent = parent || me.parent || me;
 
       if ( !ctx ) { return; }
 
-      if ( this.tracker ) {
-        pos = this.tracker.render(this,parent);
+      if ( me.tracker ) {
+        pos = me.tracker.render(me,parent);
         // Allow tracker to set many properties.
         for ( var key in pos ) {
-          if ( pos.hasOwnProperty(key) ) { this[key] = pos[key]; }
+          if ( pos.hasOwnProperty(key) ) { me[key] = pos[key]; }
         }
       }
 
       ctx.save();
-      if ( this.preRender ) { this.preRender(ctx,parent); }
-      if ( this._render ) { this._render(ctx,parent); }
-      if ( this.children && this.children.length ) {
-        len = this.children.length;
+      if ( me.preRender ) { me.preRender(ctx,parent); }
+      if ( me._render ) { me._render(ctx,parent); }
+      if ( me.children && me.children.length ) {
+        len = me.children.length;
         i = 0;
         for ( ; i < len; i++ ){
-          this.children[i].render(ctx,this);
+          me.children[i].render(ctx,me);
         }
       }
-      if ( this.postRender ) { this.postRender(ctx,parent); }
+      if ( me.postRender ) { me.postRender(ctx,parent); }
       ctx.restore();
 
-      return this;
+      return me;
     },
 
     /**
@@ -116,7 +117,7 @@ var Core = util.Core = createClass({
      * @type {function}
      * @default
      */
-    init: noop,
+    init: null,
 
     /**
      * Where the element's transforms will occur
@@ -124,50 +125,50 @@ var Core = util.Core = createClass({
      * The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center.
      * The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
      * The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
-     * @type {{String|Array}}
+     * @type {String|Array}
      * @default
      */
     transformOrigin: 'center center',
 
     /**
      * Get the coordinates where the transforms should occur based on the transform origin.
-     * @type {{String|Array}}
-     * @returns {array} Array of x & y coordinates, relative to the object's top left.
+     * @type {function}
+     * @returns {array} - Array of x & y coordinates, relative to the object's top left.
      * @default
      */
     getTransformPoint: function(){
-      var el = this,
-          point = el._transformPoint,
+      var me = this,
+          point = me._transformPoint,
           origin;
 
       // Cache values to avoid recalculation
-      if ( !point || el._transformOrigin !== el.transformOrigin ) {
+      if ( !point || me._transformOrigin !== me.transformOrigin ) {
 
-        if ( Array.isArray(el.transformOrigin) ) {
-          point = el.transformOrigin;
+        if ( Array.isArray(me.transformOrigin) ) {
+          point = me.transformOrigin;
         } else {
 
           point = [0,0];
 
-          origin = el.transformOrigin.split(' ');
+          origin = me.transformOrigin.split(' ');
 
-          if ( (!el.width && !el.height) && !el.radius ) { return point; }
+          if ( (!me.width && !me.height) && !me.radius ) { return point; }
 
           if ( origin[0] === 'center' ) {
-            point[0] += ( el.width ? el.width / 2 : el.radius );
+            point[0] += ( me.width ? me.width / 2 : me.radius );
           } else if ( origin[0] === 'right' ) {
-            point[0] += ( el.width ? el.width : el.radius * 2 );
+            point[0] += ( me.width ? me.width : me.radius * 2 );
           }
 
           if ( origin[1] === 'center' ) {
-            point[1] += ( el.height ? el.height / 2 : el.radius );
+            point[1] += ( me.height ? me.height / 2 : me.radius );
           } else if ( origin[1] === 'bottom' ) {
-            point[1] += ( el.height ? el.height : el.radius * 2 );
+            point[1] += ( me.height ? me.height : me.radius * 2 );
           }
 
         }
-        el._transformOrigin = el.transformOrigin;
-        el._transformPoint = point;
+        me._transformOrigin = me.transformOrigin;
+        me._transformPoint = point;
       }
 
       return point;
@@ -217,7 +218,7 @@ var Core = util.Core = createClass({
     transform: function(ctx, offset, zScale) {
 
       var coords = this.getCoords(offset, zScale),
-          scale = ( zScale !== undefined ? zScale : this.scale ),
+          scale = ( zScale !== undefined ? zScale * this.getZScale() : this.scale ),
           transformPoint;
 
       if ( scale <= 0 || Number.isNaN(scale) ) { return false; }
@@ -243,6 +244,5 @@ var Core = util.Core = createClass({
      * @default
      */
     clone: clone
-    // Create a copy with all the same properties
 
   });
