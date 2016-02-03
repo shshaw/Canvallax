@@ -3,6 +3,23 @@ function zIndexSort(a,b){
   return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
 }
 
+function groupAdd(el){
+  var me = this;
+  if ( !me.children ) { me.children = []; }
+  var elements = ( el && el.length > -1 ? el : arguments ),
+      len = elements.length,
+      i = 0;
+
+  for ( ; i < len; i++ ) {
+    if ( elements[i] ) { // Prevent adding `false` or `undefined` elements
+      elements[i].parent = me;
+      me.children.push(elements[i]);
+    }
+  }
+
+  return me.sort();
+}
+
 var Group = util.Group = createClass(Core,{
 
     children: null,
@@ -14,22 +31,8 @@ var Group = util.Group = createClass(Core,{
       return this;
     },
 
-    add: function(el){
-      var me = this;
-      if ( !me.children ) { me.children = []; }
-      var elements = ( el && el.length > -1 ? el : arguments ),
-          len = elements.length,
-          i = 0;
-
-      for ( ; i < len; i++ ) {
-        if ( elements[i] ) { // Prevent adding `false` or `undefined` elements
-          elements[i].parent = me;
-          me.children.push(elements[i]);
-        }
-      }
-
-      return me.sort();
-    },
+    add: groupAdd,
+    push: groupAdd,
 
     remove: function(element){
       var index = this.children.indexOf(element);
