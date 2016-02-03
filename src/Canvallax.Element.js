@@ -17,11 +17,6 @@
     // (Number)
     // Element's transparency. `0` is fully transparent and Canvallax will skip rendering, `1` is fully opaque.
 
-    scale: 1,
-    // (Number)
-    // How large the element should be rendered relative to its natural size, affected by the `transformOrigin` property.
-    // Scaling will be in addition to the `z` property's scaling.
-
     zIndex: null,
     // (`false`||Boolean)
     // Stacking order of the element.

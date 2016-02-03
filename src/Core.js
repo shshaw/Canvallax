@@ -36,6 +36,14 @@ var Core = util.Core = createClass({
     rotation: 0,
 
     /**
+     * How large the element should be rendered relative to its natural size.
+     * Scaling will occur from the `transformOrigin` property and is in addition to the `z` property's scaling.
+     * @type {!number}
+     * @default
+     */
+    scale: 1,
+
+    /**
      * Tracker instance to tie coordinates to scroll, pointer, etc, instead of manually controlling the `x` and `y`
      * @type {!function}
      * @default
@@ -193,6 +201,8 @@ var Core = util.Core = createClass({
       var x = this.x,
           y = this.y;
 
+      offset = offset || ( this.parent && this.parent.getCoords ? this.parent.getCoords() : false );
+
       if ( offset ) {
         x += offset[0];
         y += offset[1];
@@ -216,9 +226,8 @@ var Core = util.Core = createClass({
      * @default
      */
     transform: function(ctx, offset, zScale) {
-
       var coords = this.getCoords(offset, zScale),
-          scale = ( zScale !== undefined ? zScale * this.getZScale() : this.scale ),
+          scale = this.scale * ( zScale !== undefined ? zScale * this.getZScale() : 1 ),
           transformPoint;
 
       if ( scale <= 0 || Number.isNaN(scale) ) { return false; }
