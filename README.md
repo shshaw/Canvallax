@@ -1,18 +1,17 @@
 # Canvallax.js
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(6.4kb minified, 2.4kb gzipped)* dependency-free Javascript library for managing elements on `<canvas>`. Support is built-in for:
+Canvallax is a small *(7.6kb minified, 3kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Support is built-in for:
 
-- Parallax Scrolling, with optional damping to smooth motions
-- Pointer Tracking
-- Distance/scaling
-- Images on Canvas, from URLs or nodes (`<img />`, `<canvas />`, etc) with `Canvallax.Image`
-- Common shapes (`Canvallax.Circle`, `Canvallax.Polygon` and `Canvallax.Rectangle`)
-- Element stacking with zIndex
-- Fixed position Elements
-- Element cloning
+[x] Easy positioning with `x` and `y` coordinates, and a `z` axis for 3D/parallax effects
+[x] Rotate and scale elements with support for `transformOrigin`
+[x] Scroll &amp; Pointer tracking with configurable easing and offsets
+[x] Images on `<canvas>`, from URLs or nodes (`<img />`, `<canvas />`, etc) with `Canvallax.Image`
+[x] Common shapes (`Canvallax.Circle`, `Canvallax.Ellipse`, `Canvallax.Polygon`, &amp; `Canvallax.Rectangle`)
+[x] Element stacking with `zIndex`
+[x] Fixed position elements
 
-The Canvallax library is primarily meant to help with managing individual elements on canvas with unified positioning, scale and scroll effects. Some canvas knowledge will be needed for more advanced implementations like custom elements and animation, though most effects can be achieved with the built-in functionality.
+The Canvallax library is primarily meant to help manage individual elements on canvas with easy positioning, rotation, and scale. Some canvas knowledge will be needed for more advanced implementations like custom elements and animation, though most effects can be achieved with the built-in functionality.
 
 
 ## Examples
@@ -28,7 +27,7 @@ Create a new Canvallax instance either by calling `new Canvallax()` or `Canvalla
 
 ```javascript
 
-  var myCanvallax = Canvallax(),
+  var scene = Canvallax.Scene(),
       img = Canvallax.Image('image.jpg'),
       circle = Canvallax.Circle(),
       triangle = Canvallax.Polygon({
@@ -39,7 +38,7 @@ Create a new Canvallax instance either by calling `new Canvallax()` or `Canvalla
         height: 100
       });
   
-  myCanvallax.add(img,circle,triangle,square);
+  scene.add(img,circle,triangle,square);
   
 ```
 

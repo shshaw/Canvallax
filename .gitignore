@@ -3,3 +3,5 @@ node_modules/
 dev
 src/tmp
 tmp
+devStable
+img

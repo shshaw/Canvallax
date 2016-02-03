@@ -2,7 +2,7 @@
 
   'use strict';
 
-  var Canvallax = win.Canvallax || (win.Canvallax = {}),
+  var Canvallax = win.Canvallax = win.Canvallax || {},
       doc = document,
       root = doc.documentElement,
       body = doc.body;

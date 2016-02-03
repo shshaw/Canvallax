@@ -51,7 +51,6 @@
     return new C();
   }
 
-
   function createClass(){
 
     function C(options) {

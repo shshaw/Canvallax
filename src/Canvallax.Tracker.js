@@ -50,7 +50,8 @@
 
         }
       }
-      return me._pos = _pos;
+
+      return _pos;
     },
 
     clone: clone

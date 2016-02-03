@@ -45,7 +45,8 @@ Canvallax.Group = createClass(Canvallax.Core,
     each: function(callback,thisArg){
       var obj = this,
           length = this.length,
-          i = 0;
+          i = 0,
+          t;
 
       for ( ; i < length; i++ ) {
         t = thisArg || obj[i];
