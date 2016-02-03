@@ -63,8 +63,7 @@ Canvallax.Scene = createClass(Canvallax.Group,
         me.resize(me.width || me.canvas.width, me.height || me.canvas.height);
       }
 
-      //me.children = [];
-      //if ( options && options.children ) { me.add(options.children); }
+      if ( options && options.children ) { me.add(options.children); }
 
       me.render = me.render.bind(me,me.ctx);
       if ( me.animating ) { me.play(); }

@@ -5,21 +5,22 @@ function zIndexSort(a,b){
 
 function groupAdd(el){
   var me = this;
-  if ( !me.children ) { me.children = []; }
-  var elements = ( el && el.length > -1 ? el : arguments ),
+
+  var elements = ( el && !(el instanceof Canvallax.Group) && el.length > -1 ? el : arguments ),
       len = elements.length,
       i = 0;
 
   for ( ; i < len; i++ ) {
     if ( elements[i] ) { // Prevent adding `false` or `undefined` elements
       elements[i].parent = me;
-      me.children.push(elements[i]);
+      me._push(elements[i]);
     }
   }
 
-  return me.sort();
+  return me.sort(zIndexSort);
 }
 
+var arr = Array.prototype;
 
 Canvallax.Group = createClass(Canvallax.Core,
   /** @lends Group.prototype */
@@ -31,24 +32,36 @@ Canvallax.Group = createClass(Canvallax.Core,
      */
     type: 'group',
 
-    sort: function(){
-      this.children.sort(zIndexSort);
-      return this;
-    },
+    length: 0,
+    splice: arr.splice,
+    indexOf: arr.indexOf,
+    sort: arr.sort,
+
+    _push: arr.push,
 
     add: groupAdd,
     push: groupAdd,
 
+    each: function(callback,thisArg){
+      var obj = this,
+          length = this.length,
+          i = 0;
+
+      for ( ; i < length; i++ ) {
+        t = thisArg || obj[i];
+        if ( callback.call( t, obj[ i ], i ) === false ) { break; }
+      }
+
+      return this;
+    },
+
     remove: function(element){
-      var index = this.children.indexOf(element);
-      if ( index > -1 ) { this.children.splice(index, 1); }
+      var index = this.indexOf(element);
+      if ( index > -1 ) { this.splice(index, 1); }
       return this;
     },
 
     init: function(options){
-      var me = this;
-      me.children = [];
-      if ( options && options.children ) { me.add(options.children); }
-      return me;
+      if ( options && options.children ) { this.add(options.children); }
     }
   });

@@ -108,12 +108,10 @@ Canvallax.Core = createClass(
       ctx.save();
       if ( me.preRender ) { me.preRender(ctx,parent); }
       if ( me._render ) { me._render(ctx,parent); }
-      if ( me.children && me.children.length ) {
-        len = me.children.length;
+      if ( me.length > 0 ) {
+        len = me.length;
         i = 0;
-        for ( ; i < len; i++ ){
-          me.children[i].render(ctx,me);
-        }
+        for ( ; i < len; i++ ){ me[i].render(ctx,me); }
       }
       if ( me.postRender ) { me.postRender(ctx,parent); }
       ctx.restore();
