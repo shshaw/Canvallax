@@ -1,10 +1,18 @@
-var Canvallax = win.Canvallax = createClass(Group,{
+Canvallax.Scene = createClass(Canvallax.Group,
+  /** @lends Canvallax.prototype */
+  {
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'scene',
 
     canvas: null,
     // (Node)
     // Use Canvallax on an existing canvas node, otherwise one is created.
 
-    className: '',
+    className: null,
     // (String)
     // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
 
@@ -55,8 +63,8 @@ var Canvallax = win.Canvallax = createClass(Group,{
         me.resize(me.width || me.canvas.width, me.height || me.canvas.height);
       }
 
-      me.children = [];
-      if ( options && options.children ) { me.add(options.children); }
+      //me.children = [];
+      //if ( options && options.children ) { me.add(options.children); }
 
       me.render = me.render.bind(me,me.ctx);
       if ( me.animating ) { me.play(); }
@@ -71,6 +79,7 @@ var Canvallax = win.Canvallax = createClass(Group,{
       if ( this.animating ) { requestAnimationFrame(this.render); }
       if ( this.clearFrames ) { ctx.clearRect(0, 0, this.width, this.height); }
 
+      //if ( !this.transform(ctx,false,this.getZScale()) ) { return this; }
     },
 
     animating: true,

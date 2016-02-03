@@ -1,5 +1,13 @@
 
-  Canvallax.Element = createClass(Core,{
+Canvallax.Element = createClass(Canvallax.Core,
+  /** @lends Element.prototype */
+  {
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'element',
 
     fill: null,
     // (Color||`false`)
@@ -22,10 +30,6 @@
     // Stacking order of the element.
     // Higher numbers are rendered last making them appear on top of lower zIndex elements.
     // If `false`, the element's `z` property will be used.
-
-    zScale: true,
-    // (Boolean)
-    // Scale based on the `z` property, making elements appear closer or farther away.
 
     fixed: false,
     // (Boolean)

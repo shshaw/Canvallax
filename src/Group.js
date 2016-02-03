@@ -20,11 +20,16 @@ function groupAdd(el){
   return me.sort();
 }
 
-var Group = util.Group = createClass(Core,{
 
-    children: null,
-    // (Array)
-    // Collection of elements to render on the Canvallax instance
+Canvallax.Group = createClass(Canvallax.Core,
+  /** @lends Group.prototype */
+  {
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'group',
 
     sort: function(){
       this.children.sort(zIndexSort);

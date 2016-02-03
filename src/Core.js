@@ -4,32 +4,34 @@
  * @type {!number}
  * @default
  */
-
-var Core = util.Core = createClass({
+Canvallax.Core = createClass(
+  /** @lends Core.prototype */
+  {
 
     /**
-     * `x` coordinate (horizontal offset from the left)
-     * @type {!number}
+     * Horizontal offset from the left
+     * @type {!number} - `x` coordinate
      * @default
      */
     x: 0,
 
     /**
-     * `y` coordinate (vertical offset from the top)
-     * @type {!number}
+     * Vertical offset from the top
+     * @type {!number} - `y` coordinate
      * @default
      */
     y: 0,
 
     /**
-     * `z` coordinate (distance from the camera)
-     * @type {!number}
+     * Distance from the camera
+     * @type {!number} - `z` coordinate
      * @default
      */
     z: 0,
 
     /**
-     * Amount of rotation in degrees (typically 0-360), affected by the `transformOrigin` property
+     * Amount of rotation in degrees (typically 0-360),
+     * Rotation will occur from the `transformOrigin` property
      * @type {!number} degrees
      * @default
      */
