@@ -12,7 +12,7 @@ var files = [
           'src/util.js',
           'src/Core.js',
           'src/Group.js',
-          'src/Canvallax.js',
+          'src/Canvallax.Scene.js',
           'src/Canvallax.Element.js',
           'src/Elements/**/*.js',
           'src/Canvallax.Tracker.js',

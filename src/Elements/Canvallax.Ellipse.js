@@ -13,6 +13,7 @@
         ctx.ellipse(coords[0] + (this.width/2), coords[1] + (this.height / 2), (this.width/2), (this.height / 2), 0, 0, twoPI);
       };
 
+  // Manually draw ellipse if browser doesn't support native canvas ellipses
   if ( !ellipseSupport ) {
     drawEllipse = function(ctx,coords) {
       var w = this.width,

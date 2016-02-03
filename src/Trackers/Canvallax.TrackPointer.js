@@ -20,7 +20,6 @@
     },
 
     _render: function(el,parent){
-
       var pos = false,
           inBounds = parent.fullscreen,
           offsetLeft = 0,
@@ -48,7 +47,6 @@
       }
 
       return pos;
-
     }
 
   });

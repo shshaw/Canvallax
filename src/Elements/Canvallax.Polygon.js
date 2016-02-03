@@ -9,7 +9,6 @@
     // Radius of the polygon.
 
     draw: function(ctx,coords) {
-      // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
       var i = this.sides,
           radius = this.radius,
           x = coords[0] + radius,
@@ -18,13 +17,13 @@
 
       ctx.moveTo(x + radius, y);
 
+      // Polygon math adapted from http://scienceprimer.com/drawing-regular-polygons-javascript-canvas
       while (i--) {
         ctx.lineTo(
           x+(radius * Math.cos((i * twoPI) / this.sides)),
           y+(radius * Math.sin((i * twoPI) / this.sides))
         );
       }
-
     }
 
   });

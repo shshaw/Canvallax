@@ -27,14 +27,12 @@
     // Height to render the image. Will be set to the `src` image's height if not provided.
 
     init: function(options){
-
       var img = this.image;
 
       img = ( img && img.nodeType === 1 ? img : options && options.nodeType === 1 ? options : new Image() );
 
-      if ( !(img instanceof HTMLCanvasElement) ) {
-        img = img.cloneNode();
-      }
+      // Clone the element unless it's Canvas
+      if ( !(img instanceof HTMLCanvasElement) ) { img = img.cloneNode(); }
 
       this.image = img;
 
@@ -43,7 +41,6 @@
       img.onload = imageOnload.bind(null,this);
 
       img.src = img.src || options.src || options;
-
     },
 
     draw: function(ctx,coords){

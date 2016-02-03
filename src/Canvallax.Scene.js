@@ -67,8 +67,6 @@ Canvallax.Scene = createClass(Canvallax.Group,
 
       me.render = me.render.bind(me,me.ctx);
       if ( me.animating ) { me.play(); }
-
-      return me;
     },
 
     clearFrames: true,

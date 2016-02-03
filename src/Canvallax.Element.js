@@ -44,7 +44,6 @@ Canvallax.Element = createClass(Canvallax.Core,
     draw: null,
 
     _render: function(ctx,parent){
-
       var me = this,
           pCoords = parent.getCoords(),
           coords = me.getCoords(pCoords, false);
@@ -85,13 +84,11 @@ Canvallax.Element = createClass(Canvallax.Core,
       }
 
       if ( me.blend ) { ctx.globalCompositeOperation = "source-over"; }
-
-      return me;
     }
     // (Function)
     // Arguments: (context)
     // Callback function to actually draw the element.
 
-  });
+});
 
-  var createElement = Canvallax.createElement = createClass.bind(null,Canvallax.Element);
+var createElement = Canvallax.createElement = createClass.bind(null,Canvallax.Element);

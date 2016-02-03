@@ -25,7 +25,6 @@
     // Callback function run for each Canvallax instance using the tracker.
 
     render: function(el,parent) {
-
       var me = this,
           pos = me._render(el,parent),
           _pos = me.pos || {};
@@ -51,7 +50,6 @@
 
         }
       }
-
       return me._pos = _pos;
     },
 

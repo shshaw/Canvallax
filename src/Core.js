@@ -254,4 +254,4 @@ Canvallax.Core = createClass(
      */
     clone: clone
 
-  });
+});
