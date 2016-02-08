@@ -1,5 +1,5 @@
-Canvallax.Scene = createClass(Canvallax.Group,
-  /** @lends Canvallax.prototype */
+canvallax.Scene = createClass(canvallax.Group,
+  /** @lends canvallax.prototype */
   {
     /**
      * Object type
@@ -10,7 +10,7 @@ Canvallax.Scene = createClass(Canvallax.Group,
 
     canvas: null,
     // (Node)
-    // Use Canvallax on an existing canvas node, otherwise one is created.
+    // Draw scene on an existing canvas node, otherwise one is created.
 
     className: null,
     // (String)

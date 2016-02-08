@@ -1,4 +1,4 @@
-  Canvallax.Polygon = createElement({
+  canvallax.Polygon = createElement({
 
     sides: 6,
     // (Number)

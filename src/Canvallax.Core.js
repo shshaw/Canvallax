@@ -4,7 +4,7 @@
  * @type {!number}
  * @default
  */
-Canvallax.Core = createClass(
+canvallax.Core = createClass(
   /** @lends Core.prototype */
   {
 
@@ -56,7 +56,7 @@ Canvallax.Core = createClass(
      * Callback function triggered before rendering
      * @type {!function}
      * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @param {object} parent - Parent object, usually a Canvallax scene
      * @default
      */
     preRender: null,
@@ -65,7 +65,7 @@ Canvallax.Core = createClass(
      * Callback function for object specific rendering
      * @type {!function}
      * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @param {object} parent - Parent object, usually a Canvallax scene
      * @default
      */
     _render: null,
@@ -74,7 +74,7 @@ Canvallax.Core = createClass(
      * Callback function triggered after rendering
      * @type {!function}
      * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @param {object} parent - Parent object, usually a Canvallax scene
      * @default
      */
     postRender: null,
@@ -83,7 +83,7 @@ Canvallax.Core = createClass(
      * Main rendering function
      * @type {!function}
      * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax instance
+     * @param {object} parent - Parent object, usually a Canvallax scene
      * @returns {this}
      * @default
      */

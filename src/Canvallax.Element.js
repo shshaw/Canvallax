@@ -1,5 +1,5 @@
 
-Canvallax.Element = createClass(Canvallax.Core,
+canvallax.Element = createClass(canvallax.Core,
   /** @lends Element.prototype */
   {
     /**
@@ -23,7 +23,7 @@ Canvallax.Element = createClass(Canvallax.Core,
 
     opacity: 1,
     // (Number)
-    // Element's transparency. `0` is fully transparent and Canvallax will skip rendering, `1` is fully opaque.
+    // Element's transparency. `0` is fully transparent and will not be rendered, `1` is fully opaque.
 
     zIndex: null,
     // (`false`||Boolean)
@@ -33,7 +33,7 @@ Canvallax.Element = createClass(Canvallax.Core,
 
     fixed: false,
     // (Boolean)
-    // If `false`, the element will move with Canvallax
+    // If `false`, the element will move with scene
     // If `true`, the element will remain locked into its `x` and `y` positions.
 
     crop: null,
@@ -91,4 +91,4 @@ Canvallax.Element = createClass(Canvallax.Core,
 
 });
 
-var createElement = Canvallax.createElement = createClass.bind(null,Canvallax.Element);
+var createElement = canvallax.createElement = createClass.bind(null,canvallax.Element);

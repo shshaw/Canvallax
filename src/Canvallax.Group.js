@@ -6,7 +6,7 @@ function zIndexSort(a,b){
 function groupAdd(el){
   var me = this;
 
-  var elements = ( el && !(el instanceof Canvallax.Group) && el.length > -1 ? el : arguments ),
+  var elements = ( el && !(el instanceof canvallax.Group) && el.length > -1 ? el : arguments ),
       len = elements.length,
       i = 0;
 
@@ -22,7 +22,7 @@ function groupAdd(el){
 
 var arr = Array.prototype;
 
-Canvallax.Group = createClass(Canvallax.Core,
+canvallax.Group = createClass(canvallax.Core,
   /** @lends Group.prototype */
   {
     /**

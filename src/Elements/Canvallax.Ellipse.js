@@ -35,7 +35,7 @@
     }
   }
 
-  Canvallax.Ellipse = createElement({
+  canvallax.Ellipse = createElement({
 
     width: 30,
     // (Number)

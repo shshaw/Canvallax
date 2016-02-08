@@ -8,7 +8,7 @@
         winPointerY = ( e.touches ? e.touches[0].clientY : e.clientY ); // touch support
       };
 
-  Canvallax.TrackPointer = createTracker({
+  canvallax.TrackPointer = createTracker({
 
     init: function(){
       if ( !watchingPointer ) {

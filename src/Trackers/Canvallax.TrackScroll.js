@@ -1,13 +1,13 @@
   var winScrollX = 0,
       winScrollY = 0,
-      // Only one scroll tracker that works for every Canvallax instance
+      // Only one scroll tracker that works for every instance
       watchingScroll = false,
       onScroll = function(){
         winScrollX = root.scrollLeft || body.scrollLeft;
         winScrollY = root.scrollTop || body.scrollTop;
       };
 
-  Canvallax.TrackScroll = createTracker({
+  canvallax.TrackScroll = createTracker({
 
     init: function(){
       if ( !watchingScroll ) {

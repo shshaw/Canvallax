@@ -8,7 +8,7 @@
    * @class Core
    */
 
-  Canvallax.Image = createElement({
+  canvallax.Image = createElement({
 
     src: null,
     // (String)

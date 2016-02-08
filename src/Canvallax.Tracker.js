@@ -1,5 +1,5 @@
 
-  Canvallax.Tracker = createClass({
+  canvallax.Tracker = createClass({
 
     ease: 1,
     // (Number)
@@ -58,4 +58,4 @@
 
   });
 
-  var createTracker = Canvallax.createTracker = createClass.bind(null,Canvallax.Tracker);
+  var createTracker = canvallax.createTracker = createClass.bind(null,canvallax.Tracker);

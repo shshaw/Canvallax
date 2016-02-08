@@ -25,7 +25,7 @@
     return target;
   }
 
-  Canvallax.extend = extend;
+  canvallax.extend = extend;
 
 
 ////////////////////////////////////////
@@ -36,7 +36,7 @@
     return new this.constructor(props);
   }
 
-  Canvallax.clone = clone;
+  canvallax.clone = clone;
 
 
 ////////////////////////////////////////
@@ -92,4 +92,4 @@
     return C;
   }
 
-  Canvallax.createClass = createClass;
+  canvallax.createClass = createClass;

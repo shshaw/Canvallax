@@ -1,4 +1,4 @@
-  Canvallax.Circle = createElement({
+  canvallax.Circle = createElement({
 
     radius: 20,
     // (Number)
