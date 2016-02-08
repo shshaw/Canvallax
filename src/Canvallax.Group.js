@@ -22,7 +22,7 @@ function groupAdd(el){
 
 var arr = Array.prototype;
 
-canvallax.Group = createClass(canvallax.Core,
+canvallax.Group = createClass(core,
   /** @lends Group.prototype */
   {
     /**

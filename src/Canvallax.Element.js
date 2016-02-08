@@ -1,5 +1,5 @@
 
-canvallax.Element = createClass(canvallax.Core,
+canvallax.Element = createClass(core,
   /** @lends Element.prototype */
   {
     /**

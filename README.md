@@ -1,7 +1,7 @@
 # Canvallax.js
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(7.6kb minified, 3kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Support is built-in for:
+Canvallax is a small *(8.8kb minified, 3.5kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Support is built-in for:
 
 [x] Easy positioning with `x` and `y` coordinates, and a `z` axis for 3D/parallax effects
 [x] Rotate and scale elements with support for `transformOrigin`
@@ -9,6 +9,7 @@ Canvallax is a small *(7.6kb minified, 3kb gzipped)*, dependency-free Javascript
 [x] Images on `<canvas>`, from URLs or nodes (`<img />`, `<canvas />`, etc) with `canvallax.Image`
 [x] Common shapes (`canvallax.Circle`, `canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
 [x] Element stacking with `zIndex`
+[x] Animation of elements with `.to`, `.from` and `.fromTo`
 [x] Fixed position elements
 
 The Canvallax library is primarily meant to help manage individual elements on canvas with easy positioning, rotation, and scale. Some canvas knowledge will be needed for more advanced implementations like custom elements and animation, though most effects can be achieved with the built-in functionality.
@@ -51,6 +52,7 @@ var scene = canvallax.Scene({
       }),
       
     triangle = canvallax.Polygon({
+        fill: '#000',
         sides: 3,
         radius: 80
         rotation: 180
@@ -64,6 +66,7 @@ var scene = canvallax.Scene({
       }),
     
     square = canvallax.Rectangle({
+        fill: '#000',
         width: 100,
         height: 100
       });
@@ -71,5 +74,28 @@ var scene = canvallax.Scene({
 scene.add(triangle,redCircle,square);
     
 ```
+
+## Animation
+
+Animation with Canvallax is super easy! Use external animation libraries like GSAP or Velocity, or use the fully featured animation functions built in to Canvallax objects: `.to`, `.from` and `.fromTo`!
+
+```javascript
+
+  var scene = canvallax.Scene(),
+      rect = canvallax.Rectangle();
+  
+  scene.add(rect);
+  
+  rect.to(3,{ rotation: 360 },{ 
+    repeat: -1, // infinite repeat
+  });
+  rect.from(1,{ x: -100 });
+  rect.fromTo(3,{ width: 100 },{ width: 200 },{
+    repeat: -1, // inifinte repeat
+    yoyo: true // alternate animation direction on repeat
+  );
+  
+```
+
 
 

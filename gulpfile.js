@@ -8,20 +8,34 @@ var pkg = require('./package.json'),
     today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
 var files = [
-          'src/intro.js',
-          'src/util.js',
-          'src/canvallax.Core.js',
-          'src/canvallax.Group.js',
-          'src/canvallax.Scene.js',
-          'src/canvallax.Element.js',
-          'src/Elements/**/*.js',
-          'src/canvallax.Tracker.js',
-          'src/Trackers/**/*.js',
-          'src/outro.js'
-        ],
+      'src/intro.js',
+      'src/util.js',
+      'src/core.js',
+      'src/canvallax.Animate.js',
+      'src/canvallax.Group.js',
+      'src/canvallax.Scene.js',
+      'src/canvallax.Element.js',
+      'src/Elements/**/*.js',
+      'src/canvallax.Tracker.js',
+      'src/Trackers/**/*.js',
+      'src/outro.js'
+    ],
+    excludes = {
+      animate: [
+        '!src/canvallax.Animate.js'
+      ],
+      elements: [
+        '!src/Elements/**/*.js',
+      ],
+      trackers: [
+        '!src/canvallax.Tracker.js',
+        '!src/Trackers/**/*.js'
+      ]
+    },
     dirs = {
       dev: 'dev',
-      dist: 'dist'
+      dist: 'dist',
+      custom: 'custom'
     };
 
 ////////////////////////////////////////
@@ -30,20 +44,40 @@ var files = [
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat-util');
 
-var header = '/*! '+ pkg.title +', v'+ pkg.version +' (built '+ today +') '+ pkg.homepage +' @preserve */\n',
-    separator = '\n\n////////////////////////////////////////\n\n';
-
 gulp.task('default', function(){
 
-  var destination = dirs.dev;
-  //console.log(process.argv);
+  var argv = require('yargs').argv;
 
-  if (process.argv.indexOf('--dist') > -1){
+  var destination = dirs.dev,
+      filename = pkg.name,
+      extra = '';
+
+  if ( argv.dist ){
     destination = dirs.dist;
+  } else {
+    pkg.version += 'dev';
   }
 
+  if ( argv.exclude ) {
+    //destination = dirs.custom;
+
+    var exclude = argv.exclude.split(',');
+    console.log('Custom build excluding '+exclude.join(', '));
+
+    extra = ', custom build flags: --exclude='+argv.exclude;
+
+    filename += '.custom';
+
+    exclude.forEach(function(ex){
+      files.unshift.apply(files,excludes[ex]);
+    });
+  }
+
+  var header = '/*! '+ pkg.name +' v'+ pkg.version +' (built '+ today + ( extra ? extra : '') + ') '+ pkg.homepage +' @preserve */\n',
+    separator = '\n\n////////////////////////////////////////\n\n';
+
   return gulp.src(files)
-    .pipe(concat(pkg.title + '.js',{ sep: separator }))
+    .pipe(concat(filename+'.js',{ sep: separator }))
     .pipe(uglify({
           mangle: false,
           compress: false,
@@ -59,7 +93,7 @@ gulp.task('default', function(){
     .pipe(gulp.dest(destination))
     .pipe(uglify({ preserveComments: 'license' })
         .on('error', function(e){ console.log(e); }))
-    .pipe(rename(pkg.title + '.min.js'))
+    .pipe(rename(filename + '.min.js'))
     .pipe(gulp.dest(destination));
 });
 

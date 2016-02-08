@@ -1,11 +1,11 @@
 /**
- * Core class used for most Canvallax objects
- * @class Core
- * @type {!number}
+ * Core properties used for most Canvallax objects
  * @default
  */
-canvallax.Core = createClass(
-  /** @lends Core.prototype */
+var core =
+  /** @lends Group.prototype */
+  /** @lends Scene.prototype */
+  /** @lends Element.prototype */
   {
 
     /**
@@ -256,4 +256,4 @@ canvallax.Core = createClass(
      */
     clone: clone
 
-});
+};
