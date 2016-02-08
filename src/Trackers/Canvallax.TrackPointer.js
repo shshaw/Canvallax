@@ -35,15 +35,18 @@
       }
 
       if ( inBounds ) {
+
         pos = {
           x: -winPointerX + offsetLeft,
           y: -winPointerY + offsetTop
         };
 
+
         if ( parent && el !== parent ) {
-          pos.x += parent.x;
-          pos.y += parent.y;
+          pos.x += ( parent.x ? parent.x : 0 );
+          pos.y += ( parent.y ? parent.y : 0 );
         }
+
       }
 
       return pos;

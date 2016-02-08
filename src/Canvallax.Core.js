@@ -93,15 +93,17 @@ Canvallax.Core = createClass(
           pos, i, len;
 
       ctx = ctx || me.ctx;
-      parent = parent || me.parent || me;
+      parent = parent || me.parent;
 
       if ( !ctx ) { return; }
 
       if ( me.tracker ) {
         pos = me.tracker.render(me,parent);
         // Allow tracker to set many properties.
-        for ( var key in pos ) {
-          if ( pos.hasOwnProperty(key) ) { me[key] = pos[key]; }
+        if ( pos ) {
+          for ( var key in pos ) {
+            if ( pos.hasOwnProperty(key) ) { me[key] = pos[key]; }
+          }
         }
       }
 
