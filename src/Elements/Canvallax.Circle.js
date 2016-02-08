@@ -1,4 +1,10 @@
   canvallax.Circle = createElement({
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'circle',
 
     radius: 20,
     // (Number)

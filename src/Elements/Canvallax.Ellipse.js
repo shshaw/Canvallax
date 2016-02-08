@@ -36,6 +36,12 @@
   }
 
   canvallax.Ellipse = createElement({
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'ellipse',
 
     width: 30,
     // (Number)

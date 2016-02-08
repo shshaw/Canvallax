@@ -9,6 +9,12 @@
    */
 
   canvallax.Image = createElement({
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'image',
 
     src: null,
     // (String)

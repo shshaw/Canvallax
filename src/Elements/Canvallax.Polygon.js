@@ -1,4 +1,10 @@
   canvallax.Polygon = createElement({
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'polygon',
 
     sides: 6,
     // (Number)

@@ -1,4 +1,10 @@
   canvallax.Rectangle = createElement({
+    /**
+     * Object type
+     * @type {string}
+     * @default
+     */
+    type: 'rectangle',
 
     width: 100,
     // (Number)
