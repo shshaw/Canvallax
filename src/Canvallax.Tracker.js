@@ -16,7 +16,7 @@
     // Inversion of the tracking values.
     // If true, 'invertx' or 'inverty', the appropriate axes will be reversed relative to what's provided in the `render` function.
 
-    offset: false,
+    offset: null,
     // (Number||Object)
     // Offset(s) to be applied to the tracker's values.
 
@@ -50,6 +50,8 @@
 
         }
       }
+
+      me.pos = _pos;
 
       return _pos;
     },

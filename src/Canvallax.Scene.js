@@ -65,7 +65,7 @@ canvallax.Scene = createClass(canvallax.Group,
 
       if ( options && options.children ) { me.add(options.children); }
 
-      me.render = me.render.bind(me,me.ctx);
+      me.render = me.render.bind(me,me.ctx,me);
       if ( me.animating ) { me.play(); }
     },
 
