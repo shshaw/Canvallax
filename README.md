@@ -3,14 +3,14 @@
 
 Canvallax is a small *(8.8kb minified, 3.5kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Support is built-in for:
 
-[x] Easy positioning with `x` and `y` coordinates, and a `z` axis for 3D/parallax effects
-[x] Rotate and scale elements with support for `transformOrigin`
-[x] Scroll &amp; Pointer tracking with configurable easing and offsets
-[x] Images on `<canvas>`, from URLs or nodes (`<img />`, `<canvas />`, etc) with `canvallax.Image`
-[x] Common shapes (`canvallax.Circle`, `canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
-[x] Element stacking with `zIndex`
-[x] Animation of elements with `.to`, `.from` and `.fromTo`
-[x] Fixed position elements
+- [x] Easy positioning with `x` and `y` coordinates, and a `z` axis for 3D/parallax effects
+- [x] Rotate and scale elements with support for `transformOrigin`
+- [x] Scroll &amp; Pointer tracking with configurable easing and offsets
+- [x] Images on `<canvas>`, from URLs or nodes (`<img />`, `<canvas />`, etc) with `canvallax.Image`
+- [x] Common shapes (`canvallax.Circle`, `canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
+- [x] Element stacking with `zIndex`
+- [x] Animation of elements with `.to`, `.from` and `.fromTo`
+- [x] Fixed position elements
 
 The Canvallax library is primarily meant to help manage individual elements on canvas with easy positioning, rotation, and scale. Some canvas knowledge will be needed for more advanced implementations like custom elements and animation, though most effects can be achieved with the built-in functionality.
 
