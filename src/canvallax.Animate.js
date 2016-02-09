@@ -95,7 +95,7 @@
 
   Animate.from = function(target,duration,from,options){
     var to = {};
-    for (key in from){ to[key] = target[key]; }
+    for (var key in from){ to[key] = target[key]; }
     options = options || {};
     options.from = from;
     return new Animate(target,duration,to,options);
