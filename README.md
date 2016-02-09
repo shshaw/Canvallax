@@ -27,7 +27,7 @@ The examples below will help you get started using Canvallax. For advanced usage
 
 ### Scenes
 
-In order to use Canvallax, you need to create a `canvallax.Scene` and add elements to it. Create a new Canvallax scene either by calling `new canvallax.Scene()` or `canvallax.Scene()`; either will return a new instance. Elements can be created in the same way, `new canvallax.Circle()` or `canvallax.Circle`, then added to the scene like so:
+In order to use Canvallax, you need to create a `canvallax.Scene` and add elements to it. Create a new scene either by calling `new canvallax.Scene()` or `canvallax.Scene()`; either will return a new instance. Elements can be created in the same way, `new canvallax.Circle()` or `canvallax.Circle`, then added to the scene like so:
 
 ```javascript
 
@@ -39,19 +39,25 @@ In order to use Canvallax, you need to create a `canvallax.Scene` and add elemen
   
 ```
 
-### Elements
-
-Canvallax pieces (`canvallax.Scene`, `canvallax.Group`, `canvallax.Polygon`, `canvallax.Rectangle`, etc.) all accept an object containing options as the only parameter, allowing you to customize the look/functionality of each piece and control the positioning, scale and rotation.
+An object containing the scene options may be given on creation, allowing you to set properties and callbacks.
 
 ```javascript
-
 var scene = canvallax.Scene({
         className: 'my-scene', // Class added to the `<canvas>` element
         parentElement: document.getElementById('scene-container'), // Where the canvas should be appended
         fullscreen: false, // Don't take up the full window, only render at the width and height provided below.
         width: 640,
         height: 480
-      }),
+      });
+```
+
+### Elements
+
+Canvallax pieces (`canvallax.Scene`, `canvallax.Group`, `canvallax.Polygon`, `canvallax.Rectangle`, etc.) all accept an object containing options as the only parameter, allowing you to customize the look/functionality of each piece and control the positioning, scale and rotation.
+
+```javascript
+
+var scene = canvallax.Scene(),
       
     triangle = canvallax.Polygon({
         fill: '#000',
