@@ -69,7 +69,6 @@ canvallax.Element = createClass(core,
       if ( me.draw ) {
         ctx.beginPath();
         me.draw(ctx,coords,parent);
-        ctx.closePath();
       }
 
       if ( me.fill ) {
