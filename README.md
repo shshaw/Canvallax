@@ -61,8 +61,9 @@ var scene = canvallax.Scene(),
       
     triangle = canvallax.Polygon({
         fill: '#000',
-        sides: 3,
-        radius: 80,
+        points: 3,
+        width: 80,
+        height: 80,
         rotation: 180
       }),
     
