@@ -1,5 +1,5 @@
 canvallax.Scene = createClass(canvallax.Group,
-  /** @lends canvallax.prototype */
+  /** @lends canvallax.Scene.prototype */
   {
     /**
      * Object type
@@ -92,6 +92,7 @@ canvallax.Scene = createClass(canvallax.Group,
     pause: function(){
       this.animating = false;
       return this;
-    },
+    }
+
   });
 

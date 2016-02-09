@@ -1,13 +1,15 @@
-  var winScrollX = 0,
-      winScrollY = 0,
-      // Only one scroll tracker that works for every instance
-      watchingScroll = false,
-      onScroll = function(){
-        winScrollX = root.scrollLeft || body.scrollLeft;
-        winScrollY = root.scrollTop || body.scrollTop;
-      };
+var winScrollX = 0,
+    winScrollY = 0,
+    // Only one scroll tracker that works for every instance
+    watchingScroll = false,
+    onScroll = function(){
+      winScrollX = root.scrollLeft || body.scrollLeft;
+      winScrollY = root.scrollTop || body.scrollTop;
+    };
 
-  canvallax.TrackScroll = createTracker({
+canvallax.TrackScroll = createTracker(
+  /** @lends canvallax.TrackScroll.prototype */
+  {
 
     init: function(){
       if ( !watchingScroll ) {

@@ -23,7 +23,7 @@ function groupAdd(el){
 var arr = Array.prototype;
 
 canvallax.Group = createClass(core,
-  /** @lends Group.prototype */
+  /** @lends canvallax.Group.prototype */
   {
     /**
      * Object type
@@ -65,4 +65,5 @@ canvallax.Group = createClass(core,
     init: function(options){
       if ( options && options.children ) { this.add(options.children); }
     }
+
   });

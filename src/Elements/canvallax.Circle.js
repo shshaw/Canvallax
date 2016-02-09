@@ -1,4 +1,6 @@
-  canvallax.Circle = createElement({
+canvallax.Circle = createElement(
+  /** @lends canvallax.Circle.prototype */
+  {
     /**
      * Object type
      * @type {string}

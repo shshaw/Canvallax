@@ -1,4 +1,6 @@
-  canvallax.Rectangle = createElement({
+canvallax.Rectangle = createElement(
+  /** @lends canvallax.Rectangle.prototype */
+  {
     /**
      * Object type
      * @type {string}

@@ -3,9 +3,9 @@
  * @default
  */
 var core =
-  /** @lends Group.prototype */
-  /** @lends Scene.prototype */
-  /** @lends Element.prototype */
+  /** @lends canvallax.Group.prototype */
+  /** @lends canvallax.Scene.prototype */
+  /** @lends canvallax.Element.prototype */
   {
 
     /**
@@ -135,7 +135,7 @@ var core =
      * The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center.
      * The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
      * The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
-     * @type {String|Array}
+     * @type {string|array}
      * @default
      */
     transformOrigin: 'center center',
@@ -256,4 +256,4 @@ var core =
      */
     clone: clone
 
-};
+  };

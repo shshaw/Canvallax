@@ -1,4 +1,6 @@
-  canvallax.Polygon = createElement({
+canvallax.Polygon = createElement(
+  /** @lends canvallax.Polygon.prototype */
+  {
     /**
      * Object type
      * @type {string}

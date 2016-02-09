@@ -89,6 +89,6 @@ canvallax.Element = createClass(core,
     // Arguments: (context)
     // Callback function to actually draw the element.
 
-});
+  });
 
 var createElement = canvallax.createElement = createClass.bind(null,canvallax.Element);
