@@ -50,17 +50,16 @@ gulp.task('default', function(){
 
   var destination = dirs.dev,
       filename = pkg.name,
-      extra = '';
+      extra = '',
+      version = pkg.version;
 
   if ( argv.dist ){
     destination = dirs.dist;
   } else {
-    pkg.version += 'dev';
+    version += 'dev';
   }
 
   if ( argv.exclude ) {
-    //destination = dirs.custom;
-
     var exclude = argv.exclude.split(',');
     console.log('Custom build excluding '+exclude.join(', '));
 
@@ -73,7 +72,7 @@ gulp.task('default', function(){
     });
   }
 
-  var header = '/*! '+ pkg.name +' v'+ pkg.version +' (built '+ today + ( extra ? extra : '') + ') '+ pkg.homepage +' @preserve */\n',
+  var header = '/*! '+ pkg.name +' v'+ version +' (built '+ today + ( extra ? extra : '') + ') '+ pkg.homepage +' @preserve */\n',
     separator = '\n\n////////////////////////////////////////\n\n';
 
   return gulp.src(files)
