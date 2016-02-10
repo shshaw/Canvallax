@@ -193,18 +193,18 @@ var core =
 
           origin = me.transformOrigin.split(' ');
 
-          if ( (!me.width && !me.height) && !me.radius ) { return point; }
+          if ( !me.width && !me.height ) { return point; }
 
           if ( origin[0] === 'center' ) {
-            point[0] += ( me.width ? me.width / 2 : me.radius );
+            point[0] += me.width / 2;
           } else if ( origin[0] === 'right' ) {
-            point[0] += ( me.width ? me.width : me.radius * 2 );
+            point[0] += me.width;
           }
 
           if ( origin[1] === 'center' ) {
-            point[1] += ( me.height ? me.height / 2 : me.radius );
+            point[1] += me.height / 2;
           } else if ( origin[1] === 'bottom' ) {
-            point[1] += ( me.height ? me.height : me.radius * 2 );
+            point[1] += me.height;
           }
 
         }
