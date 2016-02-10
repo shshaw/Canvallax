@@ -29,7 +29,7 @@ canvallax.TrackPointer = createTracker(
           canvas;
 
       if ( !inBounds ) {
-        canvas = ( el.canvas || parent.canvas );
+        canvas = el.getCanvas();
         offsetLeft = canvas.offsetLeft;
         offsetTop = canvas.offsetTop;
 

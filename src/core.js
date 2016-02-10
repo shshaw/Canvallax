@@ -130,6 +130,16 @@ var core =
     init: null,
 
     /**
+     * Get the canvas the object is rendering onto
+     * @type {!function}
+     * @returns {this}
+     * @default
+     */
+    getCanvas: function(){
+      return this.canvas || ( this.parent ? this.parent.getCanvas() : false );
+    },
+
+    /**
      * Where the element's transforms will occur
      * Array of coordinates  two keywords separated by a space.
      * The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center.
