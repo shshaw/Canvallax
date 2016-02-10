@@ -66,31 +66,30 @@ canvallax.Scene = createClass(canvallax.Group,
       if ( options && options.children ) { me.add(options.children); }
 
       me.render = me.render.bind(me,me.ctx,me);
-      if ( me.animating ) { me.play(); }
+      if ( me.playing ) { me.play(); }
     },
 
     clearFrames: true,
 
     _render: function(ctx) {
 
-      if ( this.animating ) { requestAnimationFrame(this.render); }
       if ( this.clearFrames ) { ctx.clearRect(0, 0, this.width, this.height); }
+      if ( this.playing ) { requestAnimationFrame(this.render); }
 
-      //if ( !this.transform(ctx,false,this.getZScale()) ) { return this; }
     },
 
-    animating: true,
+    playing: true,
     // (Boolean)
     // Redraw canvas based on the fps setting.
 
     play: function(){
-      this.animating = true;
+      this.playing = true;
       requestAnimationFrame(this.render);
       return this;
     },
 
     pause: function(){
-      this.animating = false;
+      this.playing = false;
       return this;
     }
 
