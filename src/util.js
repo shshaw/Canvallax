@@ -88,6 +88,7 @@
     extend.apply(fn, args);
 
     fn.constructor = C;
+    C.fn = fn;
 
     return C;
   }
