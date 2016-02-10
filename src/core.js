@@ -108,6 +108,7 @@ var core =
       }
 
       ctx.save();
+      if ( me.clearFrames ) { ctx.clearRect(me.x, me.y, me.width, me.height); }
       if ( me.preRender ) { me.preRender(ctx,parent); }
       if ( me._render ) { me._render(ctx,parent); }
       if ( me.length > 0 ) {

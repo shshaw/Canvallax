@@ -73,7 +73,6 @@ canvallax.Scene = createClass(canvallax.Group,
 
     _render: function(ctx) {
 
-      if ( this.clearFrames ) { ctx.clearRect(0, 0, this.width, this.height); }
       if ( this.playing ) { requestAnimationFrame(this.render); }
 
     },
