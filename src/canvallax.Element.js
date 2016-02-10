@@ -43,17 +43,6 @@ canvallax.Element = createClass(core,
 
     draw: null,
 
-    _crop: function(ctx,coords){
-      var me = this;
-      ctx.beginPath();
-      if ( typeof me.crop === 'function' ) {
-        el.crop.call(me,ctx,coords);
-      } else {
-        ctx.rect(coords[0] + me.crop.x, coords[1] + me.crop.y, me.crop.width, me.crop.height);
-      }
-      ctx.clip();
-    },
-
     _render: function(ctx,parent){
       var me = this,
           pCoords = parent.getCoords(),
@@ -66,8 +55,6 @@ canvallax.Element = createClass(core,
 
       if ( !me.fixed && parent && !parent.transform(ctx, false, me.getZScale()) ) { return me; }
       if ( !me.transform(ctx,pCoords) ) { return me; }
-
-      if ( me.crop ) { me._crop(ctx,coords,parent); }
 
       if ( me.draw ) {
         ctx.beginPath();

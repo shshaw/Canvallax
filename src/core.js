@@ -80,6 +80,25 @@ var core =
     postRender: null,
 
     /**
+     * Crop to element or with custom function
+     * @type {!function}
+     * @param ctx - 2d canvas context
+     * @param {object} parent - Parent object, usually a Canvallax scene
+     * @default
+     */
+    _crop: function(ctx,parent){
+      var me = this;
+      ctx.beginPath();
+      if ( me.crop.render ) {
+        me.crop.parent = parent || me;
+        me.crop.render(ctx,parent);
+      } else {
+        me.crop.call(me,ctx,parent);
+      }
+      ctx.clip();
+    },
+
+    /**
      * Main rendering function
      * @type {!function}
      * @param ctx - 2d canvas context
@@ -109,6 +128,7 @@ var core =
 
       ctx.save();
       if ( me.clearFrames ) { ctx.clearRect(me.x, me.y, me.width, me.height); }
+      if ( me.crop ) { me._crop(ctx,parent); }
       if ( me.preRender ) { me.preRender(ctx,parent); }
       if ( me._render ) { me._render(ctx,parent); }
       if ( me.length > 0 ) {
