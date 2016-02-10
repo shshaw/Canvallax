@@ -70,7 +70,7 @@
     var args = [],
         length = arguments.length,
         i = 0,
-        parent = null,
+        parent,
         fn = C.prototype = {
           init: noop,
           extend: extend

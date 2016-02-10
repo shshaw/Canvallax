@@ -16,14 +16,6 @@
     // Inversion of the tracking values.
     // If true, 'invertx' or 'inverty', the appropriate axes will be reversed relative to what's provided in the `render` function.
 
-    offset: null,
-    // (Number||Object)
-    // Offset(s) to be applied to the tracker's values.
-
-    _render: null,
-    // (Function)
-    // Callback function run for each Canvallax instance using the tracker.
-
     render: function(el,parent) {
       var me = this,
           pos = me._render(el,parent),

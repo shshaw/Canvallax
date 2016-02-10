@@ -8,14 +8,6 @@ canvallax.Scene = createClass(canvallax.Group,
      */
     type: 'scene',
 
-    canvas: null,
-    // (Node)
-    // Draw scene on an existing canvas node, otherwise one is created.
-
-    className: null,
-    // (String)
-    // Classes to add to the canvas, in addition to the 'canvallax' class automatically added.
-
     parentElement: body,
     // (Node)
     // Canvas is prepended to document.body by default. Override with your own Node if you want it within a certain container.
@@ -24,22 +16,19 @@ canvallax.Scene = createClass(canvallax.Group,
     // (Boolean)
     // Set the canvas width and height to the size of the window, and update on window resize.
 
-    width: null,
-    // (Number)
-    // Canvas width, overridden if `fullscreen` is true.
-
-    height: null,
-    // (Number)
-    // Canvas height, overridden if `fullscreen` is true.
-
     resize: function(width,height){
       this.width = this.canvas.width = width;
       this.height = this.canvas.height = height;
-      return this;
     },
 
     resizeFullscreen: function() {
-      return this.resize(win.innerWidth,win.innerHeight);
+      this.resize(win.innerWidth,win.innerHeight);
+    },
+
+    clearFrames: true,
+
+    clear: function(ctx){
+      ctx.clearRect(0, 0, this.width, this.height);
     },
 
     /**
@@ -69,12 +58,8 @@ canvallax.Scene = createClass(canvallax.Group,
       if ( me.playing ) { me.play(); }
     },
 
-    clearFrames: true,
-
     _render: function(ctx) {
-
       if ( this.playing ) { requestAnimationFrame(this.render); }
-
     },
 
     playing: true,
@@ -84,12 +69,10 @@ canvallax.Scene = createClass(canvallax.Group,
     play: function(){
       this.playing = true;
       requestAnimationFrame(this.render);
-      return this;
     },
 
     pause: function(){
       this.playing = false;
-      return this;
     }
 
   });

@@ -1,12 +1,11 @@
 /**
  * Core properties used for most Canvallax objects
  * @default
+ * @lends canvallax.Group.prototype
+ * @lends canvallax.Scene.prototype
+ * @lends canvallax.Element.prototype
  */
-var core =
-  /** @lends canvallax.Group.prototype */
-  /** @lends canvallax.Scene.prototype */
-  /** @lends canvallax.Element.prototype */
-  {
+var core = {
 
     /**
      * Horizontal offset from the left
@@ -38,64 +37,42 @@ var core =
     rotation: 0,
 
     /**
-     * How large the element should be rendered relative to its natural size.
+     * How large the object should be rendered relative to its natural size.
      * Scaling will occur from the `transformOrigin` property and is in addition to the `z` property's scaling.
-     * @type {!number}
+     * @type {number}
      * @default
      */
     scale: 1,
 
     /**
-     * Tracker instance to tie coordinates to scroll, pointer, etc, instead of manually controlling the `x` and `y`
-     * @type {!function}
+     * Object's opacity
+     * `0` is fully transparent and will not be rendered, `1` is fully opaque.
+     * @type {number}
      * @default
      */
-    tracker: null,
+    opacity: 1,
 
     /**
-     * Callback function triggered before rendering
+     * Clip to element or with custom function
      * @type {!function}
      * @param ctx - 2d canvas context
      * @param {object} parent - Parent object, usually a Canvallax scene
      * @default
      */
-    preRender: null,
-
-    /**
-     * Callback function for object specific rendering
-     * @type {!function}
-     * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax scene
-     * @default
-     */
-    _render: null,
-
-    /**
-     * Callback function triggered after rendering
-     * @type {!function}
-     * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax scene
-     * @default
-     */
-    postRender: null,
-
-    /**
-     * Crop to element or with custom function
-     * @type {!function}
-     * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax scene
-     * @default
-     */
-    _crop: function(ctx,parent){
+    _clip: function(ctx,parent){
       var me = this;
       ctx.beginPath();
-      if ( me.crop.render ) {
-        me.crop.parent = parent || me;
-        me.crop.render(ctx,parent);
+      if ( me.clip.render ) {
+        me.clip.parent = parent || me;
+        me.clip.render(ctx,parent);
       } else {
-        me.crop.call(me,ctx,parent);
+        me.clip.call(me,ctx,parent);
       }
       ctx.clip();
+    },
+
+    clear: function(ctx){
+      ctx.clearRect(this.x, this.y, this.width, this.height);
     },
 
     /**
@@ -108,47 +85,41 @@ var core =
      */
     render: function(ctx,parent) {
 
-      var me = this,
-          pos, i, len;
-
-      ctx = ctx || me.ctx;
-      parent = parent || me.parent;
-
       if ( !ctx ) { return; }
+
+      var me = this,
+          len = me.length || 0,
+          i = 0,
+          pos, key, o;
+
+      parent = parent || me.parent;
 
       if ( me.tracker ) {
         pos = me.tracker.render(me,parent);
         // Allow tracker to set many properties.
         if ( pos ) {
-          for ( var key in pos ) {
+          for ( key in pos ) {
             if ( pos.hasOwnProperty(key) ) { me[key] = pos[key]; }
           }
         }
       }
 
+      o = ctx.globalAlpha * me.opacity;
+      if ( o <= 0 ) { return me; }
+
       ctx.save();
-      if ( me.clearFrames ) { ctx.clearRect(me.x, me.y, me.width, me.height); }
-      if ( me.crop ) { me._crop(ctx,parent); }
+      ctx.globalAlpha = o;
+      if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
+      if ( me.clearFrames ) { me.clear(ctx,parent); }
+      if ( me.clip ) { me._clip(ctx,parent); }
       if ( me.preRender ) { me.preRender(ctx,parent); }
       if ( me._render ) { me._render(ctx,parent); }
-      if ( me.length > 0 ) {
-        len = me.length;
-        i = 0;
-        for ( ; i < len; i++ ){ me[i].render(ctx,me); }
-      }
+      for ( ; i < len; i++ ){ me[i].render(ctx,me); }
       if ( me.postRender ) { me.postRender(ctx,parent); }
       ctx.restore();
 
       return me;
     },
-
-    /**
-     * Callback function triggered when an intance is first created.
-     * Receives all arguments passed to the Object's creation function.
-     * @type {function}
-     * @default
-     */
-    init: null,
 
     /**
      * Get the canvas the object is rendering onto
@@ -275,7 +246,7 @@ var core =
         ctx.translate(-coords[0],-coords[1]);
       }
 
-      return this;
+      return true;
     },
 
     /**
@@ -288,3 +259,4 @@ var core =
     clone: clone
 
   };
+

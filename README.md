@@ -1,11 +1,11 @@
 # Canvallax
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(8.8kb minified, 3.5kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Support is built-in for:
+Canvallax is a small *(9.3kb minified, 3.6kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Support is built-in for:
 
 - [x] Build scenes with easy positioning via `x` &amp; `y` coordinates, a `z` axis for 3D/parallax effects and stacking with `zIndex`
 - [x] Draw Images on `<canvas>` from URLs or nodes (`<img />`, `<canvas />`, etc.) with `canvallax.Image`
-- [x] Common shapes (`canvallax.Circle`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
+- [x] Common shapes (`canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
 - [x] Rotate and scale elements with support for `transformOrigin`
 - [x] Scroll &amp; Pointer tracking for scenes and elements with configurable easing and offsets
 - [x] Animation of elements with `.to`, `.from` and `.fromTo`
@@ -27,28 +27,27 @@ The examples below will help you get started using Canvallax. For advanced usage
 
 ### Scenes
 
-In order to use Canvallax, you need to create a `canvallax.Scene` and add elements to it. Create a new scene either by calling `new canvallax.Scene()` or `canvallax.Scene()`; either will return a new instance. Elements can be created in the same way, `new canvallax.Circle()` or `canvallax.Circle`, then added to the scene like so:
+In order to use Canvallax, you need to create a `canvallax.Scene` and add elements to it. Create a new scene either by calling `new canvallax.Scene()` or `canvallax.Scene()`; either will return a new instance. Elements can be created in the same way, `new canvallax.Ellipse()` or `canvallax.Ellipse`, then added to the scene like so:
+
+
+An object containing options may be given on creation, allowing you to set properties and callbacks.
 
 ```javascript
 
-  var scene = canvallax.Scene(),
-      img = canvallax.Image('image.jpg'),
-      circle = canvallax.Circle({ fill: '#000' });
-  
-  scene.add(img,circle);
-  
-```
-
-An object containing the scene options may be given on creation, allowing you to set properties and callbacks.
-
-```javascript
-var scene = canvallax.Scene({
+  var scene = canvallax.Scene({
         className: 'my-scene', // Class added to the `<canvas>` element
-        parentElement: document.getElementById('scene-container'), // Where the canvas should be appended
-        fullscreen: false, // Don't take up the full window, only render at the width and height provided below.
+        parentElement: document.getElementById('scene-container'), // Where the canvas should be prepended
+        fullscreen: false, // Scenes are fullscreen by default, but you can make them a specific width/height by setting fullscreen to false
         width: 640,
         height: 480
-      });
+      }),
+    
+      img = canvallax.Image({ src: 'image.jpg' }),
+      
+      circle = canvallax.Ellipse({ fill: '#000', width: 100, height: 100 });
+    
+  scene.add(img,ellipse);
+  
 ```
 
 ### Elements
@@ -58,18 +57,24 @@ Canvallax pieces (`canvallax.Scene`, `canvallax.Group`, `canvallax.Polygon`, `ca
 ```javascript
 
 var scene = canvallax.Scene(),
+
+    img = canvallax.Image({
+        src: 'image.jpg',
+        opacity: 0.5,
+        rotation: 180
+      }),
       
     triangle = canvallax.Polygon({
         fill: '#000',
         points: 3,
         width: 80,
-        height: 80,
-        rotation: 180
+        height: 80
       }),
     
-    redCircle = canvallax.Circle({
+    redEllipse = canvallax.Ellipse({
         fill: '#F00',
-        radius: 40,
+        width: 80,
+        height: 80,
         x: 200,
         y: 200  
       }),
@@ -80,7 +85,7 @@ var scene = canvallax.Scene(),
         height: 100
       });
     
-scene.add(triangle,redCircle,outlinedSquare);
+scene.add(img,triangle,redEllipse,outlinedSquare);
     
 ```
 
