@@ -1,18 +1,19 @@
-# Canvallax
+# Canvallax 2
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(9.3kb minified, 3.6kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Support is built-in for:
+Canvallax is a small *(9.3kb minified, 3.6kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Easily position, rotate, and scale elements, and tie items to scroll or pointer. 
+
+Many jaw-dropping effects can be achieved with the built-in functionality:
 
 - [x] Build scenes with easy positioning via `x` &amp; `y` coordinates, a `z` axis for 3D/parallax effects and stacking with `zIndex`
-- [x] Draw Images on `<canvas>` from URLs or nodes (`<img />`, `<canvas />`, etc.) with `canvallax.Image`
+- [x] Draw Images from URLs or nodes (`<img />`, `<canvas />`, etc.) with `canvallax.Image`.
 - [x] Common shapes (`canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
-- [x] Rotate and scale elements with support for `transformOrigin`
-- [x] Scroll &amp; Pointer tracking for scenes and elements with configurable easing and offsets
-- [x] Animation of elements with `.to`, `.from` and `.fromTo`
-- [x] Opacity, blend modes, fixed positioning, and so much more! Read the [Canvallax Wiki](https://github.com/shshaw/canvallax.js/wiki/) for full documentation.
+- [x] Rotate and scale elements with support for `transformOrigin`.
+- [x] Scroll &amp; Pointer tracking for scenes and elements with configurable easing and offsets.
+- [x] Animation of elements with `.to`, `.from` and `.fromTo`.
+- [x] Opacity, blend modes, clipping, fixed positioning, and so much more! Read the [Canvallax Wiki](https://github.com/shshaw/canvallax.js/wiki/) for full documentation.
 
-The Canvallax library helps you manage individual elements with easy positioning, rotation, and scale. Many jaw-dropping effects can be achieved with the built-in functionality, and advanced users can create custom elements and trackers and .
-
+Advanced users can create extend Canvallax with custom elements and trackers
 
 ## Demos
 
