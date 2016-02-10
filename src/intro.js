@@ -6,9 +6,8 @@
       doc = document,
       root = doc.documentElement,
       body = doc.body,
-      requestAnimationFrame = win.requestAnimationFrame || win.mozRequestAnimationFrame || win.webkitRequestAnimationFrame || win.msRequestAnimationFrame || win.oRequestAnimationFrame ||
-      // IE Fallback
-      function(callback){ win.setTimeout(callback, 20); };
+      // requestAnimationFrame polyfill
+      requestAnimationFrame = win.requestAnimationFrame || win.webkitRequestAnimationFrame || win.mozRequestAnimationFrame || win.msRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); }; // IE Fallback
 
   // Exit if browser does not support canvas
   if ( !win.CanvasRenderingContext2D ) { return false; }
