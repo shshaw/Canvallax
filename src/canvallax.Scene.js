@@ -40,7 +40,7 @@ canvallax.Scene = createClass(canvallax.Group,
 
       if ( !me.canvas ) {
         me.canvas = doc.createElement('canvas');
-        me.parentElement.insertBefore(me.canvas, me.parentElement.firstchild);
+        me.parentElement.insertBefore(me.canvas, me.parentElement.firstChild);
       }
       me.canvas.className += ' canvallax ' + me.className;
       me.ctx = me.canvas.getContext('2d');

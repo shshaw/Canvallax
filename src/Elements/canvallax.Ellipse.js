@@ -22,7 +22,7 @@ if ( !ellipseSupport ) {
         y = coords[1];
 
     if ( w === h ) { // Circle!
-      ctx.arc(x + w, coords[1] + w, w, 0, twoPI);
+      ctx.arc(x + w/2, coords[1] + w/2, w/2, 0, twoPI);
     } else {
       var ox = (w / 2) * kappa,
           oy = (h / 2) * kappa,

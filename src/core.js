@@ -234,7 +234,7 @@ var core = {
           scale = this.scale * ( zScale !== undefined ? zScale * this.getZScale() : 1 ),
           transformPoint;
 
-      if ( scale <= 0 || Number.isNaN(scale) ) { return false; }
+      if ( scale <= 0 || isNaN(scale) ) { return false; }
 
       if ( scale !== 1 || (this.rotation % 360) !== 0 ) {
         transformPoint = this.getTransformPoint();
