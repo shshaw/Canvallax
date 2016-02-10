@@ -4,10 +4,11 @@ var rename = require('gulp-rename');
 ////////////////////////////////////////
 
 var pkg = require('./package.json'),
-    date = new Date(),
-    today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
-var files = [
+    date = new Date(),
+    today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(),
+
+    src = [
       'src/intro.js',
       'src/util.js',
       'src/core.js',
@@ -20,6 +21,7 @@ var files = [
       'src/Trackers/**/*.js',
       'src/outro.js'
     ],
+
     excludes = {
       animate: [
         '!src/canvallax.Animate.js'
@@ -32,51 +34,54 @@ var files = [
         '!src/Trackers/**/*.js'
       ]
     },
-    dirs = {
+
+    dest = {
       dev: 'dev',
-      dist: 'dist',
-      custom: 'custom'
+      dist: 'dist'
     };
 
 ////////////////////////////////////////
-
 
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat-util');
 
 gulp.task('default', function(){
 
-  var argv = require('yargs').argv;
-
-  var destination = dirs.dev,
+  var argv = require('yargs').argv,
+      destination = dest.dev,
       filename = pkg.name,
-      extra = '',
-      version = pkg.version;
+      version = pkg.version,
+
+      flags = process.argv.slice(2),
+      extra = [];
 
   if ( argv.dist ){
-    destination = dirs.dist;
-  } else {
+    destination = dest.dist;
+  } else if ( !flags.length ) {
     version += 'dev';
+  } else {
+    version += 'custom';
+    extra.push('flags: ' + flags.join(' '));
+
+    if ( argv.exclude ) {
+      var exclude = argv.exclude.split(',');
+      console.log('Custom build excluding '+exclude.join(', '));
+
+      filename += '.custom';
+
+      // Remove excluded files from src list.
+      exclude.forEach(function(ex){
+        src.unshift.apply(src,excludes[ex]);
+      });
+    }
   }
 
-  if ( argv.exclude ) {
-    var exclude = argv.exclude.split(',');
-    console.log('Custom build excluding '+exclude.join(', '));
+  var header = '/*! '+ pkg.name +' v'+ version +' ( built '+ today + ( extra.length ? ' ' + extra.join(', ') + ' ' : '') + ' ) '+ pkg.homepage +' @preserve */\n';
 
-    extra = ', custom build flags: --exclude='+argv.exclude;
-
-    filename += '.custom';
-
-    exclude.forEach(function(ex){
-      files.unshift.apply(files,excludes[ex]);
-    });
-  }
-
-  var header = '/*! '+ pkg.name +' v'+ version +' (built '+ today + ( extra ? extra : '') + ') '+ pkg.homepage +' @preserve */\n',
-    separator = '\n\n////////////////////////////////////////\n\n';
-
-  return gulp.src(files)
-    .pipe(concat(filename+'.js',{ sep: separator }))
+  return gulp.src(src)
+    .pipe(concat(filename+'.js',{
+      sep: '\n\n////////////////////////////////////////\n\n'
+    }))
     .pipe(uglify({
           mangle: false,
           compress: false,
@@ -96,76 +101,6 @@ gulp.task('default', function(){
     .pipe(gulp.dest(destination));
 });
 
-
-gulp.task('watch', function(){
-  gulp.watch([files], ['default']);
-});
-
-/*
 ////////////////////////////////////////
 
-var rename = require('gulp-rename');
-var foreach = require('gulp-foreach');
-var path = require('path');
-
-var handlebars = require('gulp-static-handlebars');
-var Handlebars = handlebars.instance();
-
-function makeTitle(slug) {
-    var words = slug.split('-');
-
-    for(var i = 0; i < words.length; i++) {
-      var word = words[i];
-      words[i] = word.charAt(0).toUpperCase() + word.slice(1);
-    }
-
-    return words.join(' ');
-}
-
-gulp.task('pages', function(){
-
-  return gulp.src(files.pages)
-    .pipe(foreach(function(stream, file){
-
-      var filename = path.basename(file.path),
-            //file.path.replace(file.base,"");
-          title = makeTitle(
-            filename.replace(path.extname(filename),"")
-          ),
-          data = {
-            pkg: pkg,
-            filename: filename,
-            title: ( title === 'Index' ? false : title )
-          },
-          pageContents = Handlebars.compile(file.contents.toString('utf8'));
-
-          data.page = pageContents(data);
-
-      return gulp.src(files.template)
-          .pipe(
-            handlebars(data,{
-              partials: gulp.src(files.templates)
-            })
-          )
-          .pipe(rename(filename));
-    }))
-    .pipe(gulp.dest(dirs.build));
-
-
-});
-
-*/
-////////////////////////////////////////
-
-/*
-var runSequence = require('run-sequence');
-
-gulp.task('default',function(callback){
-  runSequence('icons','pages',callback);
-});
-
-gulp.task('watch', function() {
-  gulp.watch([files.pages,files.templates], ['pages']);
-  gulp.watch([files.icons], ['default']);
-});
-*/
+gulp.task('watch', function(){ gulp.watch([src], ['default']); });
