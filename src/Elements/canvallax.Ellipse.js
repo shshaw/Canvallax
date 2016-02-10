@@ -50,12 +50,6 @@ canvallax.Ellipse = createElement(
      */
     type: 'ellipse',
 
-    width: 40,
-    // (Number)
-
-    height: 40,
-    // (Number)
-
     draw: drawEllipse
 
   });

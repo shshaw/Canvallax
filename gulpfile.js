@@ -55,6 +55,10 @@ gulp.task('default', function(){
       flags = process.argv.slice(2),
       extra = [];
 
+  // Remove 'watch' flag.
+  var w = flags.indexOf('watch');
+  if ( w > -1 ) { flags.splice(w,1); }
+
   if ( argv.dist ){
     destination = dest.dist;
   } else if ( !flags.length ) {

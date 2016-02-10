@@ -11,11 +11,6 @@
     // Multiplier of the tracked values, how drastically the tracker will affect the values.
     // 2 is twice as fast as the tracked values, 0.5 is half the speed of the tracked values
 
-    invert: false,
-    // (Boolean||'invertx'||'inverty')
-    // Inversion of the tracking values.
-    // If true, 'invertx' or 'inverty', the appropriate axes will be reversed relative to what's provided in the `render` function.
-
     render: function(el,parent) {
       var me = this,
           pos = me._render(el,parent),
