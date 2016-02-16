@@ -7,15 +7,15 @@ Super performant, supporting all modern browsers (IE9+).
 
 Many jaw-dropping effects can be achieved with the built-in functionality:
 
-- [x] Build scenes with easy positioning via `x` &amp; `y` coordinates, a `z` axis for 3D/parallax effects and stacking with `zIndex`
-- [x] Draw Images from URLs or nodes (`<img />`, `<canvas />`, etc.) with `canvallax.Image`.
-- [x] Common shapes (`canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
-- [x] Rotate and scale elements with support for `transformOrigin`.
-- [x] Scroll &amp; Pointer tracking for scenes and elements with configurable easing and offsets.
-- [x] Animation of elements with `.to`, `.from` and `.fromTo`.
-- [x] Opacity, blend modes, clipping, fixed positioning, and so much more! Read the [Canvallax Wiki](https://github.com/shshaw/canvallax.js/wiki/) for full documentation.
+- Build scenes with easy positioning via `x` &amp; `y` coordinates, a `z` axis for 3D/parallax effects and stacking with `zIndex`
+- Draw Images from URLs or nodes (`<img />`, `<canvas />`, etc.) with `canvallax.Image`.
+- Common shapes (`canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
+- Rotate and scale elements with support for `transformOrigin`.
+- Scroll &amp; Pointer tracking for scenes and elements with configurable easing and offsets.
+- Animation of elements with `.to`, `.from` and `.fromTo`.
+- Opacity, blend modes, clipping, fixed positioning, and so much more! 
 
-Advanced users can create extend Canvallax with custom elements and trackers
+Read the [Canvallax Wiki](https://github.com/shshaw/canvallax.js/wiki/) for full documentation. Advanced users can create extend Canvallax with custom elements and trackers.
 
 ## Demos
 
@@ -116,5 +116,22 @@ Animation with Canvallax is super easy! Use external animation libraries like GS
   
 ```
 
+### Trackers
 
+Canvallax's built in trackers allow you to link an object's position to the scroll or pointer (mouse or touch)! You can use the `ease` property to slow the tracking down, use the `invert` property to reverse the tracked values, and use the `offset` property to adjust the tracked values.
 
+```javascript
+
+  var scene = canvallax.Scene({
+        tracker: canvallax.trackScroll() // Make the scene following the window scroll
+      }),
+      arrow = canvallax.Polygon({
+        fill: '#000',
+        points: 3,
+        width: 100,
+        height: 100
+        tracker: canvallax.trackPointer({ ease: 10, offset: -50 }) // Move the arrow with your cursor
+      });
+  
+  scene.add(arrow);
+```

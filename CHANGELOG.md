@@ -1,4 +1,4 @@
-## 2.0.0
+## [2.0.0] - 2016-02-XX
 
 - Massive cleanups and rewrites for performance and unified codebases.
   - Double check the documentation to see new option names & methods.
@@ -18,17 +18,17 @@
   - Builds to `dev` folder by default (ignored by git), use `gulp --dist` to create a public build.
 
 
-## 1.2.0
+## [1.2.0] - 2016-11-15
 
 - Support for pointer & scroll tracking.
 
 
-## 1.1.0
+## [1.1.1] - 2015-11-12
 
 - Support for rotation & scale
 - `transformOrigin` property
 
 
-## 1.0.0
+## [1.0.0] - 2015-11-09
 
 - Initial  release
