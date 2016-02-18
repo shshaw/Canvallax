@@ -26,7 +26,6 @@ var core = {
      * @type {!number} - `z` coordinate
      * @default
      */
-    z: 0,
 
     /**
      * Amount of rotation in degrees (typically 0-360),
@@ -34,6 +33,7 @@ var core = {
      * @type {!number} degrees
      * @default
      */
+    z: 1,
     rotation: 0,
 
     /**
@@ -197,21 +197,14 @@ var core = {
     },
 
     /**
-     * Returns the scale of the object based on it's current `z` value relative to a `z` of 0.
-     * @type {function}
-     * @returns {number}
-     * @default
-     */
-    getZScale: function(){ return ( ( this.z + 1 ) / 1 ); },
-
-    /**
      * Returns the object's current `x` and `y` coordinates relative to the parent.
      * @type {function}
-     * @params {!object} - Parent object to pull parent coordinates
+     * @param {array=} offset - Array of coordinates to offset the return coordinates
+     * @param {number=} relativeZ - `z`, typically of the child, value to base the coordinate scaling on.
      * @returns {array}
      * @default
      */
-    getCoords: function(offset,zScale){
+    getCoords: function(offset,relativeZ){
       var x = this.x,
           y = this.y;
 
@@ -222,9 +215,9 @@ var core = {
         y += offset[1];
       }
 
-      if ( zScale ) {
-        x *= zScale;
-        y *= zScale;
+      if ( relativeZ ) {
+        x *= relativeZ;
+        y *= relativeZ;
       }
 
       return [x,y];
@@ -233,15 +226,15 @@ var core = {
     /**
      * Transforms the canvas context based on the object's properties.
      * @type {function}
-     * @param ctx - 2d canvas context
-     * @params {!object} hasCoords - Coordinates to use, or if coordinates should be relative to this and scaled.
-     * @params {!number} scale - Scale of object
-     * @returns {this}
-     * @default
+     * @param {CanvasRenderingContext2D} ctx - 2d canvas context
+     * @param {array} offset - Array of coordinates to offset the return coordinates
+     * @param {number=} relativeZ - `z` value to base the scaling on, typically of the child.
+     * @returns {boolean}
+     * @memberof! core
      */
-    transform: function(ctx, offset, zScale) {
-      var coords = this.getCoords(offset, zScale),
-          scale = this.scale * ( zScale !== undefined ? zScale * this.getZScale() : 1 ),
+    transform: function(ctx, offset, relativeZ) {
+      var coords = this.getCoords(offset, relativeZ),
+          scale = this.scale * ( relativeZ !== undefined ? (this.z * relativeZ) : 1 ),
           transformPoint;
 
       if ( scale <= 0 || isNaN(scale) ) { return false; }

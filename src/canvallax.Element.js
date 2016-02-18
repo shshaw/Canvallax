@@ -14,7 +14,7 @@ canvallax.Element = createClass(core,
           pCoords = parent.getCoords(),
           coords = me.getCoords(pCoords, false);
 
-      if ( !me.fixed && parent && !parent.transform(ctx, false, me.getZScale()) ) { return me; }
+      if ( !me.fixed && parent && !parent.transform(ctx, false, me.z) ) { return me; }
       if ( !me.transform(ctx,pCoords) ) { return me; }
 
       if ( me.draw ) {
