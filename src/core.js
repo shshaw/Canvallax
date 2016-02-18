@@ -132,53 +132,63 @@ var core = {
     },
 
     /**
-     * Where the element's transforms will occur
-     * Array of coordinates  two keywords separated by a space.
-     * The default of `'center center'` means that `rotation` and `scale` transforms will occur from the center.
-     * The first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position.
-     * The second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
-     * @type {string|array}
+     * Where the object's transforms will occur, either as an array of coordinates or two keywords separated by a space.
+     *
+     * The default of `'center center'` means that `rotation` and `scale` transforms will be relative to the center of the object's `width` and `height`.
+     *
+     * As a string, the first keyword can be `left`, `center` or `right` cooresponding to the appropriate horizontal position, and the second keyword can be `top`, `center` or `bottom` cooresponding to the appropriate vertical position.
+     *
+     * @type {string|number[]}
      * @default
+     * @memberof! core
      */
     transformOrigin: 'center center',
 
     /**
+     * Calculate the transform coordinates based on width/height.
+     * @private
+     */
+    calcTransformPoint: function() {
+      var me = this,
+          point = [0,0],
+          origin = me.transformOrigin.split(' '),
+          i = 0,
+          val, multiplier;
+
+      for ( ; i < 2; i++) {
+        val = origin[i];
+        multiplier = (
+            val === 'center' ? 0.5 :
+            val === 'right' || val === 'bottom' ? 1 :
+            val.indexOf('%') ? parseFloat(val)/100 :
+            0
+          );
+
+        if ( multiplier ) { point[i] = me[_transformAttr[i]] * multiplier; }
+      }
+
+      return point;
+    },
+
+    /**
      * Get the coordinates where the transforms should occur based on the transform origin.
+     * @private
      * @type {function}
-     * @returns {array} - Array of x & y coordinates, relative to the object's top left.
-     * @default
+     * @returns {array} - Array of `x` & `y` coordinates.
+     * @memberof! core
      */
     getTransformPoint: function(){
       var me = this,
           point = me._transformPoint,
-          origin;
+          origin = me.transformOrigin,
+          isArr = Array.isArray(origin);
+
+      // If this is a `canvallax.Group` with a parent `canvallax.Scene` and no exact width & height or array of transformOrigin coordinates, then render relative to the parent scene's coordinates
+      if ( !isArr && !me.width && !me.height && this.length && this.parent ) { return me.parent.getTransformPoint(); }
 
       // Cache values to avoid recalculation
-      if ( !point || me._transformOrigin !== me.transformOrigin ) {
-
-        if ( Array.isArray(me.transformOrigin) ) {
-          point = me.transformOrigin;
-        } else {
-
-          point = [0,0];
-
-          origin = me.transformOrigin.split(' ');
-
-          if ( !me.width && !me.height ) { return point; }
-
-          if ( origin[0] === 'center' ) {
-            point[0] += me.width / 2;
-          } else if ( origin[0] === 'right' ) {
-            point[0] += me.width;
-          }
-
-          if ( origin[1] === 'center' ) {
-            point[1] += me.height / 2;
-          } else if ( origin[1] === 'bottom' ) {
-            point[1] += me.height;
-          }
-
-        }
+      if ( !point || me._transformOrigin !== origin ) {
+        point = ( isArr ? origin : me.calcTransformPoint() );
         me._transformOrigin = me.transformOrigin;
         me._transformPoint = point;
       }
