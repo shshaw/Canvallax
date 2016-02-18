@@ -1,19 +1,36 @@
-  function imageOnload(img){
-    img.width = ( img.width ? img.width : img.image.width );
-    img.height = ( img.height ? img.height : img.image.height );
-  }
+function imageOnload(img){
+  img.width = ( img.width ? img.width : img.image.width );
+  img.height = ( img.height ? img.height : img.image.height );
+}
 
-  /**
-   * Image class for drawing an <img> or <canvas> Element on a Canvallax scene
-   * @class Core
-   */
+/**
+ * Image class for drawing an `<img>` or `<canvas>` Element on a Canvallax scene.
+ *
+ * The element's `width` and `height` are set on image load unless already provided.
+ *
+ * @class
+ * @mixes core
+ * @extends canvallax.Element
+ * @memberOf canvallax
+ *
+ * @property {HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} image=null - Image element to draw. Will be created on initialization if not provided.
+ * @property {string} src=null - URL of the image to draw, subject to [cross origin policies]{@link https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image}
+ * @property {number} width=null - Width of the image. Set onload if not provided.
+ * @property {number} height=null - Height of the image. Set onload if not provided.
+ *
+ * @example
+ * var img = canvallax.Image('myimage.jpg'); // src can be provided as only parameter on init.
+ * @example
+ * var img = canvallax.Image({
+ *          src: 'myimage.jpg'
+ *          width: 300, // Ignore the images actual dimensions, and render at a specific width
+ *          height: 100 // Ignore the images actual dimensions, and render at a specific height
+ *       });
+ */
 
-  canvallax.Image = createElement({
-    /**
-     * Object type
-     * @type {string}
-     * @default
-     */
+canvallax.Image = createElement(
+  /** @lends canvallax.Image# */
+  {
     type: 'image',
 
     init: function(options){

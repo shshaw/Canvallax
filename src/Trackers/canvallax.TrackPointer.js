@@ -8,6 +8,25 @@ var winPointerX = 0,
       winPointerY = ( e.touches ? e.touches[0].clientY : e.clientY ); // touch support
     };
 
+/**
+ * Tracker Class for linking an object's `x` and `y` to the pointer position.
+ *
+ * @class
+ * @mixes canvallax.Tracker
+ * @memberOf canvallax
+ *
+ * @example
+ *  var scene = canvallax.Scene(),
+ *     arrow = canvallax.Polygon({
+ *       fill: '#000',
+ *       points: 3,
+ *       width: 100,
+ *       height: 100
+ *       tracker: canvallax.trackPointer({ ease: 10 }) // Move the arrow with your cursor
+ *     });
+ *
+ *  scene.add(arrow);
+ */
 canvallax.TrackPointer = createTracker(
   /** @lends canvallax.TrackPointer.prototype */
   {

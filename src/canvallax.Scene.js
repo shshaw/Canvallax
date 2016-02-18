@@ -1,39 +1,87 @@
+/**
+ * Canvallax Scenes are where elements are rendered, essentially a fancy wrapper for a `<canvas>` element.
+ *
+ * If you're using the default `fullscreen` setup, then you probably want these styles:
+ *
+ * ```css
+ * .canvallax {
+ *   position: fixed;
+ *   top: 0;
+ *   left: 0;
+ *   z-index: -1;
+ * }
+ * ```
+ *
+ * @class
+ * @mixes core
+ * @extends canvallax.Group
+ * @memberof canvallax
+ *
+ * @param {object} options - Object containing properties to be applied to the new `canvallax.Scene` instance. Reference the properties below for
+ *
+ * @property {HTMLCanvasElement} canvas=null - `<canvas>` element the scene should be rendered on. Creates a new `<canvas>` by default
+ * @property {node} parentElement=document.body - Node the `<canvas>` should be appended to upon initialization.
+ * @property {string} className=null - Classes to add to the canvas, in addition to the `'canvallax'` class automatically added.
+ * @property {boolean} fullscreen=true - Set the canvas width and height to the size of the window, and update on window resize.
+ * @property {boolean} clearFrames=true - Should the canvas be cleared before rendering?
+ * @property {number} width=null - Width of the `<canvas>`, set automatically if `fullscreen` is true or a `<canvas>` element is provided
+ * @property {number} height=null - Heightof the `<canvas>`, set automatically if `fullscreen` is true or a `<canvas>` element is provided
+ * @property {boolean} playing=true - If true, the scene will be re-rendered each `requestAnimationFrame`
+ *
+ * @example
+ * // draw scene to an existing `<canvas>`.
+ * var scene = canvallax.Scene({
+          fullscreen: false,
+ *        canvas: document.getElementById('#myCanvas')
+ *      });
+ *
+ */
+
 canvallax.Scene = createClass(canvallax.Group,
-  /** @lends canvallax.Scene.prototype */
+  /** @lends canvallax.Scene# */
   {
-    /**
-     * Object type
-     * @type {string}
-     * @default
-     */
+
     type: 'scene',
 
     parentElement: body,
-    // (Node)
-    // Canvas is prepended to document.body by default. Override with your own Node if you want it within a certain container.
-
     fullscreen: true,
-    // (Boolean)
-    // Set the canvas width and height to the size of the window, and update on window resize.
-
-    resize: function(width,height){
-      this.width = this.canvas.width = width;
-      this.height = this.canvas.height = height;
-    },
-
-    resizeFullscreen: function() {
-      this.resize(win.innerWidth,win.innerHeight);
-    },
 
     clearFrames: true,
 
+    /**
+     * Function to clear the canvas context if `clearFrames` is true.
+     * @type {function}
+     * @param {CanvasRenderingContext2D} ctx - 2d canvas context
+     * @memberof! canvallax.Scene
+     */
     clear: function(ctx){
       ctx.clearRect(0, 0, this.width, this.height);
     },
 
     /**
-     * Constructor
+     * Resize the `<canvas>`
+     * @type {function}
+     * @param {number} width
+     * @param {number} height
+     * @memberof! canvallax.Scene
+     */
+    resize: function(width,height){
+      this.width = this.canvas.width = width;
+      this.height = this.canvas.height = height;
+    },
+
+    /**
+     * Resize the `<canvas>` to fit the full `window`
+     * @type {function}
+     * @memberof! canvallax.Scene
+     */
+    resizeFullscreen: function() {
+      this.resize(win.innerWidth,win.innerHeight);
+    },
+
+    /**
      * @param {Object} [options] Options object
+     * @memberof! canvallax.Scene
      */
     init: function(options){
       var me = this;
@@ -63,15 +111,23 @@ canvallax.Scene = createClass(canvallax.Group,
     },
 
     playing: true,
-    // (Boolean)
-    // Redraw canvas based on the fps setting.
 
+    /**
+     * Re-render the scene every requestAnimationFrame
+     * @type {function}
+     * @memberof! canvallax.Scene
+     */
     play: function(){
       this.playing = true;
       requestAnimationFrame(this.render);
     },
 
-    pause: function(){
+    /**
+     * Stop rendering the scene every frame.
+     * @type {function}
+     * @memberof! canvallax.Scene
+     */
+    stop: function(){
       this.playing = false;
     }
 

@@ -7,6 +7,18 @@ var winScrollX = 0,
       winScrollY = root.scrollTop || body.scrollTop;
     };
 
+/**
+ * Tracker Class for linking an object's `x` and `y` to the scroll position.
+ *
+ * @class
+ * @mixes canvallax.Tracker
+ * @memberOf canvallax
+ *
+ * @example
+ *  var scene = canvallax.Scene({
+ *       tracker: canvallax.trackScroll() // Make the scene following the window scroll
+ *    });
+ */
 canvallax.TrackScroll = createTracker(
   /** @lends canvallax.TrackScroll.prototype */
   {
@@ -16,7 +28,6 @@ canvallax.TrackScroll = createTracker(
         watchingScroll = true;
         onScroll();
         win.addEventListener('scroll', onScroll);
-        win.addEventListener('touchmove', onScroll);
       }
     },
 

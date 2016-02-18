@@ -1,8 +1,19 @@
+var arr = Array.prototype;
+
 function zIndexSort(a,b){
   var sort = ( a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
   return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
 }
 
+/**
+ * Add an element, group or array of elements to collection
+ *
+ * @alias add
+ * @memberof! canvallax.Group.prototype
+ *
+ * @param {...object|object[]} element - Element or array of elements to be added
+ * @returns {this}
+ */
 function groupAdd(el){
   var me = this;
 
@@ -20,16 +31,17 @@ function groupAdd(el){
   return me.sort(zIndexSort);
 }
 
-var arr = Array.prototype;
-
+/**
+ * Control a group of element's positioning and transforms together
+ *
+ * @class An array-like collection of canvallax elements.
+ * @mixes core
+ * @memberof canvallax
+ *
+ */
 canvallax.Group = createClass(core,
-  /** @lends canvallax.Group.prototype */
+  /** @lends canvallax.Group# */
   {
-    /**
-     * Object type
-     * @type {string}
-     * @default
-     */
     type: 'group',
 
     length: 0,
@@ -37,11 +49,18 @@ canvallax.Group = createClass(core,
     indexOf: arr.indexOf,
     sort: arr.sort,
 
+    /** @private */
     _push: arr.push,
 
     add: groupAdd,
     push: groupAdd,
 
+    /**
+     * Run a function for each item in collection
+     * @param {function} callback - Callback function run for each item
+     * @param thisArg - Overrride `this` in the callback function
+     * @returns {this}
+     */
     each: function(callback,thisArg){
       var obj = this,
           length = this.length,
@@ -56,6 +75,11 @@ canvallax.Group = createClass(core,
       return this;
     },
 
+    /**
+     * Remove an element from collection
+     * @param {object} element - Element to be removed
+     * @returns {this}
+     */
     remove: function(element){
       var index = this.indexOf(element);
       if ( index > -1 ) { this.splice(index, 1); }

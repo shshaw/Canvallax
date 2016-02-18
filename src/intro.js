@@ -2,7 +2,13 @@
 
   'use strict';
 
-  var canvallax = win.canvallax = win.canvallax || {},
+  var /**
+       * Canvallax object containing all classes & methods
+       * @namespace {object} canvallax
+       * @public
+       */
+      canvallax = win.canvallax = win.canvallax || {},
+
       doc = document,
       root = doc.documentElement,
       body = doc.body,

@@ -1,50 +1,57 @@
+/**
+ * Tracker Class for linking an object's properties to external input, such as the scroll or pointer.
+ *
+ * @mixin
+ * @memberOf canvallax
+ *
+ * @property {number} ease=0 - The easing of the tracked values when updated. 0 = none, higher is longer.
+ * @property {number} scale=1 - Multiplier of the tracked values, how drastically the tracker will affect the values. 2 is twice as fast as the tracked values, 0.5 is half the speed of the tracked values
+ * @property {object|number|null} offset=null - Offset that should be applied to the tracked values.
+ * @property {boolean|string} invert=null - Invert the tracked values. Can be a string of 'invertx' or 'inverty' to invert specific values
+ *
+ */
+canvallax.Tracker = createClass({
 
-  canvallax.Tracker = createClass({
+  ease: 0,
+  scale: 1,
 
-    ease: 1,
-    // (Number)
-    // The easing of the x & y position when updated. 1 = none, higher is longer.
-    // If you're syncing parallax items to regular items in the scroll, then you'll probably want a low ease.
+  render: function(el,parent) {
+    var me = this,
+        _pos = me.pos || {},
+        pos = me._render(el,parent,_pos);
 
-    scale: 1,
-    // (Number)
-    // Multiplier of the tracked values, how drastically the tracker will affect the values.
-    // 2 is twice as fast as the tracked values, 0.5 is half the speed of the tracked values
+    if ( !pos ) { return false; }
 
-    render: function(el,parent) {
-      var me = this,
-          pos = me._render(el,parent),
-          _pos = me.pos || {};
+    for ( var key in pos ) {
+      if ( pos.hasOwnProperty(key) ) {
 
-      if ( !pos ) { return false; }
+        pos[key] = ( me.invert === true || me.invert === 'invert'+key ? pos[key] : -pos[key]) * me.scale;
 
-      for ( var key in pos ) {
-        if ( pos.hasOwnProperty(key) ) {
-
-          pos[key] = ( me.invert === true || me.invert === 'invert'+key ? -pos[key] : pos[key]) * me.scale;
-
-          if ( me.offset ) {
-            pos[key] += ( !isNaN(me.offset[key]) ? me.offset[key] : !isNaN(me.offset) ? me.offset : 0 );
-          }
-
-          if ( !_pos[key] ) {
-            _pos[key] = ( el ? el[key] : parent ? parent[key] : pos[key] );
-          }
-
-          if ( me.ease > 0 ) {
-            _pos[key] += ( -pos[key] - _pos[key] ) / me.ease;
-          }
-
+        if ( me.offset ) {
+          pos[key] += ( !isNaN(me.offset[key]) ? me.offset[key] : !isNaN(me.offset) ? me.offset : 0 );
         }
+
+        if ( !_pos[key] ) {
+          _pos[key] = ( el ? el[key] : parent ? parent[key] : pos[key] );
+        }
+
+        _pos[key] = ( me.ease <= 0 ? pos[key] : _pos[key] + ( pos[key] - _pos[key] ) / (me.ease + 1) );
+
       }
+    }
 
-      me.pos = _pos;
+    me.pos = _pos;
 
-      return _pos;
-    },
+    return _pos;
+  },
 
-    clone: clone
+  clone: clone
 
-  });
+});
 
-  var createTracker = canvallax.createTracker = createClass.bind(null,canvallax.Tracker);
+/**
+ * Creates a custom Canvallax Tracker.
+ * @memberOf canvallax
+ * @method
+ */
+var createTracker = canvallax.createTracker = createClass.bind(null,canvallax.Tracker);

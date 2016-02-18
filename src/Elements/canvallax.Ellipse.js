@@ -40,16 +40,22 @@ if ( !ellipseSupport ) {
   }
 }
 
+/**
+ * Draw Ellipses and Circles!
+ *
+ * @type {canvallax.Element}
+ * @constructs canvallax.Ellipse
+ * @memberOf canvallax
+ * @mixes core
+ * @extends canvallax.Element
+ *
+ * @property {number} width=null - Width of the ellipse, required to render.
+ * @property {number} height=null - Height of the ellipse, required to render.
+ */
 canvallax.Ellipse = createElement(
-  /** @lends canvallax.Ellipse.prototype */
+  /** @lends canvallax.Ellipse# */
   {
-    /**
-     * Object type
-     * @type {string}
-     * @default
-     */
     type: 'ellipse',
 
     draw: drawEllipse
-
   });

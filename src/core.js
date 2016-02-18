@@ -1,87 +1,43 @@
+var _transformAttr = ['width','height'];
+
 /**
  * Core properties used for most Canvallax objects
- * @default
- * @lends canvallax.Group.prototype
- * @lends canvallax.Scene.prototype
- * @lends canvallax.Element.prototype
+ *
+ * @mixin core
+ *
+ * @property {number} x=0 - `x` coordinate, horizontal offset from the left
+ * @property {number} y=0 - `y` coordinate, vertical offset from the top
+ * @property {number} z=1 - `z` coordinate, scale relative to the parent. Affects the final rendered coordinates.
+ * @property {number} opacity=1 - Object's opacity with `1` as fully opaque and `0` as fully transparent, with rendering skipped. Relative to the parent's opacity.
+ * @property {number} scale=1 - How large the object should be rendered relative to its natural size, from the `transformOrigin` property]
+ * @property {number} rotation=0 - Amount of rotation in degrees from the `transformOrigin` property
+ *
+ * @property {core.preRender} preRender - Callback before the object is rendered.
+ * @property {core._render} _render - Object specific callback to render to the context.
+ * @property {core.postRender} postRender - Callback after the object is rendered.
+ *
+ * @todo Simplify `z` to a scale-like value, positive integer with 0 being the minimum.
+ * @todo Make `z` relative to parent's `z` to allow for better camera movements into and out of a scene.
  */
+
 var core = {
 
-    /**
-     * Horizontal offset from the left
-     * @type {!number} - `x` coordinate
-     * @default
-     */
     x: 0,
-
-    /**
-     * Vertical offset from the top
-     * @type {!number} - `y` coordinate
-     * @default
-     */
     y: 0,
-
-    /**
-     * Distance from the camera
-     * @type {!number} - `z` coordinate
-     * @default
-     */
-
-    /**
-     * Amount of rotation in degrees (typically 0-360),
-     * Rotation will occur from the `transformOrigin` property
-     * @type {!number} degrees
-     * @default
-     */
     z: 1,
+    opacity: 1,
+    scale: 1,
     rotation: 0,
 
     /**
-     * How large the object should be rendered relative to its natural size.
-     * Scaling will occur from the `transformOrigin` property and is in addition to the `z` property's scaling.
-     * @type {number}
-     * @default
-     */
-    scale: 1,
-
-    /**
-     * Object's opacity
-     * `0` is fully transparent and will not be rendered, `1` is fully opaque.
-     * @type {number}
-     * @default
-     */
-    opacity: 1,
-
-    /**
-     * Clip to element or with custom function
-     * @type {!function}
-     * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax scene
-     * @default
-     */
-    _clip: function(ctx,parent){
-      var me = this;
-      ctx.beginPath();
-      if ( me.clip.render ) {
-        me.clip.parent = parent || me;
-        me.clip.render(ctx,parent);
-      } else {
-        me.clip.call(me,ctx,parent);
-      }
-      ctx.clip();
-    },
-
-    clear: function(ctx){
-      ctx.clearRect(this.x, this.y, this.width, this.height);
-    },
-
-    /**
-     * Main rendering function
-     * @type {!function}
-     * @param ctx - 2d canvas context
-     * @param {object} parent - Parent object, usually a Canvallax scene
+     * Main rendering function that calls all callbacks, gets tracker values, sets the context alpha & blend, and renders children, if any.
+     * @type {function}
      * @returns {this}
-     * @default
+     *
+     * @param {CanvasRenderingContext2D} ctx - 2d canvas context
+     * @param {canvallax.Scene|canvallax.Group=} parent - Parent object, usually a `{@link canvallax.Scene}`
+     *
+     * @memberof! core
      */
     render: function(ctx,parent) {
 
@@ -97,10 +53,8 @@ var core = {
       if ( me.tracker ) {
         pos = me.tracker.render(me,parent);
         // Allow tracker to set many properties.
-        if ( pos ) {
-          for ( key in pos ) {
-            if ( pos.hasOwnProperty(key) ) { me[key] = pos[key]; }
-          }
+        for ( key in pos ) {
+          if ( pos.hasOwnProperty(key) ) { me[key] = pos[key]; }
         }
       }
 
@@ -110,7 +64,7 @@ var core = {
       ctx.save();
       ctx.globalAlpha = o;
       if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
-      if ( me.clearFrames ) { me.clear(ctx,parent); }
+      if ( me.clearFrames && me.clear ) { me.clear(ctx,parent); }
       if ( me.clip ) { me._clip(ctx,parent); }
       if ( me.preRender ) { me.preRender(ctx,parent); }
       if ( me._render ) { me._render(ctx,parent); }
@@ -123,9 +77,8 @@ var core = {
 
     /**
      * Get the canvas the object is rendering onto
-     * @type {!function}
-     * @returns {this}
-     * @default
+     * @type {function}
+     * @memberof! core
      */
     getCanvas: function(){
       return this.canvas || ( this.parent ? this.parent.getCanvas() : false );
@@ -198,11 +151,12 @@ var core = {
 
     /**
      * Returns the object's current `x` and `y` coordinates relative to the parent.
+     * @private
      * @type {function}
      * @param {array=} offset - Array of coordinates to offset the return coordinates
      * @param {number=} relativeZ - `z`, typically of the child, value to base the coordinate scaling on.
      * @returns {array}
-     * @default
+     * @memberof! core
      */
     getCoords: function(offset,relativeZ){
       var x = this.x,
@@ -225,6 +179,7 @@ var core = {
 
     /**
      * Transforms the canvas context based on the object's properties.
+     * @private
      * @type {function}
      * @param {CanvasRenderingContext2D} ctx - 2d canvas context
      * @param {array} offset - Array of coordinates to offset the return coordinates
@@ -237,7 +192,7 @@ var core = {
           scale = this.scale * ( relativeZ !== undefined ? (this.z * relativeZ) : 1 ),
           transformPoint;
 
-      if ( scale <= 0 || isNaN(scale) ) { return false; }
+      if ( scale <= 0 ) { return false; }
 
       if ( scale !== 1 || (this.rotation % 360) !== 0 ) {
         transformPoint = this.getTransformPoint();
@@ -253,13 +208,83 @@ var core = {
     },
 
     /**
-     * Create a clone of this object
+     * Element or custom function to clip object to for masking effects.
+     * @name clip
+     * @type {function|canvallax.Element}
+     * @memberof! core
+     * @example
+     * // circular image!
+     * var circle = canvallax.Ellipse({ width: 100, height: 100 }),
+     *      image = canvallax.Image({ src: 'myimage.jpg', clip: circle });
+     */
+
+    /**
+     * Clip to element or with custom function
+     * @private
      * @type {function}
-     * @params {!object} - Properties to include on the clone
-     * @returns {cloned object}
-     * @default
+     * @param {CanvasRenderingContext2D} ctx - 2d canvas context
+     * @param {canvallax.Scene|canvallax.Group} parent - Parent object, usually a `{@link canvallax.Scene}`
+     * @memberof! core
+     */
+    _clip: function(ctx,parent){
+      var me = this;
+      ctx.beginPath();
+      if ( me.clip.render ) {
+        me.clip.parent = parent || me;
+        me.clip.render(ctx,parent);
+      } else {
+        me.clip.call(me,ctx,parent);
+      }
+      ctx.clip();
+    },
+
+    /**
+     * Create a clone of this object
+     * @borrows clone as clone
+     * @method
+     * @param {object=} options - Properties to be applied to the cloned object
+     * @memberof! core
      */
     clone: clone
+
+    /**
+     * Callback function triggered when an intance is first created.
+     * Receives all arguments passed to the Object's creation function.
+     * @callback init
+     * @type {function}
+     * @memberof! core
+     */
+
+    /**
+     * Tracker instance to tie coordinates to scroll, pointer, etc, instead of manually controlling the `x` and `y`
+     * @name tracker
+     * @type {canvallax.Tracker}
+     * @memberof! core
+     */
+
+    /**
+     * Callback before the object is rendered. Ideal for updating properties before object is drawn to canvas.
+     * @callback preRender
+     * @param {CanvasRenderingContext2D} ctx - 2d canvas context
+     * @param {canvallax.Scene|canvallax.Group} parent - Parent object, usually a `{@link canvallax.Scene}`
+     * @memberof! core
+     */
+
+    /**
+     * Object specific rendering callback
+     * @callback _render
+     * @param {CanvasRenderingContext2D} ctx - 2d canvas context
+     * @param {canvallax.Scene|canvallax.Group} parent - Parent object, usually a `{@link canvallax.Scene}`
+     * @memberof! core
+     */
+
+    /**
+     * Callback after the object is rendered.
+     * @callback postRender
+     * @param {CanvasRenderingContext2D} ctx - 2d canvas context
+     * @param {canvallax.Scene|canvallax.Group} parent - Parent object, usually a `{@link canvallax.Scene}`
+     * @memberof! core
+     */
 
   };
 

@@ -1,25 +1,38 @@
+/**
+ * Draw standard or custom polygon shapes!
+ *
+ * @class
+ * @mixes core
+ * @extends canvallax.Element
+ * @memberOf canvallax
+ *
+ * @property {number|array} points=6 - Number of points for standard polygons (triangle, hexagon, etc) or an array of coordinates to draw more complex shapes. Set the last value of array to `'close'` if you want the shape to be closed.
+ * @property {number} width=null - Width of the polygon, not used if an array of points is provided.
+ * @property {number} height=null - Height of the polygon, not used if an array of points is provided.
+ *
+ * @example
+ * var redTriangle = canvallax.Polygon({
+ *        fill: '#F00',
+ *        points: 3,
+ *        width: 100,
+ *        height: 100
+ *      });
+ *
+ * @example
+ * var blackStar = canvallax.Polygon({
+ *        fill: '#000',
+ *        points: [[80, 0], [100, 50], [160, 55], [115, 95], [130, 150], [80, 120], [30, 150], [45, 95], [0, 55], [60, 50],'close'],
+ *      });
+ *
+ */
+
 canvallax.Polygon = createElement(
-  /** @lends canvallax.Polygon.prototype */
+  /** @lends canvallax.Polygon# */
   {
-    /**
-     * Object type
-     * @type {string}
-     * @default
-     */
+
     type: 'polygon',
 
-    /**
-     * Number of points for standard polygons (triangle, hexagon, etc) or an array of coordinates to draw more complex shapes.
-     * @type {number|array}
-     * @default
-     */
     points: 6,
-    // (Number)
-    // Number of the polygon's sides. `3` is a triangle, `4` is a square, etc.
-
-    width: 20,
-
-    height: 20,
 
     draw: function(ctx,coords) {
       var p = this.points,

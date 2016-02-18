@@ -29,11 +29,20 @@
 
 
 ////////////////////////////////////////
-
-
-  function clone(properties){
-    var props = extend({}, this, properties);
-    return new this.constructor(props);
+  /**
+   * Create a clone of an object or Class
+   * @type {function}
+   * @param {!object} target - Original to clone. If not included, will default to `this`
+   * @param {!object} properties - Properties to include on the clone
+   * @returns {object} - Cloned object containing properties from
+   */
+  function clone(target,properties){
+    if ( arguments.length === 1 ) {
+      properties = target;
+      target = this;
+    }
+    var props = extend({}, target, properties);
+    return new target.constructor(props);
   }
 
   canvallax.clone = clone;
