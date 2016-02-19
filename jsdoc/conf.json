@@ -1,0 +1,11 @@
+{
+    "templates": {
+      "theme": "cosmo",
+      "linenums": true,
+      "analytics":{"ua":"UA-XXXXX-XXX", "domain":"XXXX"}
+    },
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "plugins": ["plugins/markdown"]
+}
