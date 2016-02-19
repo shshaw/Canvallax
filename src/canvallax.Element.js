@@ -13,7 +13,7 @@
  * @property {canvallax.Scene|canvallax.Group} parent=null - Parent object, automatically assigned when added to a `{@link canvallax.Scene}` or `{@link canvallax.Group}`.
  * @property {string} fill=null - Fill color
  * @property {string} stroke=null - Stroke color
- * @property {number} lineWidth=null - Width of the stroke
+ * @property {number} lineWidth=1 - Width of the stroke, if `stroke` is set.
  * @property {number} zIndex=null - Stacking order of the element, higher numbers are rendered last making them appear on top of lower zIndex elements. Defaults to `z` property
  * @property {boolean} fixed=null - If false, the element will be relative to parent, otherwise it will render fixed on the canvas.
  *
@@ -29,6 +29,8 @@ canvallax.Element = createClass(core,
   {
 
     type: 'element',
+
+    lineWidth: 1,
 
     _render: function(ctx,parent){
       var me = this,
