@@ -15,6 +15,8 @@ var winPointerX = 0,
  * @mixes canvallax.Tracker
  * @memberOf canvallax
  *
+ * @param {object} options - Object containing properties to be applied to the new instance. Reference the properties below.
+ *
  * @example
  *  var scene = canvallax.Scene(),
  *     arrow = canvallax.Polygon({

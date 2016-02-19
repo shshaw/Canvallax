@@ -6,6 +6,8 @@
  * @extends canvallax.Element
  * @memberOf canvallax
  *
+ * @param {object} options - Object containing properties to be applied to the new instance. Reference the properties below.
+ *
  * @property {number|array} points=6 - Number of points for standard polygons (triangle, hexagon, etc) or an array of coordinates to draw more complex shapes. Set the last value of array to `'close'` if you want the shape to be closed.
  * @property {number} width=null - Width of the polygon, not used if an array of points is provided.
  * @property {number} height=null - Height of the polygon, not used if an array of points is provided.

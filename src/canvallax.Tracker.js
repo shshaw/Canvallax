@@ -4,6 +4,8 @@
  * @mixin
  * @memberOf canvallax
  *
+ * @param {object} options - Object containing properties to be applied to the new instance. Reference the properties below.
+ *
  * @property {number} ease=0 - The easing of the tracked values when updated. 0 = none, higher is longer.
  * @property {number} scale=1 - Multiplier of the tracked values, how drastically the tracker will affect the values. 2 is twice as fast as the tracked values, 0.5 is half the speed of the tracked values
  * @property {object|number|null} offset=null - Offset that should be applied to the tracked values.

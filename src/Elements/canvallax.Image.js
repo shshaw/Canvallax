@@ -8,10 +8,12 @@ function imageOnload(img){
  *
  * The element's `width` and `height` are set on image load unless already provided.
  *
- * @class
+ * @class canvallax.Image
  * @mixes core
  * @extends canvallax.Element
  * @memberOf canvallax
+ *
+ * @param {object|string} options - Object containing properties to be applied to the new `canvallax.Image` instance, or a string containing the URL of the image src to be used.
  *
  * @property {HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} image=null - Image element to draw. Will be created on initialization if not provided.
  * @property {string} src=null - URL of the image to draw, subject to [cross origin policies]{@link https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image}

@@ -49,6 +49,8 @@ if ( !ellipseSupport ) {
  * @mixes core
  * @extends canvallax.Element
  *
+ * @param {object} options - Object containing properties to be applied to the new instance. Reference the properties below.
+ *
  * @property {number} width=null - Width of the ellipse, required to render.
  * @property {number} height=null - Height of the ellipse, required to render.
  */

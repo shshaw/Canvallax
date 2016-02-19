@@ -10,6 +10,8 @@
  * @memberOf canvallax
  * @returns {canvallax.Element}
  *
+ * @param {object} options - Object containing properties to be applied to the new instance. Reference the properties below.
+ *
  * @property {canvallax.Scene|canvallax.Group} parent=null - Parent object, automatically assigned when added to a `{@link canvallax.Scene}` or `{@link canvallax.Group}`.
  * @property {string} fill=null - Fill color
  * @property {string} stroke=null - Stroke color
