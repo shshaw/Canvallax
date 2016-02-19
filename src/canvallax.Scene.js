@@ -13,7 +13,7 @@
  * ```
  *
  * @class
- * @mixes core
+ * @mixes core|animateCore
  * @extends canvallax.Group
  * @memberof canvallax
  *
@@ -37,7 +37,7 @@
  *
  */
 
-canvallax.Scene = createClass(canvallax.Group,
+canvallax.Scene = createClass(canvallax.Group,animateCore,
   /** @lends canvallax.Scene# */
   {
 
@@ -47,6 +47,7 @@ canvallax.Scene = createClass(canvallax.Group,
     fullscreen: true,
 
     clearFrames: true,
+    playing: true,
 
     /**
      * Function to clear the canvas context if `clearFrames` is true.
@@ -106,30 +107,6 @@ canvallax.Scene = createClass(canvallax.Group,
       if ( me.playing ) { me.play(); }
     },
 
-    _render: function(ctx) {
-      if ( this.playing ) { requestAnimationFrame(this.render); }
-    },
-
-    playing: true,
-
-    /**
-     * Re-render the scene every requestAnimationFrame
-     * @type {function}
-     * @memberof! canvallax.Scene
-     */
-    play: function(){
-      this.playing = true;
-      requestAnimationFrame(this.render);
-    },
-
-    /**
-     * Stop rendering the scene every frame.
-     * @type {function}
-     * @memberof! canvallax.Scene
-     */
-    stop: function(){
-      this.playing = false;
-    }
 
   });
 

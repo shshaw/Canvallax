@@ -41,6 +41,7 @@ canvallax.ease = {
  * @class
  * @returns {object} Animate instance
  * @memberof canvallax
+ * @mixes animateCore
  *
  * @param {object} target - Object to animate.
  * @param {number} duration - Duration in seconds.
@@ -61,9 +62,10 @@ canvallax.ease = {
  * canvallax.Animate(redSquare, 1, { rotation: 360 },{ ease: canvallax.ease.linear, repeat: -1 });
  *
  */
+
 function Animate(target,duration,to,opts){
 
-  if (!(this instanceof Animate)) { return new Animate(target,duration,to,opts); }
+  if ( !this instanceof Animate ) { return new Animate(target,duration,to,opts); }
 
   var me = this,
       key;
@@ -79,11 +81,101 @@ function Animate(target,duration,to,opts){
   }
 
   me.duration(duration);
-  me.render = me.render.bind(me);
+  //me.render = me.render.bind(me);
   me.restart();
 
   return me;
-}
+
+};
+
+Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
+
+  repeat: 0,
+  ease: canvallax.ease.inOutQuad,
+
+  /**
+   * Get or set the animation's duration
+   *
+   * @method
+   * @memberof! canvallax.Animate
+   *
+   * @param {number} Set the duration in seconds, or retreive the current duration
+   *
+   */
+  duration: function(dur){ if ( dur ) { this._d = dur * 1000; } else { return this._d / 1000 }},
+
+  /**
+   * Start the animation from the beginning.
+   *
+   * @method
+   * @memberof! canvallax.Animate
+   */
+  restart: function(){
+    // Animation start time.
+    this._s = Date.now();
+    this._p = 0;
+    if ( this.onStart ) { this.onStart(); }
+    this.play();
+  },
+
+  pause: function(){
+    // Save the time the animation was paused to calculate elapsed time later.
+    this._p = this._p || Date.now();
+    this.playing = false;
+  },
+
+  /**
+   * Reverse the animation & restart.
+   *
+   * @method
+   * @memberof! canvallax.Animate
+   */
+  reverse: function(){
+    this.reversed = !this.reversed;
+    this.restart();
+  },
+
+  /** @private */
+  render: function(){
+
+    var me = this,
+        now = Date.now(),
+        progress, now, delta, key;
+
+    if ( !me.playing ) { return; }
+
+    // If animation was paused, add the elapsed time to the start time.
+    if ( me._p ) {
+      me._s += ( now - me._p );
+      me._p = 0;
+    }
+
+    progress = ( now - me._s ) / me._d;
+    if ( progress > 1 ) { progress = 1; }
+
+    delta = me.ease(me.reversed ? 1 - progress : progress );
+    for (key in me.to){
+      me.target[key] = me.from[key] + (me.to[key] - me.from[key]) * delta;
+    }
+
+    if ( me.onUpdate && me.onUpdate() === false ) { return false; }
+
+    if ( progress === 1 ) {
+      if ( me.onComplete ) { me.onComplete(); }
+      if ( me.yoyo ) { me.reversed = !me.reversed; }
+      if ( me.repeat != 0) {
+        if ( me.repeat > 0 ) { me.repeat--; }
+        me.restart();
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+
+  }
+
+});
 
 /**
  * Callback for when animation starts, triggered each time an animation repeats.
@@ -118,90 +210,6 @@ function Animate(target,duration,to,opts){
  */
 
 canvallax.Animate = Animate;
-
-Animate.prototype = {
-  repeat: 0,
-  ease: canvallax.ease.inOutQuad,
-
-  /**
-   * Get or set the animation's duration
-   *
-   * @method
-   * @memberof! canvallax.Animate
-   *
-   * @param {number} Set the duration in seconds, or retreive the current duration
-   *
-   */
-  duration: function(dur){ if ( dur ) { this._d = dur * 1000; } else { return this._d / 1000 }},
-
-  /**
-   * Play the animation.
-   *
-   * @method
-   * @memberof! canvallax.Animate
-   */
-  play: function(){
-    this.playing = true;
-    requestAnimationFrame(this.render);
-  },
-
-  /**
-   * Stop the animation.
-   *
-   * @method
-   * @memberof! canvallax.Animate
-   */
-  stop: function(){ this.playing = false; },
-
-  /**
-   * Start the animation from the beginning.
-   *
-   * @method
-   * @memberof! canvallax.Animate
-   */
-  restart: function(){
-    this._s = new Date;
-    if ( this.onStart ) { this.onStart(); }
-    this.play();
-  },
-
-  /**
-   * Reverse the animation & restart.
-   *
-   * @method
-   * @memberof! canvallax.Animate
-   */
-  reverse: function(){
-    this.reversed = !this.reversed;
-    this.restart();
-  },
-
-  /** @private */
-  render: function(){
-    var me = this,
-        progress = (new Date - me._s) / me._d,
-        delta, key;
-
-    if ( !me.playing ) { return; }
-    if ( progress > 1 ) { progress = 1; }
-
-    delta = me.ease(me.reversed ? 1 - progress : progress );
-    for (key in me.to){
-      me.target[key] = me.from[key] + (me.to[key] - me.from[key]) * delta;
-    }
-
-    if ( me.onUpdate && me.onUpdate() === false ) { return; }
-
-    if ( progress === 1 ) {
-      if ( me.onComplete ) { me.onComplete(); }
-      if ( me.yoyo ) { me.reversed = !me.reversed; }
-      if ( me.repeat != 0) { me.repeat--; me.restart(); }
-      return;
-    }
-
-    requestAnimationFrame(me.render);
-  }
-};
 
 /**
  * Animate an object's properties to new values

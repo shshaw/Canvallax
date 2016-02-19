@@ -14,6 +14,7 @@ var pkg = require('./package.json'),
       'src/intro.js',
       'src/util.js',
       'src/core.js',
+      'src/animateCore.js',
       'src/canvallax.Animate.js',
       'src/canvallax.Group.js',
       'src/canvallax.Scene.js',
@@ -88,7 +89,7 @@ gulp.task('default', function(){
 
   return gulp.src(src)
     .pipe(concat(_filename+'.js',{
-      sep: '\n\n////////////////////////////////////////\n\n'
+      sep: '\n////////////////////////////////////////\n\n'
     }))
       .pipe( concat.header(header) )
       .pipe( rename(_filename + '.js') )
