@@ -27,7 +27,7 @@ canvallax.TrackScroll = createTracker(
       if ( !watchingScroll ) {
         watchingScroll = true;
         onScroll();
-        win.addEventListener('scroll', onScroll);
+        doc.addEventListener('scroll', onScroll);
       }
     },
 

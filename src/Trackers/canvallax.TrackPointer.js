@@ -34,9 +34,9 @@ canvallax.TrackPointer = createTracker(
     init: function(){
       if ( !watchingPointer ) {
         watchingPointer = true;
-        win.addEventListener('mousemove', onPointerMove);
-        win.addEventListener('touchmove', onPointerMove);
-        win.addEventListener('touchstart', onPointerMove);
+        doc.addEventListener('mousemove', onPointerMove);
+        doc.addEventListener('touchmove', onPointerMove);
+        doc.addEventListener('touchstart', onPointerMove);
       }
     },
 
