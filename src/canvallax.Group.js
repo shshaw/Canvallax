@@ -1,5 +1,3 @@
-var arr = Array.prototype;
-
 function zIndexSort(a,b){
   var sort = ( a.zIndex === b.zIndex ? 0 : a.zIndex < b.zIndex ? -1 : 1 );
   return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );

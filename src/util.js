@@ -4,6 +4,20 @@
 
 ////////////////////////////////////////
 
+  /**
+   * Extend an object with properties from other objects.
+   *
+   * If only one argument is provided, the `target` is assumed to be `this` in the current context.
+   *
+   * @type method
+   * @memberof canvallax
+   *
+   * @param {object} target - Target object to receive properties from the other objects.
+   * @param {...object} - Objects to merge
+   *
+   * @returns {object} - Object with merged properties
+   */
+
   function extend(target) {
     target = target || {};
 
@@ -29,13 +43,19 @@
 
 
 ////////////////////////////////////////
+
   /**
    * Create a clone of an object or Class
-   * @type {function}
+   *
+   * @type method
+   * @memberof canvallax
+   *
    * @param {!object} target - Original to clone. If not included, will default to `this`
    * @param {!object} properties - Properties to include on the clone
-   * @returns {object} - Cloned object containing properties from
+   *
+   * @returns {object} - Cloned object containing extra properties from the provided object.
    */
+
   function clone(target,properties){
     if ( arguments.length === 1 ) {
       properties = target;
@@ -53,31 +73,41 @@
 
   // Gets around using `.apply` for creating new instances of a class, adapted from http://stackoverflow.com/a/1608546/1012919
   function construct(constructor, args) {
-    function C(){
-      return constructor.apply(this, args);
-    }
+    function C(){ return constructor.apply(this, args); }
     C.prototype = constructor.prototype;
     return new C();
   }
+
+  /**
+   * Create a new Class with the properties provided
+   *
+   * @type method
+   * @memberof canvallax
+   *
+   * @param {!object} target - Original to clone. If not included, will default to `this`
+   * @param {!object} properties - Properties to include on the clone
+   *
+   * @returns {object} - Cloned object containing extra properties from the provided object.
+   */
 
   function createClass(){
 
     function C(options) {
       var me = this,
-          args = [],
-          length = arguments.length,
+          len = arguments.length,
+          args = new Array(len),
           i = 0;
-      for ( ; i < length; i++ ) { args[i] = arguments[i]; }
+      for(; i < len; i++) { args[i] = arguments[i]; };
 
       if ( !(me instanceof C) ) { return construct(C,args); }
-
-      extend(me,options);
+      if ( len === 1 ) { extend(me,options); }
       if ( me.init ) { me.init.apply(me,args); }
+
       return me;
     }
 
-    var args = [],
-        length = arguments.length,
+    var len = arguments.length,
+        args = new Array(len),
         i = 0,
         parent,
         fn = C.prototype = {
@@ -85,9 +115,9 @@
           extend: extend
         };
 
-    for ( ; i < length; i++ ) { args[i] = arguments[i]; }
+    for(; i < len; i++) { args[i] = arguments[i]; };
 
-    if ( length > 1 && args[0].prototype ) {
+    if ( len > 1 && args[0].prototype ) {
       parent = args[0];
       args[0] = args[0].prototype;
       fn._parent = parent;
