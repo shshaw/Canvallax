@@ -5,6 +5,8 @@ var rename = require('gulp-rename');
 
 var pkg = require('./package.json'),
 
+    filename = pkg.name,
+
     date = new Date(),
     today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(),
 
@@ -36,8 +38,9 @@ var pkg = require('./package.json'),
     },
 
     dest = {
-      dev: 'dev',
-      dist: 'dist'
+      dev: './dev',
+      dist: './dist',
+      docs: './docs'
     };
 
 ////////////////////////////////////////
@@ -49,8 +52,9 @@ gulp.task('default', function(){
 
   var argv = require('yargs').argv,
       destination = dest.dev,
-      filename = pkg.name,
       version = pkg.version,
+
+      _filename = filename,
 
       flags = process.argv.slice(2),
       extra = [];
@@ -71,7 +75,7 @@ gulp.task('default', function(){
       var exclude = argv.exclude.split(',');
       console.log('Custom build excluding '+exclude.join(', '));
 
-      filename += '.custom';
+      _filename += '.custom';
 
       // Remove excluded files from src list.
       exclude.forEach(function(ex){
@@ -83,28 +87,50 @@ gulp.task('default', function(){
   var header = '/*! '+ pkg.name +' v'+ version +' ( built '+ today + ( extra.length ? ' ' + extra.join(', ') + ' ' : '') + ' ) '+ pkg.homepage +' @preserve */\n';
 
   return gulp.src(src)
-    .pipe(concat(filename+'.js',{
+    .pipe(concat(_filename+'.js',{
       sep: '\n\n////////////////////////////////////////\n\n'
     }))
-    .pipe(uglify({
-          mangle: false,
-          compress: false,
-          //preserveComments: 'license',
-          output: {
-            beautify: true,
-            comments: true,
-            indent_level: 2
-          }
-        })
-        .on('error', function(e){ console.log(e); }))
-    .pipe(concat.header(header))
-    .pipe(gulp.dest(destination))
+      .pipe( concat.header(header) )
+      .pipe( rename(_filename + '.js') )
+      .pipe( gulp.dest(destination) )
     .pipe(uglify({ preserveComments: 'license' })
-        .on('error', function(e){ console.log(e); }))
-    .pipe(rename(filename + '.min.js'))
-    .pipe(gulp.dest(destination));
+      .on('error', function(e){ console.log(e); }))
+      .pipe( rename(_filename + '.min.js') )
+      .pipe( gulp.dest(destination) );
 });
 
 ////////////////////////////////////////
 
-gulp.task('watch', function(){ gulp.watch([src], ['default']); });
+var jsdoc = require('gulp-jsdoc3');
+var fs = require("fs");
+var del = require("del");
+
+gulp.task('docs', function (cb) {
+
+    var config = require('./jsdoc/conf.json') || {};
+
+    config.templates = config.templates || {};
+    config.templates.systemName = pkg.title;
+
+    return gulp.src(['README.md','dev/'+filename+'.js'], {read: false})
+        .pipe(jsdoc(config,function(cb){
+          // No way to configure jsdoc output directory, so we have to remove the existing ./docs folder, then rename the ./out dir
+          cb = cb || function(e){ console.log(e);};
+          del(dest.docs + '/**/*')
+            .then(function(){
+              fs.rename('./out',dest.docs,cb);
+            });
+        }))
+});
+
+////////////////////////////////////////
+
+var runSequence = require('run-sequence');
+
+gulp.task('full', function(){
+  runSequence('default','docs');
+})
+
+gulp.task('watch', function(){
+  return gulp.watch([src], ['full']);
+});
