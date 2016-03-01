@@ -163,11 +163,11 @@ Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
     if ( progress === 1 ) {
       if ( me.onComplete ) { me.onComplete(); }
       if ( me.yoyo ) { me.reversed = !me.reversed; }
-      if ( me.repeat != 0) {
-        if ( me.repeat > 0 ) { me.repeat--; }
-        me.restart();
-      } else {
+      if ( me.repeat == 0) {
         return false;
+      } else {
+        if ( me.repeat > 0 ) { me.repeat--; }
+        me.restart(true);
       }
     }
 
