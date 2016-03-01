@@ -56,7 +56,7 @@
    */
 
   function clone(target,properties){
-    if ( arguments.length === 1 ) {
+    if ( arguments.length <= 1 ) {
       properties = target;
       target = this;
     }
