@@ -130,7 +130,7 @@ var core = {
      * @returns {array} - Array of `x` & `y` coordinates.
      * @memberof! core
      */
-    getTransformPoint: function(){
+    getTransformPoint: function(force){
       var me = this,
           point = me._transformPoint,
           origin = me.transformOrigin,
@@ -140,7 +140,7 @@ var core = {
       if ( !isArr && !me.width && !me.height && this.length && this.parent ) { return me.parent.getTransformPoint(); }
 
       // Cache values to avoid recalculation
-      if ( !point || me._transformOrigin !== origin ) {
+      if ( force || (!point || me._transformOrigin !== origin) ) {
         point = ( isArr ? origin : me.calcTransformPoint() );
         me._transformOrigin = me.transformOrigin;
         me._transformPoint = point;
