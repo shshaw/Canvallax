@@ -23,31 +23,24 @@ var animations = canvallax.animations = {
       if ( el.playing && ( el.render && !el.render() )) { el.stop(); }// ) { el.animate(); }
     }
 
-    requestAnimationFrame(animations.animate);
+    animations.frame = requestAnimationFrame(animations.animate);
 
   },
 
   play: function(){
-    if ( !animations.playing ) { requestAnimationFrame(animations.animate); }
+    animations.frame = animations.frame || requestAnimationFrame(animations.animate);
     animations.playing = true;
   },
 
-/*
-  pause: function(){
-    var i = 0,
-        len = animations.length,
-        el;
-
-    for (; i < len; i++) {
-      el = animations[i];
-      if ( el.pause ) { el.pause(); }
-    }
+  stop: function(){
+    animations.playing = false;
+    animations.frame = null;
   },
-*/
 
-  stop: function(){ animations.playing = false; },
-
-  kill: function(){ return animations.splice(0); }
+  kill: function(){
+    animations.stop();
+    return animations.splice(0);
+  }
 };
 
 
