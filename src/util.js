@@ -1,6 +1,13 @@
   var rad = Math.PI / 180,
       twoPI = 2 * Math.PI,
-      noop = function(){};
+      noop = function(){},
+      arrayLike = {
+        length: 0,
+        indexOf: arr.indexOf,
+        push: arr.push,
+        splice: arr.splice,
+        sort: arr.sort
+      };
 
 ////////////////////////////////////////
 

@@ -3,12 +3,7 @@
  * An array-like object that groups all `requestAnimationFrame` calls into one.
  */
 
-var animations = canvallax.animations = {
-
-  length: 0,
-  push: arr.push,
-  indexOf: arr.indexOf,
-  splice: arr.splice,
+var animations = canvallax.animations = extend({},arrayLike,{
 
   animate: function(){
 

@@ -3,9 +3,6 @@ function zIndexSort(a,b){
   return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
 }
 
-
-
-
 /**
  * Control a group of element's positioning and transforms together
  *
@@ -14,16 +11,10 @@ function zIndexSort(a,b){
  * @memberof canvallax
  *
  */
-canvallax.Group = createClass(core,
+canvallax.Group = createClass(core,arrayLike,
   /** @lends canvallax.Group# */
   {
     type: 'group',
-
-    length: 0,
-    splice: arr.splice,
-    indexOf: arr.indexOf,
-    sort: arr.sort,
-    push: arr.push,
 
     /**
      * Add an element, group or array of elements to collection
