@@ -36,7 +36,7 @@ var animations = canvallax.animations = extend({},arrayLike,{
     animations.stop();
     return animations.splice(0);
   }
-};
+});
 
 
 /**
