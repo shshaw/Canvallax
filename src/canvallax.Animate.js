@@ -20,19 +20,19 @@
 
 canvallax.ease = {
 
-  linear: function(t){ return t },
+  linear: function(t){ return t; },
 
-  inQuad: function(t){ return t*t },
-  outQuad: function(t){ return t*(2-t) },
-  inOutQuad: function(t){ return t<.5 ? 2*t*t : -1+(4-2*t)*t },
+  inQuad: function(t){ return t*t; },
+  outQuad: function(t){ return t*(2-t); },
+  inOutQuad: function(t){ return t<0.5 ? 2*t*t : -1+(4-2*t)*t; },
 
-  inCubic: function(t){ return t*t*t },
-  outCubic: function(t){ return (--t)*t*t+1 },
-  inOutCubic: function(t){ return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
+  inCubic: function(t){ return t*t*t; },
+  outCubic: function(t){ return (--t)*t*t+1; },
+  inOutCubic: function(t){ return t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1; },
 
-  inQuart: function (t){ return t*t*t*t },
-  outQuart: function (t){ return 1-(--t)*t*t*t },
-  inOutQuart: function(t){ return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t }
+  inQuart: function (t){ return t*t*t*t; },
+  outQuart: function (t){ return 1-(--t)*t*t*t; },
+  inOutQuart: function(t){ return t<0.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t; }
 
 };
 
@@ -65,7 +65,7 @@ canvallax.ease = {
 
 function Animate(target,duration,to,opts){
 
-  if ( !this instanceof Animate ) { return new Animate(target,duration,to,opts); }
+  if ( !(this instanceof Animate) ) { return new Animate(target,duration,to,opts); }
 
   var me = this,
       key;
@@ -86,7 +86,7 @@ function Animate(target,duration,to,opts){
 
   return me;
 
-};
+}
 
 Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
 
@@ -102,7 +102,10 @@ Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
    * @param {number} Set the duration in seconds, or retreive the current duration
    *
    */
-  duration: function(dur){ if ( dur ) { this._d = dur * 1000; } else { return this._d / 1000 }},
+  duration: function(dur){
+    if ( dur ) { this._d = dur * 1000; }
+    else { return this._d / 1000; }
+  },
 
   /**
    * Start the animation from the beginning.
@@ -140,7 +143,7 @@ Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
 
     var me = this,
         now = Date.now(),
-        progress, now, delta, key;
+        progress, delta, key;
 
     if ( !me.playing ) { return; }
 
@@ -163,7 +166,7 @@ Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
     if ( progress === 1 ) {
       if ( me.onComplete ) { me.onComplete(); }
       if ( me.yoyo ) { me.reversed = !me.reversed; }
-      if ( me.repeat == 0) {
+      if ( me.repeat === 0) {
         return false;
       } else {
         if ( me.repeat > 0 ) { me.repeat--; }

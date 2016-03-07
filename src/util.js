@@ -95,7 +95,7 @@
           len = arguments.length,
           args = new Array(len),
           i = 0;
-      for(; i < len; i++) { args[i] = arguments[i]; };
+      for(; i < len; i++) { args[i] = arguments[i]; }
 
       if ( !(me instanceof C) ) { return construct(C,args); } // Ensure class is always created as `new Class` even if `new` isn't used.
       if ( len === 1 ) { extend(me,options); }
@@ -113,7 +113,7 @@
           extend: extend
         };
 
-    for(; i < len; i++) { args[i] = arguments[i]; };
+    for(; i < len; i++) { args[i] = arguments[i]; }
 
     if ( len > 1 && args[0].prototype ) {
       parent = args[0];

@@ -48,6 +48,7 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
     clearFrames: true,
     playing: true,
+    className: '',
 
     /**
      * Function to clear the canvas context if `clearFrames` is true.

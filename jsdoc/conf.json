@@ -2,7 +2,6 @@
     "templates": {
       "theme": "cosmo",
       "linenums": true,
-      "collapseSymbols": true,
       "analytics":{"ua":"UA-XXXXX-XXX", "domain":"XXXX"}
     },
     "tags": {

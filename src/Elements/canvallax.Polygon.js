@@ -39,17 +39,18 @@ canvallax.Polygon = createElement(
     draw: function(ctx,coords) {
       var p = this.points,
           len = p.length,
-          i = 0, w, h, x, y;
+          i = 0,
+          w, h, x, y;
 
       if ( len ) {
         for (; i < len; i++) {
           if ( p[i] === 'close' ) { ctx.closePath(); }
-          else { ctx[( i == 0 ? 'moveTo' : 'lineTo' )](coords[0] + p[i][0], coords[1] + p[i][1]); }
+          else { ctx[( i === 0 ? 'moveTo' : 'lineTo' )](coords[0] + p[i][0], coords[1] + p[i][1]); }
         }
       } else {
-        w = this.width / 2,
-        h = this.height / 2,
-        x = coords[0] + w,
+        w = this.width / 2;
+        h = this.height / 2;
+        x = coords[0] + w;
         y = coords[1] + h;
 
         ctx.moveTo(x + w, y);

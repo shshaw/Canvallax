@@ -3,31 +3,8 @@ function zIndexSort(a,b){
   return sort || ( a.z === b.z ? 0 : a.z < b.z ? -1 : 1 );
 }
 
-/**
- * Add an element, group or array of elements to collection
- *
- * @alias add
- * @memberof! canvallax.Group.prototype
- *
- * @param {...object|object[]} element - Element or array of elements to be added
- * @returns {this}
- */
-function groupAdd(el){
-  var me = this;
 
-  var elements = ( el && !(el instanceof canvallax.Group) && el.length > -1 ? el : arguments ),
-      len = elements.length,
-      i = 0;
 
-  for ( ; i < len; i++ ) {
-    if ( elements[i] ) { // Prevent adding `false` or `undefined` elements
-      elements[i].parent = me;
-      me._push(elements[i]);
-    }
-  }
-
-  return me.sort(zIndexSort);
-}
 
 /**
  * Control a group of element's positioning and transforms together
@@ -46,12 +23,30 @@ canvallax.Group = createClass(core,
     splice: arr.splice,
     indexOf: arr.indexOf,
     sort: arr.sort,
+    push: arr.push,
 
-    /** @private */
-    _push: arr.push,
+    /**
+     * Add an element, group or array of elements to collection
+     *
+     * @param {...object|object[]} element - Element or array of elements to be added
+     * @returns {this}
+     */
+    add: function(el){
+      var me = this;
 
-    add: groupAdd,
-    push: groupAdd,
+      var elements = ( el && !(el instanceof canvallax.Group) && el.length > -1 ? el : arguments ),
+          len = elements.length,
+          i = 0;
+
+      for ( ; i < len; i++ ) {
+        if ( elements[i] ) { // Prevent adding `false` or `undefined` elements
+          elements[i].parent = me;
+          me.push(elements[i]);
+        }
+      }
+
+      return me.sort(zIndexSort);
+    },
 
     /**
      * Run a function for each item in collection

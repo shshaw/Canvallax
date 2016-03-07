@@ -44,7 +44,7 @@ var core = {
       if ( !ctx ) { return; }
 
       var me = this,
-          len = me.length || 0,
+          len = me.length,
           i = 0,
           pos, key, o;
 
