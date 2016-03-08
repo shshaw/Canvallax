@@ -113,9 +113,12 @@ Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
    * @method
    * @memberof! canvallax.Animate
    */
-  restart: function(){
+  restart: function(isRepeat){
     // Animation start time.
-    this._s = Date.now();
+
+    var d = ( isRepeat ? this.repeatDelay : this.delay );
+
+    this._s = Date.now() + (d ? d * 1000 : 0);
     this._p = 0;
     if ( this.onStart ) { this.onStart(); }
     this.play();
@@ -152,6 +155,8 @@ Animate.fn = Animate.prototype = extend({},animateCore, /** @lends Animate# */{
       me._s += ( now - me._p );
       me._p = 0;
     }
+
+    if ( now < me._s ) { return true; }
 
     progress = ( now - me._s ) / me._d;
     if ( progress > 1 ) { progress = 1; }
