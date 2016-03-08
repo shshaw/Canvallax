@@ -25,21 +25,20 @@ canvallax.Tracker = createClass({
     if ( !pos ) { return false; }
 
     for ( var key in pos ) {
-      if ( pos.hasOwnProperty(key) ) {
 
-        pos[key] = ( me.invert === true || me.invert === 'invert'+key ? pos[key] : -pos[key]) * me.scale;
+      pos[key] = ( me.invert === true || me.invert === 'invert'+key ? pos[key] : -pos[key]) * me.scale;
 
-        if ( me.offset ) {
-          pos[key] += ( !isNaN(me.offset[key]) ? me.offset[key] : !isNaN(me.offset) ? me.offset : 0 );
-        }
-
-        if ( !_pos[key] ) {
-          _pos[key] = ( el ? el[key] : parent ? parent[key] : pos[key] );
-        }
-
-        _pos[key] = ( me.ease <= 0 ? pos[key] : _pos[key] + ( pos[key] - _pos[key] ) / (me.ease + 1) );
-
+      if ( me.offset ) {
+        pos[key] += ( !isNaN(me.offset[key]) ? me.offset[key] : !isNaN(me.offset) ? me.offset : 0 );
       }
+
+      if ( !_pos[key] ) {
+        _pos[key] = 0;
+        //( el ? el[key] : parent ? parent[key] : pos[key] );
+      }
+
+      _pos[key] = ( me.ease <= 0 ? pos[key] : _pos[key] + ( pos[key] - _pos[key] ) / (me.ease + 1) );
+
     }
 
     me.pos = _pos;
