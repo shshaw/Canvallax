@@ -44,9 +44,7 @@ canvallax.Tracker = createClass({
     me.pos = _pos;
 
     return _pos;
-  },
-
-  clone: clone
+  }
 
 });
 

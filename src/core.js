@@ -245,7 +245,6 @@ var core = {
      * @param {object=} options - Properties to be applied to the cloned object
      * @memberof! core
      */
-    clone: clone
 
     /**
      * Callback function triggered when an intance is first created.

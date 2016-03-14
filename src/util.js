@@ -117,7 +117,8 @@
         parent,
         fn = C.prototype = {
           init: noop,
-          extend: extend
+          extend: extend,
+          clone: clone
         };
 
     for(; i < len; i++) { args[i] = arguments[i]; }
