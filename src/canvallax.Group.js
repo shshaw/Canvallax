@@ -23,9 +23,8 @@ canvallax.Group = createClass(core,arrayLike,
      * @returns {this}
      */
     add: function(el){
-      var me = this;
-
-      var elements = ( el && !(el instanceof canvallax.Group) && el.length > -1 ? el : arguments ),
+      var me = this,
+          elements = ( el && el.length > -1 && !(el instanceof canvallax.Group) ? el : arguments ),
           len = elements.length,
           i = 0;
 
