@@ -21,6 +21,7 @@
   if ( !win.CanvasRenderingContext2D ) { return false; }
 
 // @include ./util.js
+// @include ./arrayLike.js
 // @include ./core.js
 // @include ./animateCore.js
 // @if !exclude.animate

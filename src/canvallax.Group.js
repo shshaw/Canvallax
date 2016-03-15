@@ -24,7 +24,7 @@ canvallax.Group = createClass(core,arrayLike,
      */
     add: function(el){
       var me = this,
-          elements = ( el && el.length > -1 && !(el instanceof canvallax.Group) ? el : arguments ),
+          elements = ( el && el.length > -1 && Array.isArray(el) ? el : arguments ),
           len = elements.length,
           i = 0;
 
@@ -36,37 +36,6 @@ canvallax.Group = createClass(core,arrayLike,
       }
 
       return me.sort(zIndexSort);
-    },
-
-    /**
-     * Run a function for each item in collection
-     * @param {function} callback - Callback function run for each item
-     * @param thisArg - Overrride `this` in the callback function
-     * @returns {this}
-     */
-    each: function(callback,thisArg){
-      var obj = this,
-          length = this.length,
-          i = 0,
-          t;
-
-      for ( ; i < length; i++ ) {
-        t = thisArg || obj[i];
-        if ( callback.call( t, obj[ i ], i ) === false ) { break; }
-      }
-
-      return this;
-    },
-
-    /**
-     * Remove an element from collection
-     * @param {object} element - Element to be removed
-     * @returns {this}
-     */
-    remove: function(element){
-      var index = this.indexOf(element);
-      if ( index > -1 ) { this.splice(index, 1); }
-      return this;
     },
 
     init: function(options){
