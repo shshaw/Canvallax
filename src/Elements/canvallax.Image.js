@@ -1,8 +1,3 @@
-function imageOnload(img){
-  img.width = ( img.width ? img.width : img.image.width );
-  img.height = ( img.height ? img.height : img.image.height );
-}
-
 /**
  * Image class for drawing an `<img>` or `<canvas>` Element on a Canvallax scene.
  *
@@ -35,6 +30,11 @@ canvallax.Image = createElement(
   {
     type: 'image',
 
+    onload: function(img){
+      img.width = ( img.width ? img.width : img.image.width );
+      img.height = ( img.height ? img.height : img.image.height );
+    },
+
     init: function(options){
       var img = this.image;
 
@@ -46,8 +46,8 @@ canvallax.Image = createElement(
       this.image = img;
 
       // Ensure we get width/height of image for best draw performance
-      imageOnload(this);
-      img.onload = imageOnload.bind(null,this);
+      this.onload(this);
+      img.onload = this.onload.bind(null,this);
 
       img.src = img.src || options.src || options;
     },
