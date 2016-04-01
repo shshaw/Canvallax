@@ -3,12 +3,12 @@
  * An array-like object that groups all `requestAnimationFrame` calls into one.
  */
 
-var animations = canvallax.animations = extend({},arrayLike,{
+var animations = extend({},arrayLike,{
 
   animate: function(){
 
-    var i = 0,
-        len = animations.length,
+    var len = animations.length,
+        i = 0,
         el;
 
     if ( !animations.playing || len === 0  ) { animations.stop(); return; }
@@ -38,6 +38,8 @@ var animations = canvallax.animations = extend({},arrayLike,{
   }
 });
 
+canvallax.animations = animations;
+
 
 /**
  *
@@ -49,31 +51,33 @@ var animations = canvallax.animations = extend({},arrayLike,{
 
 var animateCore = {
 
-  /**
-   * Play the animation by adding it to the main `requestAnimationFrame` call.
-   *
-   * @method
-   * @memberof! animateCore
-   */
+    /**
+     * Play the animation by adding it to the main `requestAnimationFrame` call.
+     *
+     * @method
+     * @memberof! animateCore
+     */
 
-  play: function(){
-    this.playing = true;
+    play: function(){
+      this.playing = true;
 
-    var index = animations.indexOf(this);
-    if ( index == -1 ) { animations.push(this); }
-    animations.play();
-  },
+      var index = animations.indexOf(this);
+      if ( index == -1 ) { animations.push(this); }
+      animations.play();
+      return this;
+    },
 
-  /**
-   * Stop the animation by removing it from the main `requestAnimationFrame` call.
-   *
-   * @method
-   * @memberof! animateCore
-   */
-  stop: function(){
-    this.playing = false;
-    var index = animations.indexOf(this);
-    if ( index > -1 ) { animations.splice(index, 1); }
-  }
+    /**
+     * Stop the animation by removing it from the main `requestAnimationFrame` call.
+     *
+     * @method
+     * @memberof! animateCore
+     */
+    stop: function(){
+      this.playing = false;
+      var index = animations.indexOf(this);
+      if ( index > -1 ) { animations.splice(index, 1); }
+      return this;
+    }
 
-};
+  };
