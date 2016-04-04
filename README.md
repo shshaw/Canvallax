@@ -1,7 +1,11 @@
 # Canvallax 2
 *Easy parallax effects on `<canvas>`*
 
-Canvallax is a small *(9.3kb minified, 3.6kb gzipped)*, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Easily position, rotate, scale and animate elements, and create amazing scroll or pointer tracking effects!
+![Minified](https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?label=Size%20%28minified%29) ![GZIP](https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?compression=gzip&label=Size%20%28gzipped%29)
+
+`<canvas>` is awesome, but drawing to it can be cumbersome and trying to maintain multiple elements can be a nightmare.
+
+Enter Canvallax: a tiny, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Easily position, rotate, scale and animate elements, and create amazing scroll or pointer tracking effects!
 
 Super performant, supporting all modern browsers (IE9+).
 
