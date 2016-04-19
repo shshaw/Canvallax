@@ -127,6 +127,7 @@ var core = {
      * Get the coordinates where the transforms should occur based on the transform origin.
      * @private
      * @type {function}
+     * @param {boolean} force - force an update of the coordinate cache.
      * @returns {array} - Array of `x` & `y` coordinates.
      * @memberof! core
      */
@@ -204,7 +205,7 @@ var core = {
         ctx.translate(-coords[0],-coords[1]);
       }
 
-      return true;
+      return this;
     },
 
     /**

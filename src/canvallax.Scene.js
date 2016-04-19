@@ -44,11 +44,12 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
     type: 'scene',
 
     parentElement: body,
+    className: '',
+
     fullscreen: true,
 
-    clearFrames: true,
     playing: true,
-    className: '',
+    clearFrames: true,
 
     /**
      * Function to clear the canvas context if `clearFrames` is true.
@@ -58,6 +59,7 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
      */
     clear: function(ctx){
       ctx.clearRect(0, 0, this.width, this.height);
+      return this;
     },
 
     /**
@@ -70,6 +72,7 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
     resize: function(width,height){
       this.width = this.canvas.width = width;
       this.height = this.canvas.height = height;
+      return this;
     },
 
     /**
@@ -79,6 +82,7 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
      */
     resizeFullscreen: function() {
       this.resize(win.innerWidth,win.innerHeight);
+      return this;
     },
 
     /**
@@ -106,8 +110,7 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
       me.render = me.render.bind(me,me.ctx,me);
       if ( me.playing ) { me.play(); }
-    },
-
+    }
 
   });
 
