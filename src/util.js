@@ -20,21 +20,24 @@
    * @returns {object} - Object with merged properties
    */
 
-  function extend(target) {
-    target = target || {};
+  function extend() {
 
-    var length = arguments.length,
-        i = 1;
+    var a = arguments,
+        target = a[0] || {},
+        length = a.length,
+        i = 1,
+        key;
 
-    if ( arguments.length === 1 ) {
+    if ( length === 1 ) {
       target = this;
       i = 0;
     }
 
     for ( ; i < length; i++ ) {
-      if ( !arguments[i] ) { continue; }
-      for ( var key in arguments[i] ) {
-        if ( arguments[i].hasOwnProperty(key) ) { target[key] = arguments[i][key]; }
+      if ( a[i] ) {
+        for ( key in a[i] ) {
+          if ( a[i].hasOwnProperty(key) ) { target[key] = a[i][key]; }
+        }
       }
     }
 
