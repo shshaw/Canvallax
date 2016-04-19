@@ -20,6 +20,9 @@
   // Exit if browser does not support canvas
   if ( !win.CanvasRenderingContext2D ) { return false; }
 
+  // Shorthand name
+  win.clx = canvallax;
+
 // @include ./util.js
 // @include ./arrayLike.js
 // @include ./core.js
