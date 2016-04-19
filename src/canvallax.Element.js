@@ -48,14 +48,21 @@ canvallax.Element = createClass(core,
       }
 
       if ( me.fill ) {
-        ctx.fillStyle = me.fill;
-        ctx.fill();
+        if ( isFunction(me.fill) ) { me.fill(ctx,parent); }
+        else {
+          ctx.fillStyle = me.fill;
+          ctx.fill();
+        }
       }
 
       if ( me.stroke ) {
         if ( me.lineWidth ) { ctx.lineWidth = me.lineWidth; }
-        ctx.strokeStyle = me.stroke;
-        ctx.stroke();
+
+        if ( isFunction(me.stroke) ) { me.stroke(); }
+        else {
+          ctx.strokeStyle = me.stroke;
+          ctx.stroke();
+        }
       }
     }
 

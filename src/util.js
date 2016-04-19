@@ -1,6 +1,8 @@
   var rad = Math.PI / 180,
       twoPI = 2 * Math.PI,
-      noop = function(){};
+      noop = function(){},
+      fnType = typeof noop,
+      isFunction = function(fn){ return typeof fn === fnType; };
 
 ////////////////////////////////////////
 
