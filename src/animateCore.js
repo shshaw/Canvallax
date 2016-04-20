@@ -12,10 +12,9 @@ var animations = extend({},arrayLike,{
         el;
 
     if ( !animations.playing || len === 0  ) { animations.stop(); return; }
-
     for (; i < len; i++) {
       el = animations[i];
-      if ( el.playing && ( el.render && !el.render() )) { el.stop(); }// ) { el.animate(); }
+      if ( el && el.playing && ( el.render && !el.render() )) { el.stop(); }
     }
 
     animations.frame = requestAnimationFrame(animations.animate);
