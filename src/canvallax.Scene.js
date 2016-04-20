@@ -37,6 +37,8 @@
  *
  */
 
+var styles = '<style>.canvallax--fullscreen { position: fixed; top: 0; left: 0; z-index: -1; }</style>';
+
 canvallax.Scene = createClass(canvallax.Group,animateCore,
   /** @lends canvallax.Scene# */
   {
@@ -47,6 +49,7 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
     className: '',
 
     fullscreen: true,
+    includeStyles: true,
 
     playing: true,
     clearFrames: true,
@@ -96,15 +99,27 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
         me.canvas = doc.createElement('canvas');
         me.parentElement.insertBefore(me.canvas, me.parentElement.firstChild);
       }
-      me.canvas.className += ' canvallax ' + me.className;
+
       me.ctx = me.canvas.getContext('2d');
 
+      me.className += ' canvallax ';
+
       if ( me.fullscreen ) {
+
+        if ( styles && me.includeStyles ) {
+          doc.head.insertAdjacentHTML('afterbegin',styles);
+          styles = null;
+        }
+
+        me.className += ' canvallax--fullscreen ';
+
         me.resizeFullscreen();
         win.addEventListener('resize', me.resizeFullscreen.bind(me));
       } else {
         me.resize(me.width || me.canvas.width, me.height || me.canvas.height);
       }
+
+      me.canvas.className += me.className;
 
       if ( options && options.children ) { me.add(options.children); }
 
