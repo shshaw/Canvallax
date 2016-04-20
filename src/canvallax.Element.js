@@ -58,7 +58,7 @@ canvallax.Element = createClass(core,
       if ( me.stroke ) {
         if ( me.lineWidth ) { ctx.lineWidth = me.lineWidth; }
 
-        if ( isFunction(me.stroke) ) { me.stroke(); }
+        if ( isFunction(me.stroke) ) { me.stroke(ctx,parent); }
         else {
           ctx.strokeStyle = me.stroke;
           ctx.stroke();
