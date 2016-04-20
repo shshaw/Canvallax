@@ -138,7 +138,7 @@ var core = {
           isArr = Array.isArray(origin);
 
       // If this is a `canvallax.Group` with a parent `canvallax.Scene` and no exact width & height or array of transformOrigin coordinates, then render relative to the parent scene's coordinates
-      if ( !isArr && !me.width && !me.height && this.length && this.parent ) { return me.parent.getTransformPoint(); }
+      if ( !isArr && !me.width && !me.height && me.length && me.parent ) { return me.parent.getTransformPoint(); }
 
       // Cache values to avoid recalculation
       if ( force || (!point || me._transformOrigin !== origin) ) {
