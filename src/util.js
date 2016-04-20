@@ -100,11 +100,12 @@
           len = arguments.length,
           args = new Array(len),
           i = 0;
+
       for(; i < len; i++) { args[i] = arguments[i]; }
 
       if ( !(me instanceof C) ) { return construct(C,args); } // Ensure class is always created as `new Class` even if `new` isn't used.
       if ( len === 1 ) { extend(me,options); }
-      if ( me.init ) { me.init.apply(me,args); }
+      me.fn = C.fn;
 
       return me;
     }
@@ -113,7 +114,7 @@
         args = new Array(len),
         i = 0,
         parent,
-        fn = C.prototype = {
+        fn = {
           init: noop,
           extend: extend,
           clone: clone
@@ -131,7 +132,7 @@
     extend.apply(fn, args);
 
     fn.constructor = C;
-    C.fn = fn;
+    C.fn = C.prototype = fn;
 
     return C;
   }
