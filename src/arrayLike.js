@@ -16,6 +16,7 @@ var arrayLike = {
        *
        * @param {...object|object[]} element - Element or array of elements to be added
        * @returns {this}
+       * @memberof! arrayLike
        */
       add: function(el){
         var me = this,
@@ -36,6 +37,7 @@ var arrayLike = {
        * @param {function} callback - Callback function run for each item
        * @param thisArg - Overrride `this` in the callback function
        * @returns {this}
+       * @memberof! arrayLike
        */
       each: function(callback,thisArg){
         var me = this,
@@ -55,6 +57,7 @@ var arrayLike = {
        * Remove an element from collection
        * @param {object} element - Element to be removed
        * @returns {this}
+       * @memberof! arrayLike
        */
       remove: function(element){
         var index = this.indexOf(element);

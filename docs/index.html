@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Canvallax Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Canvallax</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="canvallax.html">canvallax</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="canvallax.Animate.html">canvallax.Animate</a></li><li><a href="canvallax.Animate.from.html">canvallax.Animate.from</a></li><li><a href="canvallax.Animate.fromTo.html">canvallax.Animate.fromTo</a></li><li><a href="canvallax.Ellipse.html">canvallax.Ellipse</a></li><li><a href="canvallax.Group.html">canvallax.Group</a></li><li><a href="canvallax.Image.html">canvallax.Image</a></li><li><a href="canvallax.Polygon.html">canvallax.Polygon</a></li><li><a href="canvallax.Rectangle.html">canvallax.Rectangle</a></li><li><a href="canvallax.styles.html">canvallax.styles</a></li><li><a href="canvallax.TrackPointer.html">canvallax.TrackPointer</a></li><li><a href="canvallax.TrackScroll.html">canvallax.TrackScroll</a></li><li><a href="core.from.canvallax.Animate.from.html">core.from.canvallax.Animate.from</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="mixins.list.html" class="dropdown-toggle" data-toggle="dropdown">Mixins<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="animateCore.html">animateCore</a></li><li><a href="arrayLike.html">arrayLike</a></li><li><a href="canvallax.Element.html">canvallax.Element</a></li><li><a href="canvallax.Tracker.html">canvallax.Tracker</a></li><li><a href="core.html">core</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>Canvallax 2</h1><p><em>Easy parallax effects on <code>&lt;canvas&gt;</code></em></p>
+<p><img src="https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?label=Size%20%28minified%29" alt="Minified"> <img src="https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?compression=gzip&amp;label=Size%20%28gzipped%29" alt="GZIP"></p>
+<p><code>&lt;canvas&gt;</code> is awesome, but drawing to it can be cumbersome and trying to maintain multiple elements can be a nightmare.</p>
+<p>Enter Canvallax: a tiny, dependency-free Javascript library for drawing shapes and images on <code>&lt;canvas&gt;</code>. Easily position, rotate, scale and animate elements, and create amazing scroll or pointer tracking effects!</p>
+<p>Super performant, supporting all modern browsers (IE9+).</p>
+<p>Many jaw-dropping effects can be achieved with the built-in functionality:</p>
+<ul>
+<li>Build scenes with easy positioning via <code>x</code> &amp; <code>y</code> coordinates, a <code>z</code> axis for 3D/parallax effects and stacking with <code>zIndex</code></li>
+<li>Draw Images from URLs or nodes (<code>&lt;img /&gt;</code>, <code>&lt;canvas /&gt;</code>, etc.) with <code>canvallax.Image</code>.</li>
+<li>Common shapes (<code>canvallax.Ellipse</code>, <code>canvallax.Polygon</code>, &amp; <code>canvallax.Rectangle</code>)</li>
+<li>Rotate and scale elements with support for <code>transformOrigin</code>.</li>
+<li>Scroll &amp; Pointer tracking for scenes and elements with configurable easing and offsets.</li>
+<li>Animation of elements with <code>.to</code>, <code>.from</code> and <code>.fromTo</code>.</li>
+<li>Opacity, blend modes, clipping, fixed positioning, and so much more! </li>
+</ul>
+<p>Read the <a href="https://github.com/shshaw/canvallax.js/wiki/">Canvallax Wiki</a> for full documentation. Advanced users can create extend Canvallax with custom elements and trackers.</p>
+<h2>Demos</h2><p>View a <a href="http://codepen.io/collection/DrxbPo/">CodePen collection full of Canvallax demos</a>!</p>
+<p><a href="http://codepen.io/shshaw/pen/EVdzLV"><img src="http://brokensquare.com/Code/Canvallax.js/img/starfield.gif" alt="Starfield"></a> <a href="http://codepen.io/shshaw/pen/bVQROG"><img src="http://brokensquare.com/Code/Canvallax.js/img/header-slice.gif" alt="Header Image Slice"></a>  <a href="http://codepen.io/shshaw/pen/RWEJMG"><img src="http://brokensquare.com/Code/Canvallax.js/img/pointer.gif" alt="Pointer Tracking"></a> <a href="http://codepen.io/shshaw/pen/ZbExyV"><img src="http://brokensquare.com/Code/Canvallax.js/img/sky.gif" alt="Parallax Sky Background"></a> <a href="http://codepen.io/shshaw/pen/dYdvww"><img src="http://brokensquare.com/Code/Canvallax.js/img/hexagons.gif" alt="Falling Hexagon Mask"></a> <a href="http://codepen.io/shshaw/pen/LpMbvZ"><img src="http://brokensquare.com/Code/Canvallax.js/img/transform-origin.gif" alt="transformOrigin"></a></p>
+<h2>Basic Usage</h2><p>The examples below will help you get started using Canvallax. For advanced usage, read the <a href="https://github.com/shshaw/canvallax.js/wiki/">Canvallax Wiki</a> for full documentation.</p>
+<h3>Scenes</h3><p>In order to use Canvallax, you need to create a <code>canvallax.Scene</code> and add elements to it. Create a new scene either by calling <code>new canvallax.Scene()</code> or <code>canvallax.Scene()</code>; either will return a new instance. Elements can be created in the same way, <code>new canvallax.Ellipse()</code> or <code>canvallax.Ellipse</code>, then added to the scene like so:</p>
+<p>An object containing options may be given on creation, allowing you to set properties and callbacks.</p>
+<pre class="prettyprint source lang-javascript"><code>
+  var scene = canvallax.Scene({
+        className: 'my-scene', // Class added to the `&lt;canvas>` element
+        parentElement: document.getElementById('scene-container'), // Where the canvas should be prepended
+        fullscreen: false, // Scenes are fullscreen by default, but you can make them a specific width/height by setting fullscreen to false
+        width: 640,
+        height: 480
+      }),
+
+      img = canvallax.Image({ src: 'image.jpg' }),
+
+      circle = canvallax.Ellipse({ fill: '#000', width: 100, height: 100 });
+
+  scene.add(img,ellipse);</code></pre><h3>Elements</h3><p>Canvallax pieces (<code>canvallax.Scene</code>, <code>canvallax.Group</code>, <code>canvallax.Polygon</code>, <code>canvallax.Rectangle</code>, etc.) all accept an object containing options as the only parameter, allowing you to customize the look/functionality of each piece and control the positioning, scale and rotation.</p>
+<pre class="prettyprint source lang-javascript"><code>
+var scene = canvallax.Scene(),
+
+    img = canvallax.Image({
+        src: 'image.jpg',
+        opacity: 0.5,
+        rotation: 180
+      }),
+
+    triangle = canvallax.Polygon({
+        fill: '#000',
+        points: 3,
+        width: 80,
+        height: 80
+      }),
+
+    redEllipse = canvallax.Ellipse({
+        fill: '#F00',
+        width: 80,
+        height: 80,
+        x: 200,
+        y: 200  
+      }),
+
+    outlinedSquare = canvallax.Rectangle({
+        stroke: '#000',
+        width: 100,
+        height: 100
+      });
+
+scene.add(img,triangle,redEllipse,outlinedSquare);</code></pre><h3>Animation</h3><p>Animation with Canvallax is super easy! Use external animation libraries like GSAP or Velocity, or use the fully featured animation functions built in to Canvallax objects: <code>.to</code>, <code>.from</code> and <code>.fromTo</code>!</p>
+<pre class="prettyprint source lang-javascript"><code>
+  var scene = canvallax.Scene(),
+      rect = canvallax.Rectangle();
+
+  scene.add(rect);
+
+  var duration = 3,
+      properties = { rotation: 360 }, // This object contains properties to animate
+      options = { repeat: -1 };
+
+  rect.to(duration, properties, options);
+  rect.from(1,{ x: -100 });
+  rect.fromTo(3,{ width: 100 },{ width: 200 },{
+    repeat: -1, // inifinte repeat
+    yoyo: true // alternate animation direction on repeat
+  );</code></pre><h3>Trackers</h3><p>Canvallax's built in trackers allow you to link an object's position to the scroll or pointer (mouse or touch)! You can use the <code>ease</code> property to slow the tracking down, use the <code>invert</code> property to reverse the tracked values, and use the <code>offset</code> property to adjust the tracked values.</p>
+<pre class="prettyprint source lang-javascript"><code>
+  var scene = canvallax.Scene({
+        tracker: canvallax.trackScroll() // Make the scene following the window scroll
+      }),
+      arrow = canvallax.Polygon({
+        fill: '#000',
+        points: 3,
+        width: 100,
+        height: 100
+        tracker: canvallax.trackPointer({ ease: 10, offset: -50 }) // Move the arrow with your cursor
+      });
+
+  scene.add(arrow);</code></pre></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on 2016-04-21T12:13:58-05:00
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+<script>
+	(function ( i, s, o, g, r, a, m ) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function () {
+			(i[r].q = i[r].q || []).push( arguments )
+		}, i[r].l = 1 * new Date();
+		a = s.createElement( o ),
+			m = s.getElementsByTagName( o )[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore( a, m )
+	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+	ga( 'create', 'UA-XXXXX-XXX', 'XXXX' );
+	ga( 'send', 'pageview' );
+</script>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>

@@ -3,7 +3,6 @@
  * Easing functions for animations, adapted from {@link http://greweb.me/2012/02/bezier-curve-based-easing-functions-from-concept-to-implementation/}
  *
  * @memberof! canvallax
- * @mixin
  *
  * @property {function} linear - Linear easing
  * @property {function} inQuad - Quadratic easing in
