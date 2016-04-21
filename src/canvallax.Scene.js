@@ -124,7 +124,6 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
       if ( options && options.children ) { me.add(options.children); }
 
       me.render = me.render.bind(me,me.ctx,me);
-      if ( me.playing ) { me.play(); }
     }
 
   });

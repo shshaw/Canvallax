@@ -12,41 +12,55 @@
  * @property {boolean|string} invert=null - Invert the tracked values. Can be a string of 'invertx' or 'inverty' to invert specific values
  *
  */
-canvallax.Tracker = createClass({
+canvallax.Tracker = createClass(arrayLike,animateCore,
+  /** @lends canvallax.Tracker# */
+  {
 
-  ease: 0,
-  scale: 1,
+    ease: 0,
+    scale: 1,
+    property: 'offset',
+    individual: false,
+    playing: true,
 
-  render: function(el,parent) {
-    var me = this,
-        _pos = me.pos || {},
-        pos = me._render(el,parent,_pos);
+    applyTracking: function(el, renderedPos){
+      var me = this,
+          pos = el[me.property] || {},
+          _pos = {};
 
-    if ( !pos ) { return false; }
+      renderedPos = renderedPos || me._render(el);
 
-    for ( var key in pos ) {
+      if ( !renderedPos ) { return false; }
 
-      pos[key] = ( me.invert === true || me.invert === 'invert'+key ? pos[key] : -pos[key]) * me.scale;
+      for ( var key in renderedPos ) {
+        _pos[key] = me.scale * ( me.invert === true || me.invert === 'invert'+key ? renderedPos[key] : -renderedPos[key] ) +
+                    (  me.offset && !isNaN(me.offset[key]) ? me.offset[key] : !isNaN(me.offset) ? me.offset : 0 );
 
-      if ( me.offset ) {
-        pos[key] += ( !isNaN(me.offset[key]) ? me.offset[key] : !isNaN(me.offset) ? me.offset : 0 );
+        if ( !pos[key] ) { pos[key] = 0; }
+
+        pos[key] = ( me.ease <= 0 ? _pos[key] : pos[key] + ( _pos[key] - pos[key] ) / (me.ease + 1) );
       }
 
-      if ( !_pos[key] ) {
-        _pos[key] = 0;
-        //( el ? el[key] : parent ? parent[key] : pos[key] );
-      }
+      el[me.property] = pos;
 
-      _pos[key] = ( me.ease <= 0 ? pos[key] : _pos[key] + ( pos[key] - _pos[key] ) / (me.ease + 1) );
+      return this;
+    },
 
+    render: function() {
+      var len = this.length,
+          i = 0,
+          renderedPos = !this.individual ? this._render() : null;
+      for ( ; i < len; i++ ){ this.applyTracking(this[i],renderedPos); }
+      return this;
     }
 
-    me.pos = _pos;
+    /**
+     * Create a clone of this object
+     * @borrows clone as clone
+     * @method
+     * @param {object=} options - Properties to be applied to the cloned object
+     */
 
-    return _pos;
-  }
-
-});
+  });
 
 /**
  * Creates a custom Canvallax Tracker.

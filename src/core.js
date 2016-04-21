@@ -18,6 +18,7 @@ var _transformAttr = ['width','height'];
  *
  * @todo Simplify `z` to a scale-like value, positive integer with 0 being the minimum.
  * @todo Make `z` relative to parent's `z` to allow for better camera movements into and out of a scene.
+ * @todo Remove `parent` property from elements, make it relative to what is calling the render.
  */
 
 var core = {
@@ -30,7 +31,32 @@ var core = {
     rotation: 0,
 
     /**
-     * Main rendering function that calls all callbacks, gets tracker values, sets the context alpha & blend, and renders children, if any.
+     * Add object to a parent
+     * @type {function}
+     * @param {...object|object[]} element - Parent or array of parents for the object to be added to
+     * @returns {this}
+     * @memberof! core
+     *
+     * @example
+     * var scene = canvallax.Scene(),
+     *     rect = canvallax.Rectangle();
+     *
+     * rect.addTo(scene);
+     */
+    addTo: function(el){
+      var elements = ( el && el.length > -1 && Array.isArray(el) ? el : arguments ),
+          len = elements.length,
+          i = 0;
+
+      for ( ; i < len; i++ ) {
+        if ( elements[i] && elements[i].add ) { elements[i].add(this); }
+      }
+
+      return this;
+    },
+
+    /**
+     * Main rendering function that calls all callbacks, sets the context alpha & blend, and renders children, if any.
      * @type {function}
      * @returns {this}
      *
@@ -49,14 +75,6 @@ var core = {
           pos, key, o;
 
       parent = parent || me.parent;
-
-      if ( me.tracker ) {
-        pos = me.tracker.render(me,parent);
-        // Allow tracker to set many properties.
-        for ( key in pos ) {
-          if ( pos.hasOwnProperty(key) ) { me[key] = pos[key]; }
-        }
-      }
 
       o = ctx.globalAlpha * me.opacity;
       if ( o <= 0 ) { return me; }
@@ -154,25 +172,30 @@ var core = {
      * Returns the object's current `x` and `y` coordinates relative to the parent.
      * @private
      * @type {function}
-     * @param {array=} offset - Array of coordinates to offset the return coordinates
-     * @param {number=} relativeZ - `z`, typically of the child, value to base the coordinate scaling on.
+     * @param {number=} coordScale - Scale of the coordinates, typically the child's `z`
      * @returns {array}
      * @memberof! core
      */
-    getCoords: function(offset,relativeZ){
+    getCoords: function(coordScale){
       var x = this.x,
-          y = this.y;
+          y = this.y,
+          offset = this.offset,
+          parent = this.parent,
+          parentOffset = !this.fixed && parent && parent.getCoords ? parent.getCoords() : false;
 
-      offset = offset || ( this.parent && this.parent.getCoords ? this.parent.getCoords() : false );
-
-      if ( offset ) {
-        x += offset[0];
-        y += offset[1];
+      if ( parentOffset ) {
+        x += parentOffset[0];
+        y += parentOffset[1];
       }
 
-      if ( relativeZ ) {
-        x *= relativeZ;
-        y *= relativeZ;
+      if ( coordScale !== undefined ) {
+        x *= coordScale;
+        y *= coordScale;
+      }
+
+      if ( offset ) {
+        x += offset.x || 0;
+        y += offset.y || 0;
       }
 
       return [x,y];
@@ -183,19 +206,18 @@ var core = {
      * @private
      * @type {function}
      * @param {CanvasRenderingContext2D} ctx - 2d canvas context
-     * @param {array} offset - Array of coordinates to offset the return coordinates
      * @param {number=} relativeZ - `z` value to base the scaling on, typically of the child.
      * @returns {boolean}
      * @memberof! core
      */
-    transform: function(ctx, offset, relativeZ) {
-      var coords = this.getCoords(offset, relativeZ),
-          scale = this.scale * ( relativeZ !== undefined ? (this.z * relativeZ) : 1 ),
-          transformPoint;
+    transform: function(ctx, relativeZ) {
+      var scale = this.scale * ( relativeZ !== undefined ? relativeZ : 1 ) * this.z,
+          coords, transformPoint;
 
       if ( scale <= 0 ) { return false; }
 
       if ( scale !== 1 || (this.rotation % 360) !== 0 ) {
+        coords = this.getCoords(relativeZ);
         transformPoint = this.getTransformPoint();
         coords[0] += transformPoint[0];
         coords[1] += transformPoint[1];
@@ -252,13 +274,6 @@ var core = {
      * Receives all arguments passed to the Object's creation function.
      * @callback init
      * @type {function}
-     * @memberof! core
-     */
-
-    /**
-     * Tracker instance to tie coordinates to scroll, pointer, etc, instead of manually controlling the `x` and `y`
-     * @name tracker
-     * @type {canvallax.Tracker}
      * @memberof! core
      */
 

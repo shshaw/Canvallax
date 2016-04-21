@@ -35,16 +35,14 @@ canvallax.Element = createClass(core,
     lineWidth: 1,
 
     _render: function(ctx,parent){
-      var me = this,
-          pCoords = parent.getCoords(),
-          coords = me.getCoords(pCoords, false);
+      var me = this;
 
-      if ( !me.fixed && parent && !parent.transform(ctx, false, me.z) ) { return me; }
-      if ( !me.transform(ctx,pCoords) ) { return me; }
+      if ( !me.fixed && parent && !parent.transform(ctx, me.z) ) { return me; }
+      if ( !me.transform(ctx, me.z) ) { return me; }
 
       if ( me.draw ) {
         ctx.beginPath();
-        me.draw(ctx,coords,parent);
+        me.draw(ctx,me.getCoords(me.z),parent);
       }
 
       if ( me.fill ) {

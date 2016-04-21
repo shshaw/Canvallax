@@ -1,13 +1,12 @@
-var winScrollX = 0,
-    winScrollY = 0,
+var scrollX = 0,
+    scrollY = 0,
     // Only one scroll tracker that works for every instance
     watchingScroll = false,
     onScroll = function(){
-      winScrollX = root.scrollLeft || body.scrollLeft;
-      winScrollY = root.scrollTop || body.scrollTop;
+      scrollX = root.scrollLeft || body.scrollLeft;
+      scrollY = root.scrollTop || body.scrollTop;
     };
-
-/**
+    /**
  * Tracker Class for linking an object's `x` and `y` to the scroll position.
  *
  * @class
@@ -17,9 +16,9 @@ var winScrollX = 0,
  * @param {object} options - Object containing properties to be applied to the new instance. Reference the properties below.
  *
  * @example
- *  var scene = canvallax.Scene({
- *       tracker: canvallax.trackScroll() // Make the scene following the window scroll
- *    });
+ *  var scene = canvallax.Scene(),
+ *      tracker = canvallax.TrackScroll();
+ *  scene.addTo(tracker);
  */
 canvallax.TrackScroll = createTracker(
   /** @lends canvallax.TrackScroll.prototype */
@@ -34,7 +33,7 @@ canvallax.TrackScroll = createTracker(
     },
 
     _render: function(){
-      return { x: winScrollX, y: winScrollY };
+      return { x: scrollX, y: scrollY };
     }
 
   });

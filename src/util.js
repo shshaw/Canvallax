@@ -98,14 +98,22 @@
     function C(options) {
       var me = this,
           len = arguments.length,
-          args = new Array(len),
+          args,
           i = 0;
 
-      for(; i < len; i++) { args[i] = arguments[i]; }
+      // Ensure class is always created as `new Class` even if `new` isn't used.
+      if ( !(me instanceof C) ) {
+        args = new Array(len);
+        for(; i < len; i++) { args[i] = arguments[i]; }
+        return construct(C,args);
+      }
 
-      if ( !(me instanceof C) ) { return construct(C,args); } // Ensure class is always created as `new Class` even if `new` isn't used.
       if ( len === 1 ) { extend(me,options); }
+
       me.fn = C.fn;
+
+      if ( me.init ) { me.init.apply(me,arguments); }
+      if ( me.playing && me.play ) { me.play(); }
 
       return me;
     }
