@@ -73,8 +73,8 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
      * @memberof! canvallax.Scene
      */
     resize: function(width,height){
-      this.width = this.canvas.width = width;
-      this.height = this.canvas.height = height;
+      this.width = this.canvas.width = width || this.width;
+      this.height = this.canvas.height = height || this.height;
       return this;
     },
 
