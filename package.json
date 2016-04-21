@@ -24,7 +24,7 @@
   "devDependencies": {
     "del": "^2.2.0",
     "gulp": "^3.9.0",
-    "gulp-jsdoc3": "^0.2.0",
+    "gulp-jsdoc3": "^0.2.1",
     "gulp-jshint": "^2.0.0",
     "gulp-load-plugins": "^1.2.0",
     "gulp-preprocess": "^2.0.0",

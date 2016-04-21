@@ -79,7 +79,7 @@ var del = require("del");
 
 gulp.task('docs', function (cb) {
 
-    var config = require('./jsdoc/conf.json') || {};
+    var config = require('./jsdoc.json') || {};
 
     config.templates = config.templates || {};
     config.templates.systemName = pkg.title;
@@ -104,5 +104,5 @@ gulp.task('default', function(){
 })
 
 gulp.task('watch', function(){
-  return gulp.watch(src, ['default']);
+  return gulp.watch(src, ['lint','build']);
 });
