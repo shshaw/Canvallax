@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Canvallax Mixin: animateCore</title>
+	<title>Canvallax Class: TrackElement</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -77,13 +77,15 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Mixin: animateCore</h1>
+	<h1 class="page-title">Class: TrackElement</h1>
 <section>
 
 <header>
     
         <h2>
-        animateCore
+            <span class="ancestors"><a href="canvallax.html">canvallax</a>.</span>
+        
+        TrackElement
         </h2>
         
     
@@ -94,83 +96,9 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Shared properties for classes that need to re-render every <code>requestAnimationFrame</code>.</p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="canvallax.js.html">canvallax.js</a>,
-				 <a href="canvallax.js.html#sunlight-1-line-603">line 603</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
 <hr>
 <dt>
-    <h4 class="name" id=".play"><span class="type-signature">&lt;static> </span>play()</h4>
+    <h4 class="name" id="TrackElement"><span class="type-signature"></span>new TrackElement(options)</h4>
     
     
 </dt>
@@ -178,7 +106,8 @@
 
     
     <div class="description">
-        <p>Play the animation by adding it to the main <code>requestAnimationFrame</code> call.</p>
+        <p>Element Tracker Class for linking an object's <code>x</code> and <code>y</code> to the element position, relative to scroll.
+Recommended for objects to be <code>fixed: true</code> to prevent any parent positioning from affecting the link to the element.</p>
     </div>
     
 
@@ -188,99 +117,122 @@
 
     
     
+        <h5>Parameters:</h5>
+        
 
-    
-<dl class="details">
-    
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="canvallax.js.html">canvallax.js</a>,
-				 <a href="canvallax.js.html#sunlight-1-line-620">line 620</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
+        <th>Type</th>
 
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<hr>
-<dt>
-    <h4 class="name" id=".stop"><span class="type-signature">&lt;static> </span>stop()</h4>
-    
-    
-</dt>
-<dd>
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Object containing properties to be applied to the new instance. Reference the properties below.</p></td>
+        </tr>
 
     
-    <div class="description">
-        <p>Stop the animation by removing it from the main <code>requestAnimationFrame</code> call.</p>
-    </div>
-    
+    </tbody>
+</table>
 
-    
-
-    
-
-    
     
 
     
 <dl class="details">
     
 
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">node</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>Element to be tracked</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
 	
 
 	
@@ -293,6 +245,14 @@
 
     
 
+    
+        <dt class="mixes">Mixes In:</dt>
+
+        <dd class="mixes"><ul>
+        
+            <li><a href="canvallax.Tracker.html">canvallax.Tracker</a></li>
+        
+        </ul></dd>
     
 
 	
@@ -313,7 +273,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="canvallax.js.html">canvallax.js</a>,
-				 <a href="canvallax.js.html#sunlight-1-line-635">line 635</a>
+				 <a href="canvallax.js.html#sunlight-1-line-1627">line 1627</a>
 			</li>
 		</ul>
 	</dd>
@@ -340,9 +300,37 @@
     
 
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var scene = canvallax.Scene(),
+     rect = canvallax.Rectange({
+       fill: &#x27;#000&#x27;,
+       width: 100,
+       height: 100
+     }),
+     tracker = canvallax.TrackElement(&#x27;#myElement&#x27;);
+
+ rect.addTo(scene,tracker);</pre>
+
+
+    
 </dd>
 
-        </dl>
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     

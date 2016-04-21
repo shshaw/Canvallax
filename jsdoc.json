@@ -1,7 +1,9 @@
 {
     "templates": {
+      "includeDate": false,
       "theme": "cosmo",
       "linenums": true,
+    	"outputSourceFiles": true,
       "analytics":{"ua":"UA-XXXXX-XXX", "domain":"XXXX"}
     },
     "tags": {
