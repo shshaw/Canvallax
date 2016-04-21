@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Patterns</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dev/canvallax.js'></script>
+<script src='../extras/canvallax.Pattern.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js'></script>
+<script>
+/* Test Code */
+
+var scene = canvallax.Scene({
+      fullscreen: true,
+    }),
+    trackScroll = canvallax.TrackScroll().add(scene).play(),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+
+////////////////////////////////////////
+
+
+var pattern = canvallax.Pattern({
+                width: 30,
+                height: 30,
+              });
+
+var circ = canvallax.Rectangle({
+      width: 10,
+      height: 10,
+      x: 10,
+      y: 10,
+      fill: '#F00'
+    });
+
+pattern.add(circ);
+
+circ.to(2, { scale: 2 }, { yoyo: true, repeat: -1 });
+pattern.play();
+
+pattern.render();
+
+var rect = canvallax.Rectangle({
+      width: 210,
+      height: 210,
+      fill: pattern.fill,
+      lineWidth: 2,
+      stroke: '#F00',
+      zIndex: 5,
+    });
+
+scene.add(rect);
+
+
+////////////////////////////////////////
+
+var pattern2 = pattern.clone({
+            fixed: true
+          });
+pattern2.render();
+pattern2.play();
+
+var rect2 = rect.clone({
+  y: 210,
+  stroke: '#0F0',
+  fill: pattern2.fill
+});
+
+scene.add(rect2);
+
+
+////////////////////////////////////////
+// Stroke pattern!
+
+var pattern3 = pattern.clone({
+            offset: { x: -10, y: -10 },
+          }),
+    rect3 = rect.clone({
+      y: 440,
+      fill: false,
+      lineWidth: 30,
+      stroke: pattern3.stroke,
+    });
+
+pattern3.play();
+
+scene.add(rect3);
+
+
+rect.to(6,{ x: width-210 },{ yoyo: true, repeat: -1 });
+rect2.to(6,{ x: width-210 });//,{ yoyo: true, repeat: -1 });
+rect3.to(6,{ x: width-210 },{ yoyo: true, repeat: -1 });
+
+//var mtracker = canvallax.TrackPointer().add(rect).play();
+
+//var lastRender = Date.now();
+//scene.postRender = function(){ console.log('render'); };//(Date.now() - lastRender)); lastRender = Date.now() }
+
+
+</script>
+</body>
+</html>

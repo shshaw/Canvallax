@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Z Field</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <!-- Demo Styles -->
+  <style type="text/css">
+
+  </style>
+</head>
+<body class="no-bg">
+
+<script src='../dev/canvallax.js'></script>
+<!-- Demo Script -->
+<script>
+  // Uses canvallax, available on Github
+  // https://github.com/shshaw/canvallax
+
+  var width = document.body.clientWidth,
+      height = document.body.clientHeight,
+      scene = canvallax.Scene({
+        fullscreen: true,
+        playing: false,
+        tracker: canvallax.TrackScroll({
+          ease: 1,
+          scale: 1
+        }),
+        transformOrigin: 'center center',
+      });
+
+  var ground = canvallax.Rectangle({
+          width: width,
+          height: height,
+          y: height / 3,
+          fill: '#FFF',
+          zIndex: 1,
+          fixed: true
+        }),
+      rect = canvallax.Rectangle({
+        width: 300,
+        height: 600,
+        fill: '#F00',
+        y: height / 4,
+        zIndex: 10
+      }),
+      rightRect = rect.clone({ x: width / 2 });
+
+  scene.add(
+    ground,
+    rect,
+    rightRect
+  );
+
+  for ( var i = 10; i > 0; i-=2 ) {
+    scene.add(
+      rect.clone({ z: i/10, opacity: i/10 }),
+      rightRect.clone({ z: i/10, opacity: i/10 })
+    );
+  }
+
+  scene.fromTo(4,{ z: 0 }, { z: 4 }, { yoyo: true, repeat: -1, onUpdate: scene.render });
+
+
+</script>
+</body>
+</html>

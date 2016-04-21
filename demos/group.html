@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Groups</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="stretch">
+
+<script src='../dev/canvallax.js'></script>
+<script>
+/* Test Code */
+
+var scene = canvallax.Scene({
+      //tracker: canvallax.TrackScroll(),
+      fullscreen: true,
+      transformOrigin: 'center center',
+    }),
+    trackScroll = canvallax.TrackScroll().add(scene).play(),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+
+////////////////////////////////////////
+
+
+var count = 4,
+    i = 0,
+    size = 40,
+    rect,
+    center = (size * count/2);
+
+var group = canvallax.Group({
+              transformOrigin: [center, center],
+              zIndex: 5,
+              //fixed: true
+            });
+
+var trackPointer = canvallax.TrackPointer({
+      offset: { x: size * (count/-2), y:  size * (count/-2)},
+      ease: 10
+    })
+      .add(group);
+
+for (; i < count; i++) {
+  rect = canvallax.Rectangle({
+        x: size * i,// Math.random() * width * (2 - distance),
+        y: size * i,//Math.random() * height * (2 - distance),
+        width: size,
+        height: size,
+        fill: '#000',
+        opacity: 0.9
+      });
+
+  group.add(rect);
+}
+
+scene.add(group);
+
+group.to(1.5,{ rotation: 360 },{
+  repeat: -1,
+  ease: canvallax.ease.linear
+});
+
+group.to(2,{ z: 2 },{
+  repeat: -1,
+  yoyo: true
+});
+
+</script>
+</body>
+</html>

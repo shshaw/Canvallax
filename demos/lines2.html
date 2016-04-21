@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Lines</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dev/canvallax.js'></script>
+<script src='../extras/canvallax.Pattern.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js'></script>
+<script>
+/* Test Code */
+
+var scene = canvallax.Scene(),
+    trackScroll = canvallax.TrackScroll().add(scene).play(),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+////////////////////////////////////////
+
+
+var color = '#CCC';
+
+var twoPI = Math.PI*2;
+
+canvallax.DottedLine = canvallax.createElement({
+  type: 'dottedLine',
+  dotSize: 4,
+  points: [],
+  draw: function(ctx,coords) {
+    var p = this.points,
+        len = p.length,
+        i = 0;
+
+
+    for (; i < len; i++) {
+      if ( p[i] === 'close' ) { ctx.closePath(); }
+      else {
+        ctx[( i === 0 ? 'moveTo' : 'lineTo' )](coords[0] + p[i][0], coords[1] + p[i][1]);
+        //ctx.arc(coords[0] + p[i][0], coords[1] + p[i][1], this.dotSize, 0, twoPI);
+      }
+    }
+    ctx.strokeStyle = this.stroke;
+    ctx.lineWidth = this.lineWidth;
+    ctx.stroke();
+
+    ctx.beginPath();
+    for (i = 0; i < len; i++) {
+      if ( p[i] !== 'close' ) {
+        ctx.moveTo(coords[0] + p[i][0] + (this.dotSize/2), coords[1] + p[i][1]);
+        ctx.arc(coords[0] + p[i][0] - (this.dotSize/2), coords[1] + p[i][1], this.dotSize, 0, twoPI);
+      }
+    }
+  }
+
+});
+
+
+var pattern = canvallax.Pattern({
+            width: 25,
+            height: 50,
+          });
+
+var line = canvallax.Polygon({
+    points: [[25,0],[0,50]],
+    stroke: color
+  });
+
+var rect = canvallax.Rectangle({
+  width: 1.5,
+  height: 1,
+  x: 24,
+  y: 0,
+  fill: color
+}),
+rect2 = rect.clone({ x: -1, y: 49 }),
+rect3 = rect.clone({ x: 24.75, y: 49 }),
+rect4 = rect.clone({ x: 24.75, y: 0 });
+
+pattern.add(line,rect,rect2,rect3,rect4);
+pattern.render();
+
+
+////////////////////////////////////////
+
+
+function randomRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function ease(current,target,ease){ return current + (target - current) * ( ease || 0.2 ); }
+
+function strip(number) {
+  return number.toFixed(1);//(parseFloat(number).toPrecision(5));
+}
+
+function animatePoint(point){
+  point = point || this;
+
+  if ( !point.origX ) { point.origX = point[0]; }
+  if ( !point.origY ) { point.origY = point[1]; }
+
+  if ( !point.x || strip(point[0]) === strip(point.x) ) { point.x = point.origX + (20 * (Math.random() - 0.5)); }
+  if ( !point.y || strip(point[1]) === strip(point.y) ) { point.y = point.origY + (20 * (Math.random() - 0.5)); }
+
+  point[0] = ease(point[0], point.x, 0.02);
+  point[1] = ease(point[1], point.y, 0.02);
+}
+
+function animatePoints(){
+
+  var p = this.points,
+      point,
+      i = 0,
+      len = p.length;
+
+  for (; i < len; i++){
+    animatePoint(p[i]);
+  }
+
+}
+
+
+////////////////////////////////////////
+
+
+var starScene = canvallax.Scene(),
+    star = canvallax.Ellipse({
+          width: 4,
+          height: 4,
+          fill: color,
+          postRender: animatePoint
+        });
+
+trackScroll.add(starScene);
+
+function fillWithLines(width, height, opts, props){
+
+  opts = opts || {};
+  props = props || {};
+
+  var lines = [],
+      r = [],
+      x = 0,
+      y = opts.y || 0,
+      z = opts.z || 1,
+
+      startX = opts.x || x,
+      spacingX = opts.spacingX || 100,
+      spacingY = opts.spacingY || 150,
+
+      limitX = ( width / z ) + spacingX,
+      limitY = ( height / z ) + spacingY,
+
+      points, line;
+
+////////////////////////////////////////
+
+  y += spacingY * 0.2;
+
+  points = [
+    [(Math.random() * -spacingX)/z, 0]
+  ];
+
+  for (x = startX; x <= limitX; x += spacingX) {
+    points.push([
+      x + (spacingX/2) * (Math.random() - 0.5),// Math.random() * width * (2 - distance),
+      Math.random() * (spacingY * 0.2), //(spacingY/2 * (Math.random() - 0.5)),//Math.random() * height * (2 - distance),
+    ]);
+  }
+
+  points.push([limitX + (Math.random() * spacingX),0]);
+
+  line = canvallax.DottedLine({
+    y: y,
+    z: z,
+    points: points,
+    preRender: animatePoints
+  });
+
+  line.extend(props);
+  lines.push(line);
+
+
+////////////////////////////////////////
+
+  for (; y <= limitY; y += spacingY ) {
+
+    var number = randomRange(20,40),
+        i = 0,
+        distance;
+
+    for (; i < number; i++) {
+      distance = randomRange(0.6,1);
+      starScene.add(
+        star.clone({
+          width: 4 * distance,
+          height: 4 * distance,
+          x: randomRange(startX, limitX),
+          y: randomRange(y + (spacingY * 0.2), y + spacingY ),
+        })
+      );
+    }
+
+////////////////////////////////////////
+
+    y += spacingY;
+
+////////////////////////////////////////
+
+    points = [
+      [(Math.random() * -spacingX)/z, 0]
+    ];
+
+    for (x = startX; x <= limitX; x += spacingX) {
+      points.push([
+        x + (spacingX/2) * (Math.random() - 0.5),// Math.random() * width * (2 - distance),
+        Math.random() * (spacingY * 0.2), //(spacingY/2 * (Math.random() - 0.5)),//Math.random() * height * (2 - distance),
+      ]);
+    }
+
+    points.push([limitX + (Math.random() * spacingX),0]);
+
+    for (; x > 0 ; x -= spacingX) {
+      points.push([
+        x + (spacingX/2) * (Math.random() - 0.5),// Math.random() * width * (2 - distance),
+        spacingY + Math.random() * (spacingY * 0.2), //(spacingY/2 * (Math.random() - 0.5)),//Math.random() * height * (2 - distance),
+      ]);
+    }
+
+    points.push([startX - (Math.random() * spacingX),spacingY]);
+
+    line = canvallax.DottedLine({
+      y: y,
+      z: z,
+      points: points,
+      preRender: animatePoints
+    });
+
+    line.extend(props);
+
+    var rect = canvallax.Polygon({
+      fill: pattern.fill,
+/*
+      fill: function(ctx,parent){
+        ctx.fillStyle = pattern;
+        var coords = parent.getCoords(this.z);
+        ctx.translate(coords[0],coords[1]);
+        ctx.fill();
+        ctx.translate(-coords[0],-coords[1]);
+      },
+*/
+      y: y,
+      points: points
+    });
+
+    scene.add(rect);
+    lines.push(line);
+  }
+
+  return lines;
+}
+
+
+////////////////////////////////////////
+
+
+scene.add(
+  fillWithLines(width, height, { z: 1 },{
+      fill: color,
+      dotSize: 2,
+
+      stroke: color,
+      lineWidth: 0.75
+    }
+  )
+);
+
+
+
+</script>
+</body>
+</html>

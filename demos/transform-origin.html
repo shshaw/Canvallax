@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Transform Origin Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="stretch">
+
+<script src='../dev/canvallax.js'></script>
+<script>
+// Uses canvallax, available on Github
+// https://github.com/shshaw/canvallax.js
+
+var scene = canvallax.Scene(),
+    tracker = canvallax.TrackScroll().add(scene).play();
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+    color = '#D25063',
+
+    els = [
+/*
+      canvallax.Image({
+        src: 'http://brokensquare.com/img/logo.svg', //http://brokensquare.com/Code/assets/face.png',
+        width: 100,
+        height: 100,
+        x: 100, //window.innerWidth / 2 - 50,
+        y: 300, //window.innerHeight / 2 - 50,
+        opacity: 0.5,
+        zIndex: 5
+      }),
+*/
+
+      canvallax.Rectangle({
+        width: 100,
+        height: 100,
+        x: 100,
+        y: 300,
+        opacity: 0.5,
+        fill: color,
+        zIndex: 5
+      }),
+
+      canvallax.Ellipse({
+        width: 100,
+        height: 100,
+        x: 300,
+        y: 300,
+        opacity: 0.5,
+        fill: color,
+        zIndex: 5
+      }),
+
+      canvallax.Polygon({
+        width: 100,
+        height: 100,
+        points: 3,
+        x: 500,
+        y: 300,
+        rotation: 0,
+        opacity: 0.5,
+        fill: color,
+        zIndex: 5
+      })
+    ];
+
+////////////////////////////////////////
+// Rotate through all transformOrigin values.
+
+var allTransforms = ["center center", [0,0], [100,100], '100% 100%', '20% 50%', "center top", "right top", "left center", "right center", "left bottom", "center bottom", "right bottom"],
+    count = allTransforms.length,
+    j = count;
+
+function animate(clone,callback){
+  if ( callback ) {
+    callback();
+    setTimeout(function(){ console.log(clone._transformPoint); },100);
+  }
+  clone.transformOrigin = allTransforms[j];
+
+  clone.to(2,{
+    rotation: 360,
+    scale: 2,
+  },{
+    ease: canvallax.ease.inOutCubic,
+    yoyo: true,
+    repeat: 1,
+    onComplete: function(){ if ( this.reversed ) { animate(clone,callback) } }
+  });
+
+}
+
+function each(obj,callback) {
+  var length = obj.length,
+      i = 0;
+
+  for ( ; i < length; i++ ) {
+    if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) { break; }
+  }
+}
+
+var trackPointer = canvallax.TrackPointer().play();
+
+each(els,function(i){
+
+  var clone = this.clone({
+      opacity: 1,
+      zIndex: 9,
+    });
+
+  if ( i == 0 ) {
+    this.x = clone.x = 0;
+    this.y = clone.y = 0;
+    trackPointer.add(this,clone);
+  }
+
+  scene.add(this,clone);
+
+  animate(clone,( i == 0 ? function(){
+    j++;
+    if ( j >= count ) { j = 0; }
+    console.log(allTransforms[j]);
+  } : false ));
+
+});
+
+////////////////////////////////////////
+
+
+
+
+
+
+</script>
+</body>
+</html>

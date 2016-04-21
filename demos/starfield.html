@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Starfield</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="bg stretch">
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+<script src='../dev/canvallax.js'></script>
+<script>
+
+  var scene = canvallax.Scene(),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+      tracker = canvallax.TrackScroll();
+
+  scene.addTo(tracker);
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  var stars = canvallax.Group(),
+      number = 200,
+      i = 0,
+      distance;
+
+  for (; i < number; i++) {
+    distance = randomRange(0.1,0.6);
+    stars.push(
+      canvallax.Ellipse({
+        width: 40,
+        height: 40,
+        x: (Math.random() - 0.25) * (width / distance),// Math.random() * width * (2 - distance),
+        y: (Math.random() - 0.25) * (height / distance),//Math.random() * height * (2 - distance),
+        z: distance,
+        fill: '#FFF'
+      })
+    );
+  }
+
+  scene.add(stars);
+
+</script>
+</body>
+</html>

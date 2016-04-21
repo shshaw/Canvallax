@@ -1,0 +1,33 @@
+    html, body { margin: 0; padding: 0; height: 100%; }
+
+    html { font-size: 62.5%; }
+
+    body {
+      background: #FFF;
+      position: relative;
+      font: normal 1.6em/1.7em sans-serif;
+    }
+
+    .stretch {
+      min-width: 200vw;
+      min-height: 200vh;
+    }
+
+    .bg,
+    .bg-image { background: #000; }
+
+    .bg-image::before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      bottom: -30px;
+      left: -30px;
+      background-image: url(http://brokensquare.com/Code/assets/landscape.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      z-index: -1;
+      filter: blur(20px);
+      opacity: 0.4;
+    }

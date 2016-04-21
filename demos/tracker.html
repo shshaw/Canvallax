@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dev/canvallax.js'></script>
+<script>
+/* Test Code */
+
+  var scene = canvallax.Scene(),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+  var circle = canvallax.Ellipse({ fill: '#000', width: 30, height: 30 }),
+      count = 10,
+      clone;
+
+  for (var i = 0; i < count; i++) {
+
+    clone = circle.clone({
+      opacity: (count - i) / count,
+    });
+
+    canvallax.TrackPointer({ ease: (i*i) + 1 }).add(clone).play();
+    scene.add(clone);
+  }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Polygons</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dev/canvallax.js'></script>
+<script>
+/* Test Code */
+
+  var scene = canvallax.Scene({
+      tracker: canvallax.TrackScroll({
+        ease: 1,
+        scale: 1,
+        //invert: true
+      }),
+      fullscreen: true,
+      transformOrigin: 'center center',
+    }),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+  // Uses canvallax, available on Github
+  // https://github.com/shshaw/canvallax.js
+
+  var tracker = canvallax.TrackPointer({
+                offset: { x: -80, y: -75 },
+                ease: 5,
+              });
+
+  var poly = canvallax.Polygon({
+          fill: '#000',
+          stroke: '#F00',
+          points: 3,
+          width: 100,
+          height: 100,
+          zIndex: 20
+        }),
+
+      star = poly.clone({
+          tracker: tracker,
+          stroke: '#F00',
+          y: 150,
+          lineWidth: 1,
+          width: 160,
+          height: 150,
+          points: [[80, 0], [100, 50], [160, 55], [115, 95], [130, 150], [80, 120], [30, 150], [45, 95], [0, 55], [60, 50],'close'],
+        });
+
+  var anim = star.to(3,{ rotation: 360 }, { repeat: -1, ease: canvallax.ease.linear });
+  star.to(1,{ lineWidth: 20 }, { repeat: -1, yoyo: true });
+
+  scene.add(
+    poly,
+    poly.clone({ points: 4, x: 150 }),
+    poly.clone({ points: 5, x: 300 }),
+    poly.clone({ points: 6, x: 450 }),
+    poly.clone({ points: 7, x: 600 }),
+
+    poly.clone({ points: 6, x: 750 }),
+    star
+  );
+
+
+</script>
+</body>
+</html>
