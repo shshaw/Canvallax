@@ -43,6 +43,7 @@
 // @include ./canvallax.Tracker.js
 // @include ./Trackers/canvallax.TrackScroll.js
 // @include ./Trackers/canvallax.TrackPointer.js
+// @include ./Trackers/canvallax.TrackElement.js
 // @endif
 
 })(window || this);
