@@ -1102,6 +1102,9 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
       if ( me.fullscreen ) {
 
+        me.resizeFullscreen();
+        win.addEventListener('resize', me.resizeFullscreen.bind(me));
+
         if ( styles && me.includeStyles ) {
           doc.head.insertAdjacentHTML('afterbegin',styles);
           styles = null;
@@ -1109,8 +1112,6 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
         me.className += ' canvallax--fullscreen ';
 
-        me.resizeFullscreen();
-        win.addEventListener('resize', me.resizeFullscreen.bind(me));
       } else {
         me.resize(me.width || me.canvas.width, me.height || me.canvas.height);
       }
@@ -1639,6 +1640,19 @@ canvallax.TrackElement = canvallax.createTracker(
     }
 
   });
+
+/*
+ * Load plugins
+ */
+var pluginQueue = noop,
+    plugins = win._clx || [],
+    len = plugins.length,
+    i = 0;
+
+for (; i < len; i++) { plugins[i](canvallax); }
+
+pluginQueue.push = function(fn){ fn(canvallax); }
+win._clx = pluginQueue;
 
 
 })(window || this);

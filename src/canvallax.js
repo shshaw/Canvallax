@@ -45,5 +45,6 @@
 // @include ./Trackers/canvallax.TrackPointer.js
 // @include ./Trackers/canvallax.TrackElement.js
 // @endif
+// @include ./plugins.js
 
 })(window || this);

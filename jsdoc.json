@@ -9,5 +9,5 @@
     "tags": {
         "allowUnknownTags": true
     },
-    "plugins": ["plugins/markdown"]
+    "plugins": ["node_modules/gulp-jsdoc3/node_modules/jsdoc/plugins/markdown"]
 }
