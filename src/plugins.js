@@ -1,5 +1,5 @@
 /*
- * Load plugins
+ * Run canvallax plugins after canvallax and all its methods have been set up.
  */
 var pluginQueue = noop,
     plugins = win._clx || [],
