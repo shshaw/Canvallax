@@ -101,7 +101,7 @@
           args,
           i = 0;
 
-      // Ensure class is always created as `new Class` even if `new` isn't used.
+      // Ensure object is always created as `new Class` even if `new` isn't used.
       if ( !(me instanceof C) ) {
         args = new Array(len);
         for(; i < len; i++) { args[i] = arguments[i]; }
@@ -113,31 +113,29 @@
       me.fn = C.fn;
 
       if ( me.init ) { me.init.apply(me,arguments); }
+      // Autoplay animation-like objects
       if ( me.playing && me.play ) { me.play(); }
 
       return me;
     }
 
     var len = arguments.length,
-        args = new Array(len),
+        arg,
         i = 0,
-        parent,
         fn = {
           init: noop,
           extend: extend,
           clone: clone
         };
 
-    for(; i < len; i++) { args[i] = arguments[i]; }
-
-    if ( len > 1 && args[0].prototype ) {
-      parent = args[0];
-      args[0] = args[0].prototype;
-      fn._parent = parent;
+    for( ; i < len; i++ ) {
+      arg = arguments[i];
+      // Get the prototype of classes that the new class will inherit from, if available.
+      if ( arg.prototype ) { arg = arg.prototype; }
+      for ( var key in arg ) {
+        if ( arg.hasOwnProperty(key) ) { fn[key] = arg[key]; }
+      }
     }
-
-    args.unshift(fn);
-    extend.apply(fn, args);
 
     fn.constructor = C;
     C.fn = C.prototype = fn;

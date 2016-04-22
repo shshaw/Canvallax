@@ -146,35 +146,22 @@
     }
 
     var len = arguments.length,
-        args = new Array(len),
+        arg,
         i = 0,
-        parents = [],
         fn = {
           init: noop,
           extend: extend,
           clone: clone
         };
 
+    // Get the prototype of classes that the new class will inherit from, if available.
     for(; i < len; i++) {
-      args[i] = arguments[i];
-      if ( args[i].fn ) {
-        //console.log(args[i].fn.type);
-        parents.push(args[i]);
-        args[i] = args[i].fn;
+      arg = arguments[i];
+      if ( arg.prototype ) { arg = arg.prototype; }
+      for ( var key in arg ) {
+        if ( arg.hasOwnProperty(key) ) { fn[key] = arg[key]; }
       }
     }
-
-/*
-    if ( len > 1 && args[0].prototype ) {
-      parent = args[0];
-      args[0] = args[0].prototype;
-      fn._parent = parent;
-    }
-*/
-
-    args.unshift(fn);
-    extend.apply(fn, args);
-    fn._parents = parents;
 
     fn.constructor = C;
     C.fn = C.prototype = fn;
@@ -1642,7 +1629,7 @@ canvallax.TrackElement = canvallax.createTracker(
   });
 
 /*
- * Load plugins
+ * Load canvallax plugins. Ensuring
  */
 var pluginQueue = noop,
     plugins = win._clx || [],
