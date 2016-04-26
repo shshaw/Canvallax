@@ -1,4 +1,4 @@
-/*! canvallax v2.0.0 ( built 2016-04-22 ) https://github.com/shshaw/Canvallax.js @preserve */
+/*! canvallax v2.0.0 ( built 2016-04-26 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -127,19 +127,19 @@
           args,
           i = 0;
 
-      // Ensure class is always created as `new Class` even if `new` isn't used.
+      // Ensure object is always created as `new Class` even if `new` isn't used.
       if ( !(me instanceof C) ) {
         args = new Array(len);
         for(; i < len; i++) { args[i] = arguments[i]; }
         return construct(C,args);
       }
 
-      // If
       if ( len === 1 ) { extend(me,options); }
 
       me.fn = C.fn;
 
       if ( me.init ) { me.init.apply(me,arguments); }
+      // Autoplay animation-like objects
       if ( me.playing && me.play ) { me.play(); }
 
       return me;
@@ -154,9 +154,9 @@
           clone: clone
         };
 
-    // Get the prototype of classes that the new class will inherit from, if available.
-    for(; i < len; i++) {
+    for( ; i < len; i++ ) {
       arg = arguments[i];
+      // Get the prototype of classes that the new class will inherit from, if available.
       if ( arg.prototype ) { arg = arg.prototype; }
       for ( var key in arg ) {
         if ( arg.hasOwnProperty(key) ) { fn[key] = arg[key]; }
@@ -253,6 +253,8 @@ var _transformAttr = ['width','height'];
  * @property {number} scale=1 - How large the object should be rendered relative to its natural size, from the `transformOrigin` property]
  * @property {number} rotation=0 - Amount of rotation in degrees from the `transformOrigin` property
  *
+ * @borrows canvallax.extend as set
+ *
  * @property {core.preRender} preRender - Callback before the object is rendered.
  * @property {core._render} _render - Object specific callback to render to the context.
  * @property {core.postRender} postRender - Callback after the object is rendered.
@@ -273,6 +275,7 @@ var core = {
 
     /**
      * Add object to a parent
+     *
      * @type {function}
      * @param {...object|object[]} element - Parent or array of parents for the object to be added to
      * @returns {this}
@@ -295,6 +298,18 @@ var core = {
 
       return this;
     },
+
+    /**
+     * Set multiple properties of an object
+     *
+     * @type {function}
+     * @param {object} - Object with properties to merge
+     * @returns {this}
+     *
+     * @memberof! core
+     */
+    extend: extend,
+    set: extend,
 
     /**
      * Main rendering function that calls all callbacks, sets the context alpha & blend, and renders children, if any.
@@ -1629,7 +1644,7 @@ canvallax.TrackElement = canvallax.createTracker(
   });
 
 /*
- * Load canvallax plugins. Ensuring
+ * Run canvallax plugins after canvallax and all its methods have been set up.
  */
 var pluginQueue = noop,
     plugins = win._clx || [],
@@ -1638,7 +1653,7 @@ var pluginQueue = noop,
 
 for (; i < len; i++) { plugins[i](canvallax); }
 
-pluginQueue.push = function(fn){ fn(canvallax); }
+pluginQueue.push = function(fn){ fn(canvallax); };
 win._clx = pluginQueue;
 
 

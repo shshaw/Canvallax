@@ -12,6 +12,8 @@ var _transformAttr = ['width','height'];
  * @property {number} scale=1 - How large the object should be rendered relative to its natural size, from the `transformOrigin` property]
  * @property {number} rotation=0 - Amount of rotation in degrees from the `transformOrigin` property
  *
+ * @borrows canvallax.extend as set
+ *
  * @property {core.preRender} preRender - Callback before the object is rendered.
  * @property {core._render} _render - Object specific callback to render to the context.
  * @property {core.postRender} postRender - Callback after the object is rendered.
@@ -32,6 +34,7 @@ var core = {
 
     /**
      * Add object to a parent
+     *
      * @type {function}
      * @param {...object|object[]} element - Parent or array of parents for the object to be added to
      * @returns {this}
@@ -54,6 +57,18 @@ var core = {
 
       return this;
     },
+
+    /**
+     * Set multiple properties of an object
+     *
+     * @type {function}
+     * @param {object} - Object with properties to merge
+     * @returns {this}
+     *
+     * @memberof! core
+     */
+    extend: extend,
+    set: extend,
 
     /**
      * Main rendering function that calls all callbacks, sets the context alpha & blend, and renders children, if any.

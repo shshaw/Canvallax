@@ -82,7 +82,7 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0dev ( built 2016-04-21 ) https://github.com/shshaw/Canvallax.js @preserve */
+            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0dev ( built 2016-04-26 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -211,54 +211,41 @@
           args,
           i = 0;
 
-      // Ensure class is always created as `new Class` even if `new` isn't used.
+      // Ensure object is always created as `new Class` even if `new` isn't used.
       if ( !(me instanceof C) ) {
         args = new Array(len);
         for(; i &lt; len; i++) { args[i] = arguments[i]; }
         return construct(C,args);
       }
 
-      // If
       if ( len === 1 ) { extend(me,options); }
 
       me.fn = C.fn;
 
       if ( me.init ) { me.init.apply(me,arguments); }
+      // Autoplay animation-like objects
       if ( me.playing &amp;&amp; me.play ) { me.play(); }
 
       return me;
     }
 
     var len = arguments.length,
-        args = new Array(len),
+        arg,
         i = 0,
-        parents = [],
         fn = {
           init: noop,
           extend: extend,
           clone: clone
         };
 
-    for(; i &lt; len; i++) {
-      args[i] = arguments[i];
-      if ( args[i].fn ) {
-        //console.log(args[i].fn.type);
-        parents.push(args[i]);
-        args[i] = args[i].fn;
+    for( ; i &lt; len; i++ ) {
+      arg = arguments[i];
+      // Get the prototype of classes that the new class will inherit from, if available.
+      if ( arg.prototype ) { arg = arg.prototype; }
+      for ( var key in arg ) {
+        if ( arg.hasOwnProperty(key) ) { fn[key] = arg[key]; }
       }
     }
-
-/*
-    if ( len > 1 &amp;&amp; args[0].prototype ) {
-      parent = args[0];
-      args[0] = args[0].prototype;
-      fn._parent = parent;
-    }
-*/
-
-    args.unshift(fn);
-    extend.apply(fn, args);
-    fn._parents = parents;
 
     fn.constructor = C;
     C.fn = C.prototype = fn;
@@ -392,6 +379,8 @@ var core = {
 
       return this;
     },
+
+    set: extend,
 
     /**
      * Main rendering function that calls all callbacks, sets the context alpha &amp; blend, and renders children, if any.
@@ -1186,6 +1175,9 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
       if ( me.fullscreen ) {
 
+        me.resizeFullscreen();
+        win.addEventListener('resize', me.resizeFullscreen.bind(me));
+
         if ( styles &amp;&amp; me.includeStyles ) {
           doc.head.insertAdjacentHTML('afterbegin',styles);
           styles = null;
@@ -1193,8 +1185,6 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
         me.className += ' canvallax--fullscreen ';
 
-        me.resizeFullscreen();
-        win.addEventListener('resize', me.resizeFullscreen.bind(me));
       } else {
         me.resize(me.width || me.canvas.width, me.height || me.canvas.height);
       }
@@ -1723,6 +1713,19 @@ canvallax.TrackElement = canvallax.createTracker(
     }
 
   });
+
+/*
+ * Run canvallax plugins after canvallax and all its methods have been set up.
+ */
+var pluginQueue = noop,
+    plugins = win._clx || [],
+    len = plugins.length,
+    i = 0;
+
+for (; i &lt; len; i++) { plugins[i](canvallax); }
+
+pluginQueue.push = function(fn){ fn(canvallax); }
+win._clx = pluginQueue;
 
 
 })(window || this);
