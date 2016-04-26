@@ -8,5 +8,5 @@ var pluginQueue = noop,
 
 for (; i < len; i++) { plugins[i](canvallax); }
 
-pluginQueue.push = function(fn){ fn(canvallax); }
+pluginQueue.push = function(fn){ fn(canvallax); };
 win._clx = pluginQueue;
