@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Polygons</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="stretch">
+
+<script src='../dist/canvallax.js'></script>
+<script src='../plugins/canvallax.RoundedRectangle.js'></script>
+<script>
+/* Test Code */
+
+  var scene = canvallax.Scene(),
+      trackScroll = canvallax.TrackScroll().add(scene),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+  var rrect = canvallax.RoundedRectangle({
+          fill: '#000',
+          radius: 5,
+          width: 100,
+          height: 100,
+          zIndex: 20,
+          y: 100,
+        });
+
+  scene.add(
+    rrect,
+    rrect.clone({ radius: 10, x: 150 }),
+    rrect.clone({ radius: 20, x: 300 }),
+    rrect.clone({ radius: 30, x: 450 }),
+    rrect.clone({ radius: 40, x: 600 }),
+    rrect.clone({ radius: {
+        tl: 30, tr: 0,
+        bl: 0, br: 30
+      }, x: 750 })
+  );
+
+  rrect.set({
+    y: 0,
+    stroke: '#F00',
+    fixed: true
+  });
+
+  rrect.to(3,{ rotation: 360 }, { repeat: -1, ease: canvallax.ease.linear });
+  rrect.to(1,{ lineWidth: 20 }, { repeat: -1, yoyo: true });
+
+  canvallax.TrackPointer({
+                offset: { x: -50, y: -50 },
+                ease: 5,
+              }).add(rrect);
+
+</script>
+</body>
+</html>
