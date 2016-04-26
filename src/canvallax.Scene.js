@@ -106,6 +106,9 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
       if ( me.fullscreen ) {
 
+        me.resizeFullscreen();
+        win.addEventListener('resize', me.resizeFullscreen.bind(me));
+
         if ( styles && me.includeStyles ) {
           doc.head.insertAdjacentHTML('afterbegin',styles);
           styles = null;
@@ -113,8 +116,6 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
 
         me.className += ' canvallax--fullscreen ';
 
-        me.resizeFullscreen();
-        win.addEventListener('resize', me.resizeFullscreen.bind(me));
       } else {
         me.resize(me.width || me.canvas.width, me.height || me.canvas.height);
       }
