@@ -1,4 +1,4 @@
-/*! canvallax v2.0.0 ( built 2016-04-26 ) https://github.com/shshaw/Canvallax.js @preserve */
+/*! canvallax v2.0.0 ( built 2016-05-06 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -1168,7 +1168,7 @@ canvallax.Element = createClass(core,
       var me = this;
 
       if ( !me.fixed && parent && !parent.transform(ctx, me.z) ) { return me; }
-      if ( !me.transform(ctx, me.z) ) { return me; }
+      if ( !me.transform(ctx) ) { return me; }
 
       if ( me.draw ) {
         ctx.beginPath();

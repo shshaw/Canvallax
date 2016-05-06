@@ -38,11 +38,11 @@ canvallax.Element = createClass(core,
       var me = this;
 
       if ( !me.fixed && parent && !parent.transform(ctx, me.z) ) { return me; }
-      if ( !me.transform(ctx, me.z) ) { return me; }
+      if ( !me.transform(ctx) ) { return me; }
 
       if ( me.draw ) {
         ctx.beginPath();
-        me.draw(ctx,me.getCoords(me.z),parent);
+        me.draw(ctx,me.getCoords(),parent);
       }
 
       if ( me.fill ) {
