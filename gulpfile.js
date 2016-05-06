@@ -84,7 +84,7 @@ gulp.task('docs', function (cb) {
     config.templates = config.templates || {};
     config.templates.systemName = pkg.title;
 
-    return gulp.src(['README.md','dev/'+filename+'.js'], {read: false})
+    return gulp.src(['README.md','dist/'+filename+'.js'], {read: false})
         .pipe($.jsdoc3(config,function(cb){
           // No way to configure jsdoc output directory, so we have to remove the existing ./docs folder, then rename the ./out dir
           cb = cb || function(e){ console.log(e);};

@@ -82,7 +82,7 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0dev ( built 2016-04-26 ) https://github.com/shshaw/Canvallax.js @preserve */
+            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0 ( built 2016-05-06 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -337,6 +337,8 @@ var _transformAttr = ['width','height'];
  * @property {number} scale=1 - How large the object should be rendered relative to its natural size, from the `transformOrigin` property]
  * @property {number} rotation=0 - Amount of rotation in degrees from the `transformOrigin` property
  *
+ * @borrows canvallax.extend as set
+ *
  * @property {core.preRender} preRender - Callback before the object is rendered.
  * @property {core._render} _render - Object specific callback to render to the context.
  * @property {core.postRender} postRender - Callback after the object is rendered.
@@ -357,6 +359,7 @@ var core = {
 
     /**
      * Add object to a parent
+     *
      * @type {function}
      * @param {...object|object[]} element - Parent or array of parents for the object to be added to
      * @returns {this}
@@ -380,6 +383,16 @@ var core = {
       return this;
     },
 
+    /**
+     * Set multiple properties of an object
+     *
+     * @type {function}
+     * @param {object} - Object with properties to merge
+     * @returns {this}
+     *
+     * @memberof! core
+     */
+    extend: extend,
     set: extend,
 
     /**
@@ -1239,7 +1252,7 @@ canvallax.Element = createClass(core,
       var me = this;
 
       if ( !me.fixed &amp;&amp; parent &amp;&amp; !parent.transform(ctx, me.z) ) { return me; }
-      if ( !me.transform(ctx, me.z) ) { return me; }
+      if ( !me.transform(ctx) ) { return me; }
 
       if ( me.draw ) {
         ctx.beginPath();
@@ -1724,7 +1737,7 @@ var pluginQueue = noop,
 
 for (; i &lt; len; i++) { plugins[i](canvallax); }
 
-pluginQueue.push = function(fn){ fn(canvallax); }
+pluginQueue.push = function(fn){ fn(canvallax); };
 win._clx = pluginQueue;
 
 
