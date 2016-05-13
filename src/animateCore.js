@@ -60,7 +60,7 @@ var animateCore = {
       this.playing = true;
 
       var index = animations.indexOf(this);
-      if ( index == -1 ) { animations.push(this); }
+      if ( index == -1 ) { animations[ ( this.animateLast ? 'unshift' : 'push' ) ](this); }
       animations.play();
       return this;
     },

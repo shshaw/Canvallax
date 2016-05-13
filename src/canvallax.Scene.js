@@ -52,6 +52,7 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
     includeStyles: true,
 
     playing: true,
+    animateLast: true,
     clearFrames: true,
 
     /**

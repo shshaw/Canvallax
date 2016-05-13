@@ -6,10 +6,11 @@
 
 var arrayLike = {
       length: 0,
+      splice: arr.splice,
       indexOf: arr.indexOf,
       push: arr.push,
-      splice: arr.splice,
       sort: arr.sort,
+      unshift: arr.unshift,
 
       /**
        * Add an element, group or array of elements to collection
