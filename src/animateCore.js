@@ -8,12 +8,11 @@ var animations = extend({},arrayLike,{
   animate: function(){
 
     var len = animations.length,
-        i = 0,
         el;
 
     if ( !animations.playing || len === 0  ) { animations.stop(); return; }
-    for (; i < len; i++) {
-      el = animations[i];
+    while(len--){
+      el = animations[len];
       if ( el && el.playing && ( el.render && !el.render() )) { el.stop(); }
     }
 
