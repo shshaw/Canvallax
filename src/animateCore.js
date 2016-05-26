@@ -7,6 +7,8 @@ var animations = extend({},arrayLike,{
 
   animate: function(){
 
+    animations.frame = requestAnimationFrame(animations.animate);
+
     var len = animations.length,
         el;
 
@@ -15,8 +17,6 @@ var animations = extend({},arrayLike,{
       el = animations[len];
       if ( el && el.playing && ( el.render && !el.render() )) { el.stop(); }
     }
-
-    animations.frame = requestAnimationFrame(animations.animate);
 
   },
 

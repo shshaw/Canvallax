@@ -1,4 +1,4 @@
-/*! canvallax v2.0.0 ( built 2016-05-13 ) https://github.com/shshaw/Canvallax.js @preserve */
+/*! canvallax v2.0.0 ( built 2016-05-26 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -570,6 +570,8 @@ var animations = extend({},arrayLike,{
 
   animate: function(){
 
+    animations.frame = requestAnimationFrame(animations.animate);
+
     var len = animations.length,
         el;
 
@@ -578,8 +580,6 @@ var animations = extend({},arrayLike,{
       el = animations[len];
       if ( el && el.playing && ( el.render && !el.render() )) { el.stop(); }
     }
-
-    animations.frame = requestAnimationFrame(animations.animate);
 
   },
 
@@ -1517,8 +1517,8 @@ var scrollX = 0,
     // Only one scroll tracker that works for every instance
     watchingScroll = false,
     onScroll = function(){
-      scrollX = root.scrollLeft || body.scrollLeft;
-      scrollY = root.scrollTop || body.scrollTop;
+      scrollX = win.pageXOffset;
+      scrollY = win.pageYOffset;
     };
     /**
  * Tracker Class for linking an object's `x` and `y` to the scroll position.
