@@ -3,8 +3,8 @@ var scrollX = 0,
     // Only one scroll tracker that works for every instance
     watchingScroll = false,
     onScroll = function(){
-      scrollX = root.scrollLeft || body.scrollLeft;
-      scrollY = root.scrollTop || body.scrollTop;
+      scrollX = win.pageXOffset;
+      scrollY = win.pageYOffset;
     };
     /**
  * Tracker Class for linking an object's `x` and `y` to the scroll position.
