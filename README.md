@@ -1,3 +1,18 @@
+# [Canvallax 2](https://github.com/shshaw/Canvallax/tree/v2.0.0) is Coming
+
+I've been working hard at improving the Canvallax API & feature set, and it's almost ready for prime time. Check out the [v2.0.0](https://github.com/shshaw/Canvallax/tree/v2.0.0) branch to try out the upcoming features. File any feedback or bugs under [Issues](https://github.com/shshaw/Canvallax/issues)
+
+### What's new in 2.0.0?
+- Built in animation engine with `.to`, `.from` and `.fromTo` methods on all elements.
+- Better Tracker setup and DOM element tracking
+- Full documentation with JSDoc
+- Any-shape polygon ( `var star = canvallax.Polygon({ points: [[80, 0], [100, 50], [160, 55], [115, 95], [130, 150], [80, 120], [30, 150], [45, 95], [0, 55], [60, 50],'close'] });` )
+- Plugin support! Easily extend Canvallax with your own Elements, Methods & Trackers. Example `Canvallax.Pattern` & `Canvallax.RoundedRectangle` plugins included.
+- `Canvallax.Ellipse` to replace `Canvallax.Circle`, make round shapes of any size!
+- `Canvallax.Group` for keeping Elements linked together.
+
+--
+
 # Canvallax.js
 *Easy parallax effects on `<canvas>`*
 
