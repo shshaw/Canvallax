@@ -95,12 +95,18 @@ gulp.task('docs', function (cb) {
         }))
 });
 
+var ghPages = require('gulp-gh-pages');
+gulp.task('gh-pages', function() {
+  return gulp.src(dest.docs + '/**/*')
+    .pipe(ghPages());
+});
+
 ////////////////////////////////////////
 
 var runSequence = require('run-sequence');
 
 gulp.task('default', function(){
-  runSequence('lint','build','docs');
+  runSequence('lint','build','docs', 'gh-pages');
 })
 
 gulp.task('watch', function(){

@@ -3,23 +3,22 @@
 
 ![Minified](https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?label=Size%20%28minified%29) ![GZIP](https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?compression=gzip&label=Size%20%28gzipped%29)
 
-`<canvas>` is awesome, but drawing to it can be cumbersome and trying to maintain multiple elements can be a nightmare.
+`<canvas>` is awesome, but drawing can be cumbersome and maintaining multiple elements is a nightmare.
 
-Enter Canvallax: a tiny, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Easily position, rotate, scale and animate elements, and create amazing scroll or pointer tracking effects!
-
-Super performant, supporting all modern browsers (IE9+).
+Enter Canvallax: a tiny, dependency-free Javascript library for drawing shapes and images on `<canvas>`. Easily position, rotate, scale and animate elements, and create amazing scroll or pointer tracking effects! Super performant, supporting modern browsers (IE9+).
 
 Many jaw-dropping effects can be achieved with the built-in functionality:
 
-- Build scenes with easy positioning via `x` &amp; `y` coordinates, a `z` axis for 3D/parallax effects and stacking with `zIndex`
-- Draw Images from URLs or nodes (`<img />`, `<canvas />`, etc.) with `canvallax.Image`.
-- Common shapes (`canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
+- Build scenes with easy positioning via `x` &amp; `y` coordinates, a `z` axis for 3D/parallax effects, and stacking with `zIndex`.
+- Common shapes built in (`canvallax.Ellipse`, `canvallax.Polygon`, &amp; `canvallax.Rectangle`)
+- Draw Images from URLs or nodes (`<img />`, `<canvas />`) with `canvallax.Image`.
 - Rotate and scale elements with support for `transformOrigin`.
 - Scroll &amp; Pointer tracking for scenes and elements with configurable easing and offsets.
 - Animation of elements with `.to`, `.from` and `.fromTo`.
-- Opacity, blend modes, clipping, fixed positioning, and so much more! 
+- Easily add and create your own plugins using `canvallax.createElement`, `canvallax.createTracker` or the general `canvallax.createClass`.
+- Opacity, blend modes, offsets, clipping, fixed positioning, and so much more! 
 
-Read the [Canvallax Wiki](https://github.com/shshaw/canvallax.js/wiki/) for full documentation. Advanced users can create extend Canvallax with custom elements and trackers.
+Read the [Canvallax Docs](http://shshaw.github.io/Canvallax/) for documentation on each feature.
 
 ## Demos
 
