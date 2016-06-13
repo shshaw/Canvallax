@@ -35,6 +35,10 @@ canvallax.Image = createElement(
       img.height = ( img.height ? img.height : img.image.height );
     },
 
+    onerror: function(){
+      this.removeAttribute('src');
+    },
+
     init: function(options){
       var img = this.image;
 
@@ -48,6 +52,7 @@ canvallax.Image = createElement(
       // Ensure we get width/height of image for best draw performance
       this.onload(this);
       img.onload = this.onload.bind(null,this);
+      img.onerror = this.onerror;
 
       img.src = img.src || options.src || options;
     },
