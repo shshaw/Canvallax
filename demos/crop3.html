@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Crop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dist/canvallax.js'></script>
+<script>
+  // https://snowden.persona.co/
+
+  var scene = canvallax.Scene(),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+  scene.addTo(canvallax.TrackScroll());
+  //scene.fill = '#ABB';
+
+  var distance = 150;
+
+  var bg = canvallax.Image({
+          src: 'https://unsplash.it/1000/1000/?image=1027', //368', //325',
+          width: width + ( distance * 2 ),
+          height: height + ( distance * 2 ),
+          zIndex: 1,
+          x: -distance,
+          y: -distance,
+          blend: 'darker'
+        });
+
+  //scene.add(bg);
+
+  var rectHeight = height/5,
+      rectWidth = width/4,
+
+      clipRect = canvallax.Rectangle({
+          width: rectWidth,
+          height: rectHeight,
+          fixed: true
+        });
+
+  var clipper, clone;
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+function weightedRandom(max, bellFactor) {
+    var num = 0;
+    for (var i = 0; i < bellFactor; i++) {
+        num += Math.random() * (max/bellFactor);
+    }
+    return num;
+}
+
+  for ( var i = 0; i < 10; i++ ) {
+
+      clipper = clipRect.clone({
+        x: weightedRandom(width - rectWidth, 15),
+        y: weightedRandom(height - rectHeight, 15),
+        width: weightedRandom(rectWidth * 2, 15),
+        height: weightedRandom(rectHeight * 2, 15)
+      })
+
+      clone = bg.clone({
+          clip: clipper,
+          opacity: randomRange(0.3,0.6)
+        });
+
+        var invert = ( Math.random() > 0.5 );
+
+      canvallax.TrackPointer({
+        range: distance + (Math.random() * distance),
+        ease: 30 + (Math.random() * 20),
+        invert: invert
+      }).add(clone);
+
+      canvallax.TrackPointer({
+        range: distance/2 + (Math.random() * distance/2),
+        ease: 20 + (Math.random() * 10),
+        invert: !invert
+      }).add(clipper);
+
+      scene.add(clone);
+  }
+
+</script>
+</body>
+</html>

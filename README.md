@@ -22,7 +22,7 @@ Read the [Canvallax Docs](http://shshaw.github.io/Canvallax/) for documentation 
 
 ## Demos
 
-View a [CodePen collection full of Canvallax demos](http://codepen.io/collection/DrxbPo/)!
+View a [CodePen collection full of Canvallax demos](http://codepen.io/collection/DrxbPo/)! *Demos currently use Canvallax 1.0.0, new demos for Canvallax 2.0.0 coming soon*
 
 [![Starfield](http://brokensquare.com/Code/Canvallax.js/img/starfield.gif)](http://codepen.io/shshaw/pen/EVdzLV) [![Header Image Slice](http://brokensquare.com/Code/Canvallax.js/img/header-slice.gif)](http://codepen.io/shshaw/pen/bVQROG)  [![Pointer Tracking](http://brokensquare.com/Code/Canvallax.js/img/pointer.gif)](http://codepen.io/shshaw/pen/RWEJMG) [![Parallax Sky Background](http://brokensquare.com/Code/Canvallax.js/img/sky.gif)](http://codepen.io/shshaw/pen/ZbExyV) [![Falling Hexagon Mask](http://brokensquare.com/Code/Canvallax.js/img/hexagons.gif)](http://codepen.io/shshaw/pen/dYdvww) [![transformOrigin](http://brokensquare.com/Code/Canvallax.js/img/transform-origin.gif)](http://codepen.io/shshaw/pen/LpMbvZ)
 

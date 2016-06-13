@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Crop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dist/canvallax.js'></script>
+<script>
+
+  var scene = canvallax.Scene(),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+  scene.addTo(canvallax.TrackScroll());
+
+  var bg = canvallax.Image({
+          src: 'https://unsplash.it/1000/1000/?image=1027', //368', //325',
+          width: width + 200,
+          height: height + 200,
+          zIndex: 1,
+          x: -100,
+          y: -100
+        });
+
+  var rectHeight = height/3,
+      rectWidth = width/4;
+
+  var clipRect = canvallax.Rectangle({
+          width: rectWidth,
+          height: rectHeight,
+          fixed: true
+        });
+
+  var tracker, clone,
+      distance = 50,
+
+      imageID = 996,
+      imageWidth = rectWidth+ ( distance * 2 ),
+      imageHeight = rectHeight+ ( distance * 2 );
+
+  scene.fill = '#FFF';
+
+  scene.add(
+    canvallax.Rectangle({
+      width: width,
+      height: height,
+      fill: '#CDD',
+      blend: 'screen',
+      opacity: 0.9,
+      zIndex: 2000
+    })
+  );
+
+  for (var y = 0; y < height; y += rectHeight ) {
+
+    for ( var x = 0; x < width; x += rectWidth ) {
+
+      clone = canvallax.Image({
+          src: 'https://unsplash.it/'+imageWidth+'/'+imageHeight+'/?image='+ imageID--,
+          //blend: 'overlay',
+          //opacity: 0.5,
+          clip: clipRect.clone({
+            x: x,
+            y: y,
+            //stroke: '#FFF',
+            //lineWidth: 10
+          }),
+          width: imageWidth,
+          height: imageHeight,
+          x: x - distance,
+          y: y - distance,
+          zIndex: (x+y)/100,
+        });
+
+      tracker = canvallax.TrackPointer({
+        range: distance + ( Math.random() * distance/2 ),
+        invert: true,// ( Math.random() - 0.5 > 0 ),
+        ease: 40 + (Math.random() * 30)
+      }).add(clone);
+
+      scene.add(clone);
+    }
+  }
+
+/*
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function randomColor(){
+    return 'hsl(' + randomRange(0,360) + ',' + randomRange(50,100) + '%,' + randomRange(40,80) + '%)';
+  }
+
+
+*/
+
+
+  //scene.to(2, { opacity: 0.1 },{ yoyo: true, repeat: -1 });
+
+
+</script>
+</body>
+</html>
