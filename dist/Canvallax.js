@@ -1,4 +1,4 @@
-/*! canvallax v2.0.0 ( built 2016-05-26 ) https://github.com/shshaw/Canvallax.js @preserve */
+/*! canvallax v2.0.0 ( built 2016-06-08 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -1060,7 +1060,9 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
      * @memberof! canvallax.Scene
      */
     clear: function(ctx){
-      ctx.clearRect(0, 0, this.width, this.height);
+      var fill = this.fill;
+      if ( fill ) { ctx.fillStyle = fill; }
+      ctx[ this.fill ? 'fillRect' : 'clearRect' ](0, 0, this.width, this.height);
       return this;
     },
 

@@ -62,7 +62,9 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
      * @memberof! canvallax.Scene
      */
     clear: function(ctx){
-      ctx.clearRect(0, 0, this.width, this.height);
+      var fill = this.fill;
+      if ( fill ) { ctx.fillStyle = fill; }
+      ctx[ this.fill ? 'fillRect' : 'clearRect' ](0, 0, this.width, this.height);
       return this;
     },
 
