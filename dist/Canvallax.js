@@ -1554,7 +1554,11 @@ canvallax.TrackScroll = createTracker(
     },
 
     _render: function(){
-      return { x: scrollX, y: scrollY };
+      var e = this.element;
+      return {
+        x: e ? e.scrollLeft : scrollX,
+        y: e ? e.scrollTop : scrollY
+      };
     }
 
   });
