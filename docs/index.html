@@ -101,8 +101,7 @@
         <article><h1>Canvallax 2</h1><p><em>Easy parallax effects on <code>&lt;canvas&gt;</code></em></p>
 <p><img src="https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?label=Size%20%28minified%29" alt="Minified"> <img src="https://badge-size.herokuapp.com/shshaw/Canvallax/master/dist/Canvallax.min.js.svg?compression=gzip&amp;label=Size%20%28gzipped%29" alt="GZIP"></p>
 <p><code>&lt;canvas&gt;</code> is awesome, but drawing can be cumbersome and maintaining multiple elements is a nightmare.</p>
-<p>Enter Canvallax: a tiny, dependency-free Javascript library for drawing shapes and images on <code>&lt;canvas&gt;</code>. Easily position, rotate, scale and animate elements, and create amazing scroll or pointer tracking effects!</p>
-<p>Super performant, supporting all modern browsers (IE9+).</p>
+<p>Enter Canvallax: a tiny, dependency-free Javascript library for drawing shapes and images on <code>&lt;canvas&gt;</code>. Easily position, rotate, scale and animate elements, and create amazing scroll or pointer tracking effects! Super performant, supporting modern browsers (IE9+).</p>
 <p>Many jaw-dropping effects can be achieved with the built-in functionality:</p>
 <ul>
 <li>Build scenes with easy positioning via <code>x</code> &amp; <code>y</code> coordinates, a <code>z</code> axis for 3D/parallax effects, and stacking with <code>zIndex</code>.</li>
@@ -114,8 +113,8 @@
 <li>Easily add and create your own plugins using <code>canvallax.createElement</code>, <code>canvallax.createTracker</code> or the general <code>canvallax.createClass</code>.</li>
 <li>Opacity, blend modes, offsets, clipping, fixed positioning, and so much more! </li>
 </ul>
-<p>Read the <a href="https://github.com/shshaw/canvallax.js/wiki/">Canvallax Wiki</a> for full documentation. Advanced users can create extend Canvallax with custom elements and trackers.</p>
-<h2>Demos</h2><p>View a <a href="http://codepen.io/collection/DrxbPo/">CodePen collection full of Canvallax demos</a>!</p>
+<p>Read the <a href="http://shshaw.github.io/Canvallax/">Canvallax Docs</a> for documentation on each feature.</p>
+<h2>Demos</h2><p>View a <a href="http://codepen.io/collection/DrxbPo/">CodePen collection full of Canvallax demos</a>! <em>Demos currently use Canvallax 1.0.0, new demos for Canvallax 2.0.0 coming soon</em></p>
 <p><a href="http://codepen.io/shshaw/pen/EVdzLV"><img src="http://brokensquare.com/Code/Canvallax.js/img/starfield.gif" alt="Starfield"></a> <a href="http://codepen.io/shshaw/pen/bVQROG"><img src="http://brokensquare.com/Code/Canvallax.js/img/header-slice.gif" alt="Header Image Slice"></a>  <a href="http://codepen.io/shshaw/pen/RWEJMG"><img src="http://brokensquare.com/Code/Canvallax.js/img/pointer.gif" alt="Pointer Tracking"></a> <a href="http://codepen.io/shshaw/pen/ZbExyV"><img src="http://brokensquare.com/Code/Canvallax.js/img/sky.gif" alt="Parallax Sky Background"></a> <a href="http://codepen.io/shshaw/pen/dYdvww"><img src="http://brokensquare.com/Code/Canvallax.js/img/hexagons.gif" alt="Falling Hexagon Mask"></a> <a href="http://codepen.io/shshaw/pen/LpMbvZ"><img src="http://brokensquare.com/Code/Canvallax.js/img/transform-origin.gif" alt="transformOrigin"></a></p>
 <h2>Basic Usage</h2><p>The examples below will help you get started using Canvallax. For advanced usage, read the <a href="https://github.com/shshaw/canvallax.js/wiki/">Canvallax Wiki</a> for full documentation.</p>
 <h3>Scenes</h3><p>In order to use Canvallax, you need to create a <code>canvallax.Scene</code> and add elements to it. Create a new scene either by calling <code>new canvallax.Scene()</code> or <code>canvallax.Scene()</code>; either will return a new instance. Elements can be created in the same way, <code>new canvallax.Ellipse()</code> or <code>canvallax.Ellipse</code>, then added to the scene like so:</p>
