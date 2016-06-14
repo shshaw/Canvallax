@@ -1,0 +1,13 @@
+{
+    "templates": {
+      "includeDate": false,
+      "theme": "cosmo",
+      "linenums": true,
+    	"outputSourceFiles": true,
+      "analytics":{"ua":"UA-XXXXX-XXX", "domain":"XXXX"}
+    },
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "plugins": ["node_modules/gulp-jsdoc3/node_modules/jsdoc/plugins/markdown"]
+}

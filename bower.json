@@ -1,0 +1,23 @@
+{
+  "name": "canvallax",
+  "title": "Canvallax",
+  "version": "2.0.0",
+  "description": "Easy parallax effects on canvas",
+  "main": "dist/Canvallax.min.js",
+  "homepage": "https://github.com/shshaw/Canvallax.js",
+  "authors": [
+    "Stephen Shaw <stephen@brokensquare.com>"
+  ],
+  "keywords": [
+    "javascript",
+    "canvas",
+    "library"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
