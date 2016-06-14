@@ -61,11 +61,28 @@
    */
 
   function clone(target,properties){
+
     if ( arguments.length <= 1 ) {
       properties = target;
       target = this;
     }
-    var props = extend({}, target, properties);
+
+    var props = extend({}, target, properties),
+        len = props.length,
+        i = 0;
+
+    /** Clone all children */
+    if ( len ) {
+      props.children = [];
+      props.length = 0;
+      for ( ; i < len; i++ ) {
+        if ( props[i] && props[i].clone ) {
+          props.children[i] = props[i].clone();
+          delete props[i];
+        }
+      }
+    }
+
     return new target.constructor(props);
   }
 
