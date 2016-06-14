@@ -60,9 +60,18 @@ var arrayLike = {
        * @returns {this}
        * @memberof! arrayLike
        */
-      remove: function(element){
-        var index = this.indexOf(element);
-        if ( index > -1 ) { this.splice(index, 1); }
-        return this;
+      remove: function(el){
+
+        var me = this,
+            elements = ( el && el.length > -1 && Array.isArray(el) ? el : arguments ),
+            len = elements.length,
+            index;
+
+        while (len--) {
+          index = me.indexOf(elements[len]);
+          if ( index > -1 ) { me.splice(index, 1); }
+        }
+
+        return me;
       }
     };
