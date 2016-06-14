@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Animation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="demos.css">
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dist/canvallax.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js'></script>
+<script>
+/* Test Code */
+
+  var scene = canvallax.Scene({
+        tracker: canvallax.TrackPointer({
+          ease: 1,
+          scale: 0.1,
+          //invert: true
+        }),
+        fullscreen: true,
+        transformOrigin: 'center center',
+      }),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+
+  ////////////////////////////////////////
+
+var size = 15,
+    spacing = size * 4,
+    x = 0,
+    y = height / 2;
+
+function drawDots(z){
+  var shapes = [];
+
+//for (y = 0; y < height; y += size + spacing){
+  for (x = 0; x < width; x += size + spacing) {
+    shapes.push(
+      canvallax.Ellipse({
+        x: x,// Math.random() * width * (2 - distance),
+        y: y,//Math.random() * height * (2 - distance),
+        z: z,
+        opacity: z,
+        width: size,
+        height: size,
+        fill: '#000'
+      })
+    );
+  }
+//}
+  scene.add(shapes);
+
+  TweenMax.staggerTo(shapes,2,{
+    y: '-=50',
+    delay: 1 / z,
+    repeat: -1,
+    yoyo: true,
+    ease: 'cubic.easeInOut'
+  },0);
+}
+
+drawDots(1);
+drawDots(0.9);
+drawDots(0.8);
+drawDots(0.7);
+drawDots(0.6);
+drawDots(0.5);
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Triangles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  body { background: #262626;}
+
+  </style>
+</head>
+<body class="no-bg">
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js'></script>
+<script src='../dist/canvallax.js'></script>
+<script>
+
+  var scene = canvallax.Scene({
+/*
+      tracker: canvallax.TrackScroll({
+        ease: 1,
+        scale: 1,
+        //invert: true
+      }),
+*/
+      fullscreen: true,
+      transformOrigin: 'center center',
+    }),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+  // Adapted from http://gif.flrn.nl/post/141922883984
+
+  var clone,
+      leftClone,
+
+      main = canvallax.Group(),
+      left = canvallax.Group(),
+
+      count = 12,
+      half = count/2,
+
+      spacing = 10,
+      size = 10,
+      full = 220;//((size + spacing) * (count - 1)) - (spacing * 2);
+
+  var line = canvallax.Rectangle({
+          fill: '#dadad0',
+          x: Math.round(width/3) - full/2,
+          y: Math.round(height/3) - full/2,
+          width: full,
+          height: size,
+          zIndex: 20,
+        });
+
+  for (var i = 1; i < count; i++) {
+
+    var sin = Math.sin( Math.PI / (count/(i)) ),
+        w = full * sin;
+        //( i > half ? full - ( step * half-i ) : small + (step * i) );
+        //( small / ( i === half ? 1 : (i - half) );
+
+console.log(w);
+
+    clone = line.clone({
+      width: w,
+      FULLWIDTH: w,
+      x: line.x + (full-w/2),
+      y: line.y + (spacing + size) * i
+    });
+    main.push(clone);
+
+    leftClone = clone.clone({
+      width: 0,
+      y: clone.y + size
+    });
+    left.push(leftClone);
+  }
+
+  scene.add(main);
+  scene.add(left);
+
+
+  TweenLite.defaultEase = Power4.easeInOut;
+
+  var tl = new TimelineMax({ repeat: -1 }),
+      label,
+      speed = 0.6,
+      delay = 0.3,
+      offset = 0.1;
+
+  label = 'start';
+  tl.addLabel(label);
+
+  main.each(function(line, i){
+
+    tl.to(line,speed,{
+      width: 0,
+      //ease: Power2.easeInOut
+    },offset * i);
+
+    tl.to(line,speed,{
+      x: line.x + line.width
+    },offset * i);
+
+    tl.to(left[i],speed,{
+      width: line.FULLWIDTH,
+      //ease: Power2.easeInOut
+    },offset * i)
+
+    tl.from(left[i],speed,{
+      x: line.x// - line.width/10
+    },offset * i)
+
+  });
+
+
+  tl.to(scene,1.5,{
+    y: '-='+ spacing,
+    ease: Linear.easeNone
+  },0)
+
+  tl.staggerTo(main,1.5,{
+    y: '-='+ spacing,
+    ease: Linear.easeNone
+  },0,0)
+
+  tl.staggerTo(left,1.5,{
+    y: '-='+ spacing,
+    ease: Linear.easeNone
+  },0,0)
+
+
+  tl.timeScale(0.6);
+
+/*
+  TweenLite.to(main,tl.duration(),{
+    y: -(spacing + size),
+    ease: Linear.easeNone
+  });
+
+  TweenLite.to(left,tl.duration(),{
+    y: -(spacing + size),
+    ease: Linear.easeNone
+  },0);
+*/
+/*
+  tl.staggerTo(main,speed,{
+    width: 0,
+  },offset,label);
+
+  tl.staggerTo(left,speed,{
+    height: full,
+    delay: delay
+  },-offset,label);
+
+  label = 'second';
+
+  tl.addLabel(label);
+  tl.call(invert);
+
+  tl.staggerTo(vert,speed,{
+    height: size,
+    y: '+='+(full-size)
+  },offset,label);
+
+  tl.staggerTo(horiz,speed,{
+    width: full,
+    delay: delay
+  },offset,label);
+
+  label = 'third';
+  tl.addLabel(label);
+  tl.call(invert);
+
+  tl.staggerTo(vert,speed,{
+    height: full,
+    y: vertLine.y,
+    delay: delay
+  },offset,label);
+
+  tl.staggerTo(horiz,speed,{
+    width: size,
+    x: '+='+(full-size)
+  },-offset,label);
+
+
+
+  label = 'fourth';
+  tl.addLabel(label);
+  tl.call(invert);
+
+  tl.staggerTo(vert,speed,{
+    height: size,
+    y: vertLine.y
+  },-offset,label);
+
+  tl.staggerTo(horiz,speed,{
+    width: full,
+    x: line.x,
+    delay: delay
+  },offset,label);
+
+  tl.timeScale(1.2);
+  tl.play();
+*/
+
+
+
+
+</script>
+</body>
+</html>

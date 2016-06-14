@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Starfield</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="bg stretch">
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+<script src='../dist/canvallax.js'></script>
+<script>
+/* Test Code */
+
+var tracker = canvallax.TrackScroll({
+      ease: 2,
+      scale: 1,
+      //invert: true
+    }),
+    scene = canvallax.Scene({
+      tracker: tracker,
+      fullscreen: true,
+      transformOrigin: 'center center',
+    }),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+
+////////////////////////////////////////
+
+var color = '#FFF';
+
+function randomRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+var shapes = [],
+    size = 4,
+    x = 0,
+    y = 0;
+
+var tl = new TimelineMax({ paused: true });
+
+var count = (width / height) * 900,
+    halfW = width / 3,
+    halfH = height / 3,
+    circ;
+
+for (var i = 0; i < count; i++) {
+
+  circ = canvallax.Ellipse({
+        x: halfW,// Math.random() * width * (2 - distance),
+        y: halfH,//Math.random() * height * (2 - distance),
+        z: 0.5,
+        width: size,
+        height: size,
+        fill: color
+      });
+
+  tl.to(circ,randomRange(1.2,2),{
+    x: randomRange(0,width),
+    y: randomRange(0,height),
+    z: 2,
+    opacity: 0,
+    repeat: -1,
+    ease: 'Cubic.easeInOut',
+  },randomRange(0.3,2));
+
+  shapes.push(circ);
+
+}
+
+scene.add(shapes);
+tl.play();
+
+</script>
+</body>
+</html>

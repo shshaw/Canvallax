@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Lines</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="stretch">
+
+<script src='../dist/canvallax.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js'></script>
+<script>
+/* Test Code */
+
+var scene = canvallax.Scene({
+      //tracker: canvallax.TrackScroll(),
+      fullscreen: true,
+      playing: false,
+      transformOrigin: [0,0],
+    }),
+    trackScroll = canvallax.TrackScroll().add(scene).play(),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+////////////////////////////////////////
+
+var twoPI = Math.PI*2;
+
+canvallax.DottedLine = canvallax.createElement({
+  type: 'dottedLine',
+  dotSize: 4,
+  points: [],
+  draw: function(ctx,coords) {
+    var p = this.points,
+        len = p.length,
+        i = 0;
+
+
+    for (; i < len; i++) {
+      if ( p[i] === 'close' ) { ctx.closePath(); }
+      else {
+        ctx[( i === 0 ? 'moveTo' : 'lineTo' )](coords[0] + p[i][0], coords[1] + p[i][1]);
+        //ctx.arc(coords[0] + p[i][0], coords[1] + p[i][1], this.dotSize, 0, twoPI);
+      }
+    }
+    ctx.strokeStyle = this.stroke;
+    ctx.lineWidth = this.lineWidth;
+    ctx.stroke();
+
+    ctx.beginPath();
+    for (i = 0; i < len; i++) {
+      if ( p[i] !== 'close' ) {
+        ctx.moveTo(coords[0] + p[i][0] + (this.dotSize/2), coords[1] + p[i][1]);
+        ctx.arc(coords[0] + p[i][0] - (this.dotSize/2), coords[1] + p[i][1], this.dotSize, 0, twoPI);
+      }
+    }
+  }
+
+})
+
+
+
+////////////////////////////////////////
+
+function ease(current,target,ease){ return current + (target - current) * ( ease || 0.2 ); }
+
+function strip(number) {
+    return number.toFixed(1);//(parseFloat(number).toPrecision(5));
+}
+
+function animatePoints(){
+
+  var p = this.points,
+      point,
+      i = 0,
+      len = p.length;
+
+  for (; i < len; i++){
+
+    point = p[i];
+
+    if ( !point.origX ) { point.origX = point[0]; }
+    if ( !point.origY ) { point.origY = point[1]; }
+
+    if ( !point.x || strip(point[0]) === strip(point.x) ) { point.x = point.origX + (15 * (Math.random() - 0.5)); }
+    if ( !point.y || strip(point[1]) === strip(point.y) ) { point.y = point.origY + (25 * (Math.random() - 0.5)); }
+
+    point[0] = ease(point[0], point.x, 0.02);
+    point[1] = ease(point[1], point.y, 0.02);
+
+/*
+    p[i][0] += 0.75 * (Math.random() - 0.5);
+    p[i][1] += 0.75 * (Math.random() - 0.5);
+*/
+  }
+
+}
+
+
+////////////////////////////////////////
+
+
+function fillWithLines(width, height, opts, props){
+
+  opts = opts || {};
+  props = props || {};
+
+  var lines = [],
+      r = [],
+      x = 0,
+      y = opts.y || 0,
+      z = opts.z || 1,
+
+      startX = opts.x || x,
+      spacingX = opts.spacingX || 100,
+      spacingY = opts.spacingY || 150,
+
+      limitX = ( width / z ) + spacingX,
+      limitY = ( height / z ) + spacingY,
+
+      points, line;
+
+  for (; y <= limitY; y += spacingY ) {
+
+    points = [
+      [(Math.random() * -spacingX)/z, 0]
+    ];
+
+    r = [
+      [(Math.random() * -spacingX)/z, Math.random * spacingY]
+    ];
+
+    for (x = startX; x <= limitX; x += spacingX) {
+      points.push([
+        x + (spacingX/2) * (Math.random() - 0.5),// Math.random() * width * (2 - distance),
+        Math.random() * (spacingY/3), //(spacingY/2 * (Math.random() - 0.5)),//Math.random() * height * (2 - distance),
+      ]);
+
+      r.push([
+        x + (spacingX/2) * (Math.random() - 0.5),// Math.random() * width * (2 - distance),
+        Math.random() * (spacingY/3), //(spacingY/2 * (Math.random() - 0.5)),//Math.random() * height * (2 - distance),
+      ]);
+    }
+
+    points.push([limitX + (Math.random() * spacingX),0]);
+    r.push([limitX + (Math.random() * spacingX), Math.random * spacingY]);
+
+    line = canvallax.DottedLine({
+      y: y,
+      z: z,
+      points: points,
+      preRender: animatePoints
+    });
+
+    //var r = points.slice().reverse();
+
+    line.extend(props);
+
+/*
+    for (var i = 0; i < points.length; i++){
+      r[i].repeat = -1;
+      r[i].yoyo = true;
+      r[i].ease = 'Power1.easeInOut';
+      r[i].delay = i * 0.02;
+      TweenMax.to(line.points[i], 9, r[i]);
+    }
+*/
+
+    lines.push(line);
+  }
+
+  return lines;
+}
+
+
+////////////////////////////////////////
+
+
+var color = '#CCC';
+
+scene.add(
+  fillWithLines(width, height, { z: 1 },{
+      fill: color,
+      dotSize: 2,
+
+      stroke: color,
+      lineWidth: 0.75
+    })
+);
+
+var z = 0.9;
+
+scene.add(
+  fillWithLines(width, height, {
+    z: z,
+    y: 80 / z,
+    spacingY: 200 / z
+  },{
+    fill: color,
+    dotSize: 1.5,
+
+    stroke: color,
+    lineWidth: 0.4
+  })
+);
+scene.play();
+
+</script>
+</body>
+</html>

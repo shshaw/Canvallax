@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Crop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dist/canvallax.js'></script>
+<script>
+
+  var scene = canvallax.Scene(),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+  scene.addTo(canvallax.TrackScroll());
+
+  var cropCircle = canvallax.Ellipse({
+          width: width/4,
+          height: width/4,
+          fixed: true
+        }),
+      tracker = canvallax.TrackPointer({
+          offset: { x: cropCircle.width/-2, y: cropCircle.width/-2 },
+          ease: 5,
+        });
+
+  tracker.add(cropCircle);
+  scene.clip = cropCircle;
+
+
+  var bg = canvallax.Rectangle({
+          width: width,
+          height: height,
+          fill: '#000',
+          zIndex: 1
+        }),
+
+      poly = canvallax.Polygon({
+          fill: '#FFF',
+          points: 3,
+          width: 100,
+          height: 100,
+          zIndex: 20
+        });
+
+  scene.add(bg);
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function randomColor(){
+    return 'hsl(' + randomRange(0,360) + ',' + randomRange(50,100) + '%,' + randomRange(40,80) + '%)';
+  }
+
+  for ( var i = 0; i < 100; i++ ) {
+    scene.add(
+      poly.clone({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        fill: randomColor(),
+        points: 2 + Math.round( 5 * Math.random() ),
+        rotation: Math.round(360 * Math.random())
+      })
+    );
+  }
+
+
+  //scene.to(2, { opacity: 0.1 },{ yoyo: true, repeat: -1 });
+
+
+</script>
+</body>
+</html>

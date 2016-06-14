@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Animation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="demos.css">
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dist/canvallax.js'></script>
+<script>
+/* Test Code */
+
+  var scene = canvallax.Scene(),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+
+////////////////////////////////////////
+
+
+var cat = canvallax.Group({
+  x: (width / 2) - 50,
+  y: (height / 2) -50
+});
+
+cat.add(
+
+  canvallax.Ellipse({
+    x: 10,
+    y: 10,
+    width: 80,
+    height: 80,
+    fill: '#000'
+  }),
+
+  canvallax.Polygon({
+    points: 3,
+    width: 40,
+    height: 40,
+    rotation: -15,
+    fill: '#000',
+  }),
+
+  canvallax.Polygon({
+    x: 60,
+    points: 3,
+    width: 40,
+    height: 40,
+    rotation: 75,
+    fill: '#000',
+  }),
+
+  canvallax.Ellipse({
+    x: 25,
+    y: 30,
+    width: 16,
+    height: 16,
+    fill: '#FFF'
+  }),
+
+  canvallax.Ellipse({
+    x: 60,
+    y: 30,
+    width: 16,
+    height: 16,
+    fill: '#FFF'
+  }),
+
+  canvallax.Polygon({
+    x: 43,
+    y: 50,
+    points: 3,
+    width: 16,
+    height: 16,
+    rotation: -30,
+    fill: '#FAA'
+  })
+
+);
+
+var pupil = canvallax.Ellipse({
+      x: 26,
+      y: 31,
+      width: 8,
+      height: 8,
+      transformOrigin: [7,7],
+      fill: '#000'
+    }),
+    pupil2 = pupil.clone({ x: 61, y: 31 });
+
+  cat.add(pupil,pupil2);
+
+  ////////////////////////////////////////
+
+  var mouth = canvallax.Rectangle({
+    x: 38,
+    y: 73,
+    width: 24,
+    height: 4,
+    fill: '#FFF'
+  })
+
+  cat.add(mouth);
+
+  cat.transformOrigin = cat[0].getTransformPoint();
+
+  ////////////////////////////////////////
+
+  mouth.to(0.5,{
+    height: 0
+  },{
+    repeat: -1,
+    yoyo: true
+  });
+
+  pupil.to(2,{ rotation: 360 }, { repeat: -1, ease: canvallax.ease.linear });
+  pupil2.to(2,{ rotation: 360 }, { repeat: -1, ease: canvallax.ease.linear });
+
+  cat.to(1,{
+    y: cat.y - 100,
+  },{
+    repeat: -1,
+    yoyo: true,
+  });
+
+  scene.add(cat);
+
+</script>
+</body>
+</html>

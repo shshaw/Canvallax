@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Triangles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="no-bg">
+
+<script src='../dist/canvallax.js'></script>
+<script>
+/* Test Code */
+
+  var scene = canvallax.Scene({
+      tracker: canvallax.TrackScroll({
+        ease: 1,
+        scale: 1,
+        //invert: true
+      }),
+      fullscreen: true,
+      transformOrigin: 'center center',
+    }),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+  // Uses canvallax, available on Github
+  // https://github.com/shshaw/canvallax.js
+
+  var tracker = canvallax.TrackPointer({
+                offset: { x: -80, y: -75 },
+                ease: 5,
+              });
+
+  var tri = canvallax.Polygon({
+          stroke: '#dadad0',
+          lineWidth: 2,
+          points: 3,
+          x: width/3 - 100,
+          y: height/3 - 100,
+          width: 200,
+          height: 200,
+          zIndex: 20
+        });
+
+  var clone,
+      count = 6,
+      duration = 0.3,
+      angle = 125/(count);
+
+
+  function animate(el,i){
+/*
+      el.to(4,{ rotation: 360 + el.rotation }, {
+        ease: canvallax.ease.linear,
+        repeat: -1
+      });
+*/
+
+      var delay = (i+1) * duration * 2;
+
+      el.to(duration * count,{ scale: 0.2, lineWidth: 10 },{
+        ease: canvallax.ease.inOutCubic,
+        yoyo: true,
+        repeat: -1,
+        delay: delay,
+        repeatDelay: 0.2
+      });
+  }
+
+  for (var i = 0; i < count; i++) {
+    clone = tri.clone({ rotation: angle * i });
+    scene.add(clone);
+    //animate(clone,i);
+  }
+
+  scene.each(animate);
+
+
+
+</script>
+</body>
+</html>

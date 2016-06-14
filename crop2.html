@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Crop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='../dist/canvallax.js'></script>
+<script>
+  // https://snowden.persona.co/
+
+  var scene = canvallax.Scene(),
+      width = document.body.clientWidth,
+      height = document.body.clientHeight;
+
+  scene.addTo(canvallax.TrackScroll());
+
+
+  var distance = 100;
+
+  var bg = canvallax.Image({
+          src: 'https://unsplash.it/1000/1000/?image=1027', //368', //325',
+          width: width + ( distance * 2 ),
+          height: height + ( distance * 2 ),
+          zIndex: 1,
+          x: -distance,
+          y: -distance
+        });
+
+  var rectHeight = height/5,
+      rectWidth = width/4,
+
+      clipRect = canvallax.Rectangle({
+          width: rectWidth,
+          height: rectHeight,
+          fixed: true
+        });
+
+  var tracker, clone;
+
+  for (var y = 0; y < height; y += rectHeight ) {
+    for ( var x = 0; x < width; x += rectWidth ) {
+
+      clone = bg.clone({
+          clip: clipRect.clone({
+            x: x,
+            y: y
+          }),
+          zIndex: (x+y)/100
+        });
+
+      canvallax.TrackPointer({
+        range: distance + (Math.random() * distance),
+        ease: 30 + (Math.random() * 20),
+        invert: true
+      }).add(clone);
+
+      scene.add(clone);
+    }
+  }
+
+
+</script>
+</body>
+</html>

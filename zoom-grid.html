@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Zoom Grid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="bg">
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+<script src='../dist/canvallax.js'></script>
+<script>
+/* Test Code */
+
+var tracker = canvallax.TrackScroll({
+      ease: 2,
+      scale: 1,
+      //invert: true
+    }),
+    scene = canvallax.Scene({
+      offset: tracker,
+      fullscreen: true,
+      transformOrigin: 'center center',
+      playing: false
+    }),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+// Uses canvallax, available on Github
+// https://github.com/shshaw/canvallax.js
+
+console.clear();
+
+var width = document.body.clientWidth,
+    height = document.body.clientHeight,
+
+    allTransforms = ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom"],
+    count = allTransforms.length,
+
+    color = '#FFF';
+
+
+
+////////////////////////////////////////
+
+
+function randomRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+var shapes = [],
+    size = width / 20,
+    x = 0,
+    y = 0;
+
+for (y = 0; y < height; y += size* 2){
+  for (x = 0; x < width; x += size * 2) {
+    shapes.push(
+      canvallax.Rectangle({
+        x: x,// Math.random() * width * (2 - distance),
+        y: y,//Math.random() * height * (2 - distance),
+        width: size,
+        height: size,
+        fill: color,
+        opacity: 0.9
+      })
+    );
+  }
+}
+
+for (y = 0; y < height; y += size* 2){
+  for (x = 0; x < width; x += size * 2) {
+    shapes.push(
+      canvallax.Rectangle({
+        x: x,// Math.random() * width * (2 - distance),
+        y: y,//Math.random() * height * (2 - distance),
+        z: 0.8,
+        width: size,
+        height: size,
+        fill: '#000',
+        opacity: 0.9
+      })
+    );
+  }
+}
+
+new TimelineMax({ repeat: -1 })
+.staggerTo(shapes,1.5,{
+  //z: -1,
+  rotation: 360,
+  ease: 'Cubic.easeInOut',
+},0.005)
+
+
+//scene.transformOrigin = 'center top';
+ TweenMax.to(scene,2,{
+   z: 0.5,
+   //rotation: 360,
+   //ease: SteppedEase.config(5),
+   onUpdate: scene.render,
+   yoyo: true,
+   repeat: -1
+ });
+
+scene.add(shapes);
+
+</script>
+</body>
+</html>

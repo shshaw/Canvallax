@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Clock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body>
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+<script src='../dist/canvallax.js'></script>
+<script>
+/* Test Code */
+
+var scene = canvallax.Scene({
+      tracker: canvallax.TrackScroll(),
+      fullscreen: true,
+      transformOrigin: 'center center',
+    }),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight;
+
+canvallax.clockNumbers = canvallax.createElement({
+
+  draw: function(ctx,coords) {
+    var ang;
+    var num;
+    var radius = (this.width/4)+(this.height/4);
+
+    var spacing = radius*0.85;
+
+    ctx.font = radius*0.15 + "px arial";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+
+    ctx.translate(coords[0] + radius, coords[1] + radius);
+    for(num= 1; num < 13; num++){
+        ang = num * Math.PI / 6;
+        ctx.rotate(ang);
+        ctx.translate(0, -spacing);
+        ctx.rotate(-ang);
+        ctx.fillText(num.toString(), 0, 0);
+        ctx.rotate(ang);
+        ctx.translate(0, spacing);
+        ctx.rotate(-ang);
+    }
+  }
+})
+
+
+var clock = canvallax.Group({
+              x: (width / 2) - 50,
+              y: (height / 2) - 50,
+              transformOrigin: [50, 50],
+              zIndex: 5,
+            });
+
+var hours = canvallax.Rectangle({
+      y: 20,
+      x: 48,
+      width: 4,
+      height: 30,
+      fill: '#000',
+      transformOrigin: [2,30]
+    }),
+    minutes = canvallax.Rectangle({
+      y: 10,
+      x: 48.5,
+      width: 3,
+      height: 40,
+      fill: '#000',
+      transformOrigin: [1.5,40]
+    }),
+    seconds = canvallax.Rectangle({
+      y: 5,
+      x: 49,
+      width: 2,
+      height: 45,
+      fill: '#F00',
+      transformOrigin: [1,45]
+    });
+
+clock.add(
+
+  canvallax.Ellipse({
+    width: 100,
+    height: 100,
+    fill: '#FFF',
+    stroke: '#000',
+    lineWidth: 5
+  }),
+
+  canvallax.clockNumbers({
+    fill: '#000',
+    x: 2.75,
+    y: 2.75,
+    width: 96,
+    height: 96,
+  }),
+
+  hours,
+  minutes,
+  seconds,
+
+  canvallax.Ellipse({
+    x: 47,
+    y: 47,
+    width: 6,
+    height: 6,
+    fill: '#000'
+  })
+
+);
+
+function updateClock(){
+  var d = new Date();
+  seconds.rotation = (d.getSeconds() / 59) * 360;
+  minutes.rotation = (d.getMinutes() / 59) * 360;
+  hours.rotation = ((d.getHours() % 12) / 11) * 360;
+}
+updateClock();
+
+clock.preRender = updateClock;
+
+clock.to(2,{ scale: 2 },{ ease: canvallax.ease.inOutCubic, repeat: -1, yoyo: true })
+
+//seconds.to(60,{ rotation: 360 },{ ease: canvallax.ease.linear, repeat: -1 });
+//minutes.to(3600,{ rotation: 360 },{ ease: canvallax.ease.linear, repeat: -1 });
+//hours.to(86400,{ rotation: 360 },{ ease: canvallax.ease.linear, repeat: -1 });
+
+scene.add(clock);
+
+</script>
+</body>
+</html>
