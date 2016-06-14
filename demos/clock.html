@@ -143,7 +143,7 @@ scene.add(clock);
 ////////////////////////////////////////
 
 
-var clock2 = clock.clone({ y: clock.y + 250, preRender: null });
+var clock2 = clock.clone({ y: clock.y + 250, preRender: null }, true);
 
 var secondsClone = clock2[4],
     minutesClone = clock2[3],

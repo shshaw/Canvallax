@@ -56,6 +56,7 @@
    *
    * @param {!object} target - Original to clone. If not included, will default to `this`
    * @param {!object} properties - Properties to include on the clone
+   * @param {!boolean} cloneChildren - If the original has children, clone them.
    *
    * @returns {object} - Cloned object containing extra properties from the provided object.
    */

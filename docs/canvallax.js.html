@@ -82,7 +82,7 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0 ( built 2016-05-26 ) https://github.com/shshaw/Canvallax.js @preserve */
+            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0 ( built 2016-06-14 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -166,16 +166,35 @@
    *
    * @param {!object} target - Original to clone. If not included, will default to `this`
    * @param {!object} properties - Properties to include on the clone
+   * @param {!boolean} cloneChildren - If the original has children, clone them.
    *
    * @returns {object} - Cloned object containing extra properties from the provided object.
    */
 
-  function clone(target,properties){
-    if ( arguments.length &lt;= 1 ) {
+  function clone(target, properties, cloneChildren) {
+
+    if ( arguments.length &lt;= 1 || typeof properties === "boolean" ) {
+      cloneChildren = properties;
       properties = target;
       target = this;
     }
-    var props = extend({}, target, properties);
+
+    var props = extend({}, target, properties),
+        len = props.length,
+        i = 0;
+
+    /** Clone all children */
+    if ( len &amp;&amp; cloneChildren ) {
+      props.children = [];
+      props.length = 0;
+      for ( ; i &lt; len; i++ ) {
+        if ( props[i] &amp;&amp; props[i].clone ) {
+          props.children[i] = props[i].clone();
+          delete props[i];
+        }
+      }
+    }
+
     return new target.constructor(props);
   }
 
@@ -313,14 +332,23 @@ var arrayLike = {
 
       /**
        * Remove an element from collection
-       * @param {object} element - Element to be removed
+       * @param {...object|object[]} element - Element or array of elements to be removed
        * @returns {this}
        * @memberof! arrayLike
        */
-      remove: function(element){
-        var index = this.indexOf(element);
-        if ( index > -1 ) { this.splice(index, 1); }
-        return this;
+      remove: function(el){
+
+        var me = this,
+            elements = ( el &amp;&amp; el.length > -1 &amp;&amp; Array.isArray(el) ? el : arguments ),
+            len = elements.length,
+            index;
+
+        while (len--) {
+          index = me.indexOf(elements[len]);
+          if ( index > -1 ) { me.splice(index, 1); }
+        }
+
+        return me;
       }
     };
 
@@ -1144,7 +1172,9 @@ canvallax.Scene = createClass(canvallax.Group,animateCore,
      * @memberof! canvallax.Scene
      */
     clear: function(ctx){
-      ctx.clearRect(0, 0, this.width, this.height);
+      var fill = this.fill;
+      if ( fill ) { ctx.fillStyle = fill; }
+      ctx[ this.fill ? 'fillRect' : 'clearRect' ](0, 0, this.width, this.height);
       return this;
     },
 
@@ -1432,6 +1462,10 @@ canvallax.Image = createElement(
       img.height = ( img.height ? img.height : img.image.height );
     },
 
+    onerror: function(){
+      this.removeAttribute('src');
+    },
+
     init: function(options){
       var img = this.image;
 
@@ -1445,6 +1479,7 @@ canvallax.Image = createElement(
       // Ensure we get width/height of image for best draw performance
       this.onload(this);
       img.onload = this.onload.bind(null,this);
+      img.onerror = this.onerror;
 
       img.src = img.src || options.src || options;
     },
@@ -1631,7 +1666,11 @@ canvallax.TrackScroll = createTracker(
     },
 
     _render: function(){
-      return { x: scrollX, y: scrollY };
+      var e = this.element;
+      return {
+        x: e ? e.scrollLeft : scrollX,
+        y: e ? e.scrollTop : scrollY
+      };
     }
 
   });

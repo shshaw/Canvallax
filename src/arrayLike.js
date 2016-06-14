@@ -56,7 +56,7 @@ var arrayLike = {
 
       /**
        * Remove an element from collection
-       * @param {object} element - Element to be removed
+       * @param {...object|object[]} element - Element or array of elements to be removed
        * @returns {this}
        * @memberof! arrayLike
        */

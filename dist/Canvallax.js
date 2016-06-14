@@ -82,13 +82,15 @@
    *
    * @param {!object} target - Original to clone. If not included, will default to `this`
    * @param {!object} properties - Properties to include on the clone
+   * @param {!boolean} cloneChildren - If the original has children, clone them.
    *
    * @returns {object} - Cloned object containing extra properties from the provided object.
    */
 
-  function clone(target,properties){
+  function clone(target, properties, cloneChildren) {
 
-    if ( arguments.length <= 1 ) {
+    if ( arguments.length <= 1 || typeof properties === "boolean" ) {
+      cloneChildren = properties;
       properties = target;
       target = this;
     }
@@ -98,7 +100,7 @@
         i = 0;
 
     /** Clone all children */
-    if ( len ) {
+    if ( len && cloneChildren ) {
       props.children = [];
       props.length = 0;
       for ( ; i < len; i++ ) {
@@ -246,7 +248,7 @@ var arrayLike = {
 
       /**
        * Remove an element from collection
-       * @param {object} element - Element to be removed
+       * @param {...object|object[]} element - Element or array of elements to be removed
        * @returns {this}
        * @memberof! arrayLike
        */
