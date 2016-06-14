@@ -9,9 +9,11 @@
   /* Custom Styles for test */
   html, body { margin: 0; padding: 0; }
   html { height: 100%; }
-  body { min-height: 100%; background: #EEE; }
+  body { min-height: 100%; background: #EEE; font: 14px/1.4 sans-serif; }
   nav { width: 20%; padding: 1em; }
-  nav a { display: block; }
+  nav a,
+  nav strong { display: block; }
+  nav strong { margin-top: 1em; }
 
   #demoFrame {
     position: absolute;
@@ -28,33 +30,39 @@
 
   <nav>
 
+    <a href="starfield.html" target="demoFrame">Starfield</a>
+    <a href="transform-grid.html" target="demoFrame">Transform Grid</a>
+    <a href="zoom-grid.html" target="demoFrame">Zoom Grid</a>
+
+    <strong>Elements &amp; Features</strong>
+    <a href="crop.html" target="demoFrame">Crop</a>
+    <a href="image-grid.html" target="demoFrame">Image Grid</a>
+    <a href="image-slice.html" target="demoFrame">Image Slice</a>
+    <a href="group.html" target="demoFrame">Group</a>
+    <a href="polygons.html" target="demoFrame">Polygons</a>
+    <a href="transform-origin.html" target="demoFrame">Transform Origin</a>
+
+    <strong>Plugins &amp; Custom Elements</strong>
+    <a href="lines.html" target="demoFrame">Lines</a>
+    <a href="patterns.html" target="demoFrame">Patterns</a>
+    <a href="roundedRectangles.html" target="demoFrame">Rounded Rectangles</a>
+
+    <strong>Animation</strong>
     <a href="animate.html" target="demoFrame">Animate</a>
     <a href="clock.html" target="demoFrame">Clock</a>
-    <a href="crop.html" target="demoFrame">Crop</a>
-    <a href="dots.html" target="demoFrame">Dots</a>
-    <a href="group.html" target="demoFrame">Group</a>
-    <a href="lines.html" target="demoFrame">Lines</a>
-    <a href="lines2.html" target="demoFrame">Lines 2</a>
-    <a href="parallax.html" target="demoFrame">Parallax</a>
-    <a href="patterns.html" target="demoFrame">Patterns</a>
-    <a href="polygons.html" target="demoFrame">Polygons</a>
-    <a href="rect.html" target="demoFrame">Rect</a>
-    <a href="screensaver.html" target="demoFrame">Screensaver</a>
     <a href="sphere.html" target="demoFrame">Sphere</a>
-    <a href="starfield.html" target="demoFrame">Starfield</a>
-    <a href="tracker.html" target="demoFrame">Tracker</a>
-    <a href="trackElement.html" target="demoFrame">trackElement</a>
-    <a href="transform-grid.html" target="demoFrame">Transform Grid</a>
-    <a href="transform-origin.html" target="demoFrame">Transform Origin</a>
-    <a href="transform.html" target="demoFrame">Transform</a>
+    <a href="stripes.html" target="demoFrame">Stripes</a>
     <a href="triangles.html" target="demoFrame">Triangles</a>
-    <a href="zfield.html" target="demoFrame">Z-Field</a>
-    <a href="zoom-grid.html" target="demoFrame">Zoom Grid</a>
+
+    <strong>Trackers</strong>
+    <a href="trackPointer.html" target="demoFrame">trackerPointer</a>
+    <a href="trackElement.html" target="demoFrame">trackElement</a>
 
   </nav>
 
-  <iframe id="demoFrame" src="animate.html" name="demoFrame" frameborder="0"></iframe>
+  <iframe id="demoFrame" src="" name="demoFrame" frameborder="0"></iframe>
 
+<!--
   <script>
     var frame = document.getElementById('demoFrame');
     document.body.addEventListener('click',function(){
@@ -62,5 +70,6 @@
       //frame.src += '';
     });
   </script>
+-->
 </body>
 </html>

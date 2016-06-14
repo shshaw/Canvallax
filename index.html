@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>canvallax Demo: Parallax Sky Background</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+
+  html, body {
+  	margin:  0; padding: 0;
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+  }
+
+  .spacer {
+    width: 200vw;
+    height: 200vh;
+    margin: auto;
+  }
+
+  body {
+    font: 16px/1.2 sans-serif;
+    color: #FFF;
+    background: #07588A;
+  }
+
+  main {
+    position: fixed;
+    top: 50%; left: 0; right: 0;
+    transform: translateY(-50%);
+    margin: auto;
+    visibility: hidden;
+    pointer-events: none;
+    text-align: center;
+    max-width: 20em;
+  }
+  main > * { visibility: visible; }
+
+
+  main h1 { margin: 0; }
+  main h2 { margin: 0 0 1em; font-size: 1em; font-weight: normal; }
+  main a {
+    pointer-events: auto;
+    display: inline-block;
+    padding: 0.6em 1em 0.5em;
+    background: #FFF;
+    color: #07588A;
+    text-decoration: none;
+    border-radius: 0.25em;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="spacer"></div>
+</div>
+
+<main>
+  <h1>Canvallax.js</h1>
+  <h2><em>Easy parallax effects on &lt;canvas&gt;</em></h2>
+
+  <a href="./docs/">Documentation</a> <a href="./demos/">Demos</a> <a href="https://github.com/shshaw/Canvallax/">GitHub</a>
+
+</main>
+
+<script src='dist/canvallax.min.js'></script>
+<script>
+
+var scrollElement = document.querySelector('.container'),
+    sizer = document.querySelector('.spacer') || document.body;
+
+/*
+scrollElement.addEventListener("scroll",function(){
+  console.log('scroll', this.scrollTop);
+});
+*/
+
+var scene = canvallax.Scene({
+      parentElement: scrollElement
+    }),
+    tracker = canvallax.TrackScroll({
+      element: scrollElement,
+      ease: 10
+    }).add(scene);
+
+var origWidth = width = sizer.clientWidth; //document.body.clientWidth,
+    origHeight = height = sizer.clientHeight;
+
+var bgGradient = canvallax.Rectangle({
+        width: width,
+        height: height,
+        zIndex: 1,
+        fill: (function(){
+          var canvas = document.createElement('canvas'),
+              ctx = canvas.getContext('2d'),
+              gradient = ctx.createLinearGradient(0,0,0,height);
+          gradient.addColorStop(0,'#07588A');
+          gradient.addColorStop(1,'#E1F6F4');
+          return gradient;
+        })()
+      });
+
+scene.add(bgGradient);
+
+function randomRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+var stars = [],
+    number = 200,
+    i = 0,
+    distance;
+
+for (; i < number; i++) {
+  distance = randomRange(0.4,0.8);
+  stars.push(
+    canvallax.Ellipse({
+      x: randomRange(width/-2, width * 2) / distance,
+      y: randomRange(height/-2, height * 2) / distance,
+      z: distance,
+      width: 6 / distance,
+      height: 6 / distance,
+      fill: '#FFF',
+    })
+  );
+}
+
+scene.add(stars);
+
+window.addEventListener('resize', function(){
+
+  height = document.body.clientHeight;
+
+  var i = scene.length,
+      max = document.body.clientWidth,
+      heightScale = height / origHeight;
+
+  console.log(height,origHeight,heightScale);
+
+  while (i--){
+    scene[i].maxX = max; //document.body.clientWidth;
+    scene[i].origY = scene.elements[i].origY || scene.elements[i].y;
+    scene[i].y = scene.elements[i].origY * heightScale;
+  }
+
+});
+
+////////////////////////////////////////
+
+function weightedRandom(max, bellFactor) {
+  var num = 0;
+  for (var i = 0; i < bellFactor; i++) {
+      num += Math.random() * (max/bellFactor);
+  }
+  return num;
+}
+
+var CLOUD_COUNT = 30,
+    CLOUD_WIDTH = 510,
+    CLOUD_HEIGHT = 260;
+
+CLOUD_COUNT = Math.floor(( width * height ) / (CLOUD_WIDTH * CLOUD_HEIGHT) / 1.5) ;
+
+function randomizedCloud(image){
+
+  var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d'),
+      width = canvas.width = randomRange(300,800), //CLOUD_WIDTH,
+      height = canvas.height = randomRange(150,250),//CLOUD_HEIGHT,
+      w = image.width,
+      h = image.height,
+      halfw = w / 2,
+      halfh = h / 2,
+      i = Math.round(( width / w ) + ( height / h )) * 2,//  Math.ceil(randomRange(15,40)), //60
+      flip,
+      randScale,
+      randTex,
+      maxScale = 2.5,
+      fullPi = Math.PI / 2;
+
+  while (i--){
+    randScale = randomRange(0.4,maxScale);
+    ctx.globalAlpha = randomRange(0.1,0.5);
+
+    ctx.translate( weightedRandom( width - (w * randScale), 5 ), weightedRandom( height- (h * randScale), 5) );
+    ctx.scale( randScale, randomRange(randScale - 0.2,randScale));
+    ctx.translate(halfw,halfh);
+    ctx.rotate(randomRange(0,fullPi));
+    ctx.drawImage(image, -halfw, -halfh);//, w, h, 0, 0, w, h);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
+
+  return canvas;//.toDataURL();
+}
+
+var cloudImg = new Image();
+cloudImg.addEventListener('load',function(){
+
+  var i = CLOUD_COUNT, //Math.ceil(CLOUD_COUNT * 0.5),
+      el, rand, pos, tex;
+
+  while(i--) {
+    rand = randomRange(0.7, 1);
+    pos = [ randomRange(-100, width * 1.2), randomRange(0, height) ];//weightedRandom( width, 2), weightedRandom(height, 2) ];
+    tex = randomizedCloud(cloudImg);
+
+    cloud = canvallax.Image({
+      image: tex,
+      width: tex.width,
+      height: tex.height,
+      zIndex: rand * 13,
+      x: pos[0],
+      y: pos[1],
+      stroke: '#F00',
+      opacity: rand * randomRange(0.7,0.9),
+      z: rand,
+
+      maxX: width,
+      speed: rand * randomRange(0.2,0.4),
+      preRender: function(){
+        this.x = (this.x * this.z) > -this.width ? this.x - this.speed : (this.maxX * this.z) + (this.width * 2) ;
+      }
+
+    });
+
+    scene.add(cloud);
+  }
+
+});
+
+cloudImg.src = 'img/cloud.png';
+</script>
+</body>
+</html>

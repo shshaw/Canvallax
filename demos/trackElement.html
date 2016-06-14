@@ -48,11 +48,9 @@
   </section>
 
 </div>
-<script src='../dist/canvallax.js'></script>
-<script src='../src/Trackers/canvallax.TrackElement.js'></script>
+<script src='../dist/canvallax.min.js'></script>
 <script>
 
-var SCROLL = true;
 
 var scene = canvallax.Scene({
         fullscreen: true,
@@ -60,8 +58,6 @@ var scene = canvallax.Scene({
       }),
     width = document.body.clientWidth,
     height = document.body.clientHeight;
-
-SCROLL && scene.addTo(canvallax.TrackScroll());
 
 
 ////////////////////////////////////////

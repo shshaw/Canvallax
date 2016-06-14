@@ -13,7 +13,8 @@ var pkg = require('./package.json'),
     dest = {
       dev: './dev',
       dist: './dist',
-      docs: './docs'
+      docs: './docs',
+      demos: './demos'
     };
 
 ////////////////////////////////////////
@@ -97,8 +98,16 @@ gulp.task('docs', function (cb) {
 
 var ghPages = require('gulp-gh-pages');
 gulp.task('gh-pages', function() {
-  return gulp.src(dest.docs + '/**/*')
-    .pipe(ghPages());
+  return gulp.src([
+      './**/*',
+      '!gulpfile.js',
+      '!node_modules/**/*',
+      '!dev/**/*',
+      '!tmp/**/*',
+      '!src/**/*',
+      '!.git/**/*'
+    ])
+    .pipe(ghPages({ force: true }));
 });
 
 ////////////////////////////////////////
@@ -106,7 +115,12 @@ gulp.task('gh-pages', function() {
 var runSequence = require('run-sequence');
 
 gulp.task('default', function(){
+  runSequence('lint','build');
+});
+
+gulp.task('publish',function(){
   runSequence('lint','build','docs', 'gh-pages');
+
 })
 
 gulp.task('watch', function(){

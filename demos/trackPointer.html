@@ -14,25 +14,32 @@
 </head>
 <body>
 
-<script src='../dist/canvallax.js'></script>
+<script src='../dist/canvallax.min.js'></script>
 <script>
 /* Test Code */
 
-  var scene = canvallax.Scene(),
-      width = document.body.clientWidth,
-      height = document.body.clientHeight;
+  var scene = canvallax.Scene();
 
-  var circle = canvallax.Ellipse({ fill: '#000', width: 30, height: 30 }),
-      count = 10,
+  var pointer = canvallax.Polygon({
+        x: -10,
+        y: -10,
+        points: 3,
+        width: 50,
+        height: 50,
+        rotation: -125,
+        fill: '#000',
+        fixed: true
+      }),
+      count = 6,
       clone;
 
   for (var i = 0; i < count; i++) {
 
-    clone = circle.clone({
+    clone = pointer.clone({
       opacity: (count - i) / count,
     });
 
-    canvallax.TrackPointer({ ease: (i*i) + 1 }).add(clone).play();
+    canvallax.TrackPointer({ ease: (i*i) + 1 }).add(clone);
     scene.add(clone);
   }
 
