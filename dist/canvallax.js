@@ -1,4 +1,4 @@
-/*! canvallax v2.0.0 ( built 2016-06-08 ) https://github.com/shshaw/Canvallax.js @preserve */
+/*! canvallax v2.0.0 ( built 2016-06-14 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
