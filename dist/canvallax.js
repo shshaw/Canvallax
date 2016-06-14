@@ -87,11 +87,28 @@
    */
 
   function clone(target,properties){
+
     if ( arguments.length <= 1 ) {
       properties = target;
       target = this;
     }
-    var props = extend({}, target, properties);
+
+    var props = extend({}, target, properties),
+        len = props.length,
+        i = 0;
+
+    /** Clone all children */
+    if ( len ) {
+      props.children = [];
+      props.length = 0;
+      for ( ; i < len; i++ ) {
+        if ( props[i] && props[i].clone ) {
+          props.children[i] = props[i].clone();
+          delete props[i];
+        }
+      }
+    }
+
     return new target.constructor(props);
   }
 
@@ -233,10 +250,19 @@ var arrayLike = {
        * @returns {this}
        * @memberof! arrayLike
        */
-      remove: function(element){
-        var index = this.indexOf(element);
-        if ( index > -1 ) { this.splice(index, 1); }
-        return this;
+      remove: function(el){
+
+        var me = this,
+            elements = ( el && el.length > -1 && Array.isArray(el) ? el : arguments ),
+            len = elements.length,
+            index;
+
+        while (len--) {
+          index = me.indexOf(elements[len]);
+          if ( index > -1 ) { me.splice(index, 1); }
+        }
+
+        return me;
       }
     };
 

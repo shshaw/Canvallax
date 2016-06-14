@@ -15,7 +15,6 @@
 <body class="stretch">
 
 <script src='../dist/canvallax.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js'></script>
 <script>
 /* Test Code */
 
@@ -30,6 +29,7 @@ var scene = canvallax.Scene({
     height = document.body.clientHeight;
 
 ////////////////////////////////////////
+// Custom Canvallax Element.
 
 var twoPI = Math.PI*2;
 
@@ -42,12 +42,10 @@ canvallax.DottedLine = canvallax.createElement({
         len = p.length,
         i = 0;
 
-
     for (; i < len; i++) {
       if ( p[i] === 'close' ) { ctx.closePath(); }
       else {
         ctx[( i === 0 ? 'moveTo' : 'lineTo' )](coords[0] + p[i][0], coords[1] + p[i][1]);
-        //ctx.arc(coords[0] + p[i][0], coords[1] + p[i][1], this.dotSize, 0, twoPI);
       }
     }
     ctx.strokeStyle = this.stroke;
@@ -94,11 +92,6 @@ function animatePoints(){
 
     point[0] = ease(point[0], point.x, 0.02);
     point[1] = ease(point[1], point.y, 0.02);
-
-/*
-    p[i][0] += 0.75 * (Math.random() - 0.5);
-    p[i][1] += 0.75 * (Math.random() - 0.5);
-*/
   }
 
 }
@@ -159,19 +152,7 @@ function fillWithLines(width, height, opts, props){
       preRender: animatePoints
     });
 
-    //var r = points.slice().reverse();
-
     line.extend(props);
-
-/*
-    for (var i = 0; i < points.length; i++){
-      r[i].repeat = -1;
-      r[i].yoyo = true;
-      r[i].ease = 'Power1.easeInOut';
-      r[i].delay = i * 0.02;
-      TweenMax.to(line.points[i], 9, r[i]);
-    }
-*/
 
     lines.push(line);
   }

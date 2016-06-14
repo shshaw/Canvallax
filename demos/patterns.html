@@ -65,9 +65,7 @@ scene.add(rect);
 
 ////////////////////////////////////////
 
-var pattern2 = pattern.clone({
-            fixed: true
-          });
+var pattern2 = pattern.clone({ fixed: true });
 pattern2.render();
 pattern2.play();
 
@@ -97,15 +95,9 @@ pattern3.play();
 
 scene.add(rect3);
 
-
 rect.to(6,{ x: width-210 },{ yoyo: true, repeat: -1 });
-rect2.to(6,{ x: width-210 });//,{ yoyo: true, repeat: -1 });
+rect2.to(6,{ x: width-210 },{ yoyo: true, repeat: -1 });
 rect3.to(6,{ x: width-210 },{ yoyo: true, repeat: -1 });
-
-//var mtracker = canvallax.TrackPointer().add(rect).play();
-
-//var lastRender = Date.now();
-//scene.postRender = function(){ console.log('render'); };//(Date.now() - lastRender)); lastRender = Date.now() }
 
 
 </script>

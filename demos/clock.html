@@ -14,8 +14,7 @@
 </head>
 <body>
 
-<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
-<script src='../dist/canvallax.min.js'></script>
+<script src='../dist/canvallax.js'></script>
 <script>
 /* Test Code */
 
@@ -52,14 +51,16 @@ canvallax.clockNumbers = canvallax.createElement({
         ctx.rotate(-ang);
     }
   }
-})
+
+});
 
 
 var clock = canvallax.Group({
               x: (width / 2) - 50,
-              y: (height / 2) - 50,
+              y: (height / 2) - 150,
               transformOrigin: [50, 50],
               zIndex: 5,
+              scale: 2
             });
 
 var hours = canvallax.Rectangle({
@@ -70,6 +71,7 @@ var hours = canvallax.Rectangle({
       fill: '#000',
       transformOrigin: [2,30]
     }),
+
     minutes = canvallax.Rectangle({
       y: 10,
       x: 48.5,
@@ -78,6 +80,7 @@ var hours = canvallax.Rectangle({
       fill: '#000',
       transformOrigin: [1.5,40]
     }),
+
     seconds = canvallax.Rectangle({
       y: 5,
       x: 49,
@@ -89,6 +92,7 @@ var hours = canvallax.Rectangle({
 
 clock.add(
 
+  // Clock frame
   canvallax.Ellipse({
     width: 100,
     height: 100,
@@ -97,6 +101,7 @@ clock.add(
     lineWidth: 5
   }),
 
+  // Numbers
   canvallax.clockNumbers({
     fill: '#000',
     x: 2.75,
@@ -109,6 +114,7 @@ clock.add(
   minutes,
   seconds,
 
+  // Center dot
   canvallax.Ellipse({
     x: 47,
     y: 47,
@@ -119,6 +125,8 @@ clock.add(
 
 );
 
+
+//clock.to(2,{ scale: 2 },{ ease: canvallax.ease.inOutCubic, repeat: -1, yoyo: true })
 function updateClock(){
   var d = new Date();
   seconds.rotation = (d.getSeconds() / 59) * 360;
@@ -129,13 +137,24 @@ updateClock();
 
 clock.preRender = updateClock;
 
-clock.to(2,{ scale: 2 },{ ease: canvallax.ease.inOutCubic, repeat: -1, yoyo: true })
-
-//seconds.to(60,{ rotation: 360 },{ ease: canvallax.ease.linear, repeat: -1 });
-//minutes.to(3600,{ rotation: 360 },{ ease: canvallax.ease.linear, repeat: -1 });
-//hours.to(86400,{ rotation: 360 },{ ease: canvallax.ease.linear, repeat: -1 });
-
 scene.add(clock);
+
+
+////////////////////////////////////////
+
+
+var clock2 = clock.clone({ y: clock.y + 250, preRender: null });
+
+var secondsClone = clock2[4],
+    minutesClone = clock2[3],
+    hoursClone = clock2[2];
+
+secondsClone.to(60,{ rotation: secondsClone.rotation + 360 },{ ease: canvallax.ease.linear, repeat: -1 });
+minutesClone.to(3600,{ rotation: minutesClone.rotation + 360 },{ ease: canvallax.ease.linear, repeat: -1 });
+hoursClone.to(86400,{ rotation: hoursClone.rotation + 360 },{ ease: canvallax.ease.linear, repeat: -1 });
+
+scene.add(clock2);
+
 
 </script>
 </body>

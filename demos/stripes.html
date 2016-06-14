@@ -68,21 +68,6 @@
   var mainColor = '#dadad0',
       curColor = mainColor;
 
-  function invert(){
-    return;
-
-
-    document.body.style.backgroundColor = curColor;
-
-    curColor= ( curColor == mainColor ? '#000' : mainColor );
-
-
-    scene.each(function(el){
-      el.fill = curColor;
-    });
-  }
-  invert();
-
   TweenLite.defaultEase = Power2.easeIn;
 
   var tl = new TimelineMax({ repeat: -1 }),
@@ -93,7 +78,6 @@
 
   label = 'start';
   tl.addLabel(label);
-  tl.call(invert);
 
   tl.staggerTo(horiz,speed,{
     width: size,
@@ -107,7 +91,6 @@
   label = 'second';
 
   tl.addLabel(label);
-  tl.call(invert);
 
   tl.staggerTo(vert,speed,{
     height: size,
@@ -121,7 +104,6 @@
 
   label = 'third';
   tl.addLabel(label);
-  tl.call(invert);
 
   tl.staggerTo(vert,speed,{
     height: full,
@@ -138,7 +120,6 @@
 
   label = 'fourth';
   tl.addLabel(label);
-  tl.call(invert);
 
   tl.staggerTo(vert,speed,{
     height: size,
@@ -154,6 +135,19 @@
   tl.timeScale(1.2);
   tl.play();
 
+
+  function invert(){
+
+    document.body.style.backgroundColor = curColor;
+
+    curColor= ( curColor == mainColor ? '#000' : mainColor );
+
+    scene.each(function(el){
+      el.fill = curColor;
+    });
+
+  }
+  invert();
 
 
 

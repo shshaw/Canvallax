@@ -14,7 +14,6 @@
 </head>
 <body class="bg stretch">
 
-<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
 <script src='../dist/canvallax.min.js'></script>
 <script>
 
@@ -40,8 +39,8 @@
       canvallax.Ellipse({
         width: 40,
         height: 40,
-        x: (Math.random() - 0.25) * (width / distance),// Math.random() * width * (2 - distance),
-        y: (Math.random() - 0.25) * (height / distance),//Math.random() * height * (2 - distance),
+        x: (Math.random() - 0.25) * ((width * 1.25) / distance),// Math.random() * width * (2 - distance),
+        y: (Math.random() - 0.25) * ((height * 1.25) / distance),//Math.random() * height * (2 - distance),
         z: distance,
         fill: '#FFF'
       })
