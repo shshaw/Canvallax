@@ -18,9 +18,6 @@ var _transformAttr = ['width','height'];
  * @property {core._render} _render - Object specific callback to render to the context.
  * @property {core.postRender} postRender - Callback after the object is rendered.
  *
- * @todo Simplify `z` to a scale-like value, positive integer with 0 being the minimum.
- * @todo Make `z` relative to parent's `z` to allow for better camera movements into and out of a scene.
- * @todo Remove `parent` property from elements, make it relative to what is calling the render.
  */
 
 var core = {
@@ -91,20 +88,44 @@ var core = {
 
       parent = parent || me.parent;
 
-      o = ctx.globalAlpha * me.opacity;
-      if ( o <= 0 ) { return me; }
-
       ctx.save();
-      ctx.globalAlpha = o;
-      if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
-      if ( me.clearFrames && me.clear ) { me.clear(ctx,parent); }
-      if ( me.clip ) { me._clip(ctx,parent); }
-      if ( me.preRender ) { me.preRender(ctx,parent); }
-      if ( me._render ) { me._render(ctx,parent); }
-      for ( ; i < len; i++ ){ me[i].render(ctx,me); }
-      if ( me.postRender ) { me.postRender(ctx,parent); }
-      ctx.restore();
 
+      // Clear previous frame
+      if ( me.clearFrames && me.clear ) { me.clear(ctx,parent); }
+
+      // Opacity based on parent's opacity.
+      o = ctx.globalAlpha * me.opacity;
+      if ( o > 0 ) {
+
+        ctx.globalAlpha = o;
+
+        if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
+
+        // Apply clipping mask
+        if ( me.clip ) { me._clip(ctx,parent); }
+
+        // 'z' scaling if it has a parent and isn't fixed
+        if ( me.fixed || ( parent && parent.transform(ctx, me.z) ) ) {
+
+          // Apply this element's transforms. If scale is 0, the element won't continue to render.
+          if ( me.transform(ctx) ) {
+
+            // Pre-render callback
+            if ( me.preRender ) { me.preRender(ctx,parent); }
+
+            // Render this
+            if ( me._render ) { me._render(ctx,parent); }
+
+            // Render children
+            for ( ; i < len; i++ ){ me[i].render(ctx,me); }
+
+            // Post-render callback
+            if ( me.postRender ) { me.postRender(ctx,parent); }
+          }
+
+        }
+      }
+      ctx.restore();
       return me;
     },
 
@@ -226,10 +247,12 @@ var core = {
      * @memberof! core
      */
     transform: function(ctx, relativeZ) {
-      var scale = this.scale * ( relativeZ !== undefined ? relativeZ : 1 ) * this.z,
+      var scale = ( relativeZ !== undefined ? relativeZ : this.scale ),
           coords, transformPoint;
 
-      if ( scale <= 0 ) { return false; }
+      if ( scale <= 0 ) {
+        return false;
+      }
 
       if ( scale !== 1 || (this.rotation % 360) !== 0 ) {
         coords = this.getCoords(relativeZ);
