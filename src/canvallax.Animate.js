@@ -49,7 +49,7 @@ canvallax.ease = {
  *
  * @param {number} options.repeat=0 - Number of times to repeat the animation. -1 is infinite
  * @param {boolean} options.yoyo - Reverse animation on repeat
- * @param {function} options.ease=canvallax.ease.inOutQuad - Easing to use from {@link canvallax.ease}
+ * @param {function|string} options.ease=canvallax.ease.inOutQuad - Easing function to use. Many functions are built in to {@link canvallax.ease}, and you can reference them directly or use a string of the property instead of the function itself like `'inOutCubic'`
  * @param {boolean} options.reversed - Play animation backwards
  * @param {canvallax.Animate.onStart} options.onStart - Callback for when animation starts
  * @param {canvallax.Animate.onUpdate} options.onUpdate - Callback for every `requestAnimationFrame` render
@@ -81,6 +81,7 @@ function Animate(target,duration,to,opts){
 
   me.duration(duration);
   //me.render = me.render.bind(me);
+  me.ease = canvallax.ease[me.ease] || me.ease;
   me.restart();
 
   return me;
