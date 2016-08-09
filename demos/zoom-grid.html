@@ -14,24 +14,22 @@
 </head>
 <body class="bg">
 
-<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
 <script src='../dist/canvallax.min.js'></script>
 <script>
 /* Test Code */
 
-var tracker = canvallax.TrackScroll({
-      ease: 2,
-      scale: 1,
-      //invert: true
-    }),
-    scene = canvallax.Scene({
-      offset: tracker,
-      fullscreen: true,
-      transformOrigin: 'center center',
+var scene = canvallax.Scene({
       playing: false
     }),
     width = document.body.clientWidth,
     height = document.body.clientHeight;
+
+canvallax.TrackScroll({
+      ease: 2,
+      scale: 1,
+      //invert: true
+    }).add(scene);
 
 // Uses canvallax, available on Github
 // https://github.com/shshaw/canvallax.js

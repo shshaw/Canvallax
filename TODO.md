@@ -1,0 +1,8 @@
+- [x] Simplify `z` to a scale-like value, positive integer with 0 being the minimum.
+- [x] Make `z` relative to parent's `z` to allow for better camera movements into and out of a scene.
+- [ ] Remove `parent` property from elements, make it relative to what is calling the render, and/or have a parent array.
+- [ ] Make `fill` and `stroke` into methods ( `drawFill` and `drawStroke`? )
+- [ ] `getPercentageValue()` method to allow for `width: 20%`, `y: 60%` with value caching until width/height changes.
+- [ ] `DragTracker` track mousedown drag movements with hand cursors
+- [ ] `DeviceOrientationTracker` for mobile to emulate a 'window' effect.
+- [ ] Cache to offscreen canvas for improved performance. `Canvallax.Polygon().cache()`? `Canvallax.Polygon({ cache: true })`?

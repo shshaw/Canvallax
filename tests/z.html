@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Canvallax: Z</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../demos/demos.css">
+
+  <style type="text/css">
+  /* Custom Styles for test */
+
+  </style>
+</head>
+<body class="stretch">
+
+<script src='../dist/canvallax.min.js'></script>
+<script>
+/* Test Code */
+
+var scene = canvallax.Scene({
+      //playing: false,
+      fullscreen: true,
+      transformOrigin: 'center center',
+    }),
+    width = document.body.clientWidth,
+    height = document.body.clientHeight,
+    tracker = canvallax.TrackScroll();
+
+  scene.addTo(tracker);
+
+
+////////////////////////////////////////
+
+
+var count = 10,
+    i = 0,
+    size = 100,
+    rect;
+
+for (; i < count; i++) {
+  rect = canvallax.Rectangle({
+        width: size,
+        height: size,
+        x: (width * 0.25)/2,
+        y: (height * 0.25)/2,
+        fill: '#000',
+        opacity: 0.8,
+        z: 1 - (i * 0.09)
+      });
+
+  console.log(rect.z);
+
+  scene.add(rect);
+}
+
+//scene.render();
+
+</script>
+</body>
+</html>

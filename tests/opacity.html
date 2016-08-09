@@ -23,7 +23,6 @@ var scene = canvallax.Scene(),
     width = document.body.clientWidth,
     height = document.body.clientHeight;
 
-canvallax.TrackScroll().add(scene);
 
 ////////////////////////////////////////
 
@@ -38,28 +37,18 @@ var shapes = [],
     x = 0,
     y = 0;
 
-for (y = 0; y < height; y += size){
-  for (x = 0; x < width; x += size) {
-    shapes.push(
-      canvallax.Rectangle({
-        x: x,// Math.random() * width * (2 - distance),
-        y: y,//Math.random() * height * (2 - distance),
-        width: size,
-        height: size,
-        fill: color,
-        opacity: 0.9
-      })
-    );
-  }
+for (x = 0; x < width; x += size) {
+  shapes.push(
+    canvallax.Rectangle({
+      x: x,// Math.random() * width * (2 - distance),
+      y: y,//Math.random() * height * (2 - distance),
+      width: size,
+      height: size,
+      fill: color,
+      opacity: x / width
+    })
+  );
 }
-
-new TimelineMax({ yoyo: true, repeat: -1 })
-.staggerTo(shapes, 2,{
-  z: 0,
-  //rotation: 360,
-  ease: 'Cubic.easeInOut',
-},0.01)
-
 
 //scene.transformOrigin = 'center top';
 /*

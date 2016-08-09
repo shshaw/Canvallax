@@ -6,7 +6,8 @@
   - `canvallax()` has become `canvallax.Scene()` for clarity.
   - `distance` property is now just `z`.
   - Trackers are now classes that can control scenes, groups and elements with offsets & easing! Set the `tracker` property of Canvallax pieces to a `canvallax.TrackPointer()` or `canvallax.TrackScroll()` instance.
-  - `canvallax.Polygon` now uses `width` & `height` instead of `radius` for creating oblong polygons and supports custom shapes an array as the `points` value. Custom shapes can be closed by setting the last point in the array as `'close'`.
+  - `canvallax.Ellipse` replaces `canvallax.Circle` and uses `width` & `height` instead of `radius` for creating oblong shapes.
+  - `canvallax.Polygon` also uses `width` & `height` and supports custom shapes using an array as the `points` value. Custom shapes can be closed by setting the last point in the array as `'close'`.
 - `canvallax.Group()` for keeping elements together.
   - Element positions & transforms will be relative to Group's position.
 - `clip` property utilizing Canvallax Elements or custom functions.

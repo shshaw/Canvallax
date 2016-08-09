@@ -82,7 +82,7 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0 ( built 2016-06-14 ) https://github.com/shshaw/Canvallax.js @preserve */
+            class="sunlight-highlight-javascript linenums">/*! canvallax v2.0.0 ( built 2016-08-05 ) https://github.com/shshaw/Canvallax.js @preserve */
 
 (function(win){
 
@@ -372,9 +372,6 @@ var _transformAttr = ['width','height'];
  * @property {core._render} _render - Object specific callback to render to the context.
  * @property {core.postRender} postRender - Callback after the object is rendered.
  *
- * @todo Simplify `z` to a scale-like value, positive integer with 0 being the minimum.
- * @todo Make `z` relative to parent's `z` to allow for better camera movements into and out of a scene.
- * @todo Remove `parent` property from elements, make it relative to what is calling the render.
  */
 
 var core = {
@@ -445,20 +442,44 @@ var core = {
 
       parent = parent || me.parent;
 
-      o = ctx.globalAlpha * me.opacity;
-      if ( o &lt;= 0 ) { return me; }
-
       ctx.save();
-      ctx.globalAlpha = o;
-      if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
-      if ( me.clearFrames &amp;&amp; me.clear ) { me.clear(ctx,parent); }
-      if ( me.clip ) { me._clip(ctx,parent); }
-      if ( me.preRender ) { me.preRender(ctx,parent); }
-      if ( me._render ) { me._render(ctx,parent); }
-      for ( ; i &lt; len; i++ ){ me[i].render(ctx,me); }
-      if ( me.postRender ) { me.postRender(ctx,parent); }
-      ctx.restore();
 
+      // Clear previous frame
+      if ( me.clearFrames &amp;&amp; me.clear ) { me.clear(ctx,parent); }
+
+      // Opacity based on parent's opacity.
+      o = ctx.globalAlpha * me.opacity;
+      if ( o > 0 ) {
+
+        ctx.globalAlpha = o;
+
+        if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
+
+        // Apply clipping mask
+        if ( me.clip ) { me._clip(ctx,parent); }
+
+        // 'z' scaling if it has a parent and isn't fixed
+        if ( me.fixed || ( parent &amp;&amp; parent.transform(ctx, me.z) ) ) {
+
+          // Apply this element's transforms. If scale is 0, the element won't continue to render.
+          if ( me.transform(ctx) ) {
+
+            // Pre-render callback
+            if ( me.preRender ) { me.preRender(ctx,parent); }
+
+            // Render this
+            if ( me._render ) { me._render(ctx,parent); }
+
+            // Render children
+            for ( ; i &lt; len; i++ ){ me[i].render(ctx,me); }
+
+            // Post-render callback
+            if ( me.postRender ) { me.postRender(ctx,parent); }
+          }
+
+        }
+      }
+      ctx.restore();
       return me;
     },
 
@@ -550,22 +571,23 @@ var core = {
           y = this.y,
           offset = this.offset,
           parent = this.parent,
-          parentOffset = !this.fixed &amp;&amp; parent &amp;&amp; parent.getCoords ? parent.getCoords() : false;
+          parentOffset = !this.fixed &amp;&amp; parent &amp;&amp; parent.getCoords ? parent.getCoords(coordScale) : false;
+
+      if ( offset ) {
+        x += offset.x || 0;
+        y += offset.y || 0;
+      }
 
       if ( parentOffset ) {
         x += parentOffset[0];
         y += parentOffset[1];
       }
 
-      if ( coordScale !== undefined ) {
+      if ( !parent &amp;&amp; coordScale !== undefined ) {
         x *= coordScale;
         y *= coordScale;
       }
 
-      if ( offset ) {
-        x += offset.x || 0;
-        y += offset.y || 0;
-      }
 
       return [x,y];
     },
@@ -580,10 +602,12 @@ var core = {
      * @memberof! core
      */
     transform: function(ctx, relativeZ) {
-      var scale = this.scale * ( relativeZ !== undefined ? relativeZ : 1 ) * this.z,
+      var scale = ( relativeZ !== undefined ? relativeZ : this.scale ),
           coords, transformPoint;
 
-      if ( scale &lt;= 0 ) { return false; }
+      if ( scale &lt;= 0 ) {
+        return false;
+      }
 
       if ( scale !== 1 || (this.rotation % 360) !== 0 ) {
         coords = this.getCoords(relativeZ);
@@ -805,7 +829,7 @@ canvallax.ease = {
  *
  * @param {number} options.repeat=0 - Number of times to repeat the animation. -1 is infinite
  * @param {boolean} options.yoyo - Reverse animation on repeat
- * @param {function} options.ease=canvallax.ease.inOutQuad - Easing to use from {@link canvallax.ease}
+ * @param {function|string} options.ease=canvallax.ease.inOutQuad - Easing function to use. Many functions are built in to {@link canvallax.ease}, and you can reference them directly or use a string of the property instead of the function itself like `'inOutCubic'`
  * @param {boolean} options.reversed - Play animation backwards
  * @param {canvallax.Animate.onStart} options.onStart - Callback for when animation starts
  * @param {canvallax.Animate.onUpdate} options.onUpdate - Callback for every `requestAnimationFrame` render
@@ -837,6 +861,7 @@ function Animate(target,duration,to,opts){
 
   me.duration(duration);
   //me.render = me.render.bind(me);
+  me.ease = canvallax.ease[me.ease] || me.ease;
   me.restart();
 
   return me;
@@ -1281,9 +1306,6 @@ canvallax.Element = createClass(core,
 
     _render: function(ctx,parent){
       var me = this;
-
-      if ( !me.fixed &amp;&amp; parent &amp;&amp; !parent.transform(ctx, me.z) ) { return me; }
-      if ( !me.transform(ctx, me.z) ) { return me; }
 
       if ( me.draw ) {
         ctx.beginPath();

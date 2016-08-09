@@ -9,8 +9,8 @@
   }
 
   .stretch {
-    min-width: 200vw;
-    min-height: 200vh;
+    min-width: 400vw;
+    min-height: 400vh;
   }
 
   .bg,
