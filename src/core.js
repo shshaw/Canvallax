@@ -217,22 +217,23 @@ var core = {
           y = this.y,
           offset = this.offset,
           parent = this.parent,
-          parentOffset = !this.fixed && parent && parent.getCoords ? parent.getCoords() : false;
+          parentOffset = !this.fixed && parent && parent.getCoords ? parent.getCoords(coordScale) : false;
+
+      if ( offset ) {
+        x += offset.x || 0;
+        y += offset.y || 0;
+      }
 
       if ( parentOffset ) {
         x += parentOffset[0];
         y += parentOffset[1];
       }
 
-      if ( coordScale !== undefined ) {
+      if ( !parent && coordScale !== undefined ) {
         x *= coordScale;
         y *= coordScale;
       }
 
-      if ( offset ) {
-        x += offset.x || 0;
-        y += offset.y || 0;
-      }
 
       return [x,y];
     },

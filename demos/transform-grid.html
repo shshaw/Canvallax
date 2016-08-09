@@ -14,42 +14,27 @@
 </head>
 <body>
 
-<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
 <script src='../dist/canvallax.min.js'></script>
 <script>
 /* Test Code */
 
-var tracker = canvallax.TrackScroll({
-      ease: 2,
-      scale: 1,
-      //invert: true
-    }),
-    scene = canvallax.Scene({
-      tracker: tracker,
-      fullscreen: true,
-      transformOrigin: 'center center',
-    }),
+var scene = canvallax.Scene(),
     width = document.body.clientWidth,
     height = document.body.clientHeight;
 
-var width = document.body.clientWidth,
-    height = document.body.clientHeight,
-
-    allTransforms = ["left top", "center top", "right top", "left center", "center center", "right center", "left bottom", "center bottom", "right bottom"],
-    count = allTransforms.length,
-
-    color = '#000';
-
+canvallax.TrackScroll().add(scene);
 
 ////////////////////////////////////////
 
+var color = '#000';
 
 function randomRange(min, max) {
   return Math.random() * (max - min) + min;
 }
 
 var shapes = [],
-    size = width / 30,
+    size = width / 20,
     x = 0,
     y = 0;
 
@@ -69,7 +54,7 @@ for (y = 0; y < height; y += size){
 }
 
 new TimelineMax({ yoyo: true, repeat: -1 })
-.staggerTo(shapes,1.5,{
+.staggerTo(shapes, 2,{
   z: 0,
   //rotation: 360,
   ease: 'Cubic.easeInOut',
