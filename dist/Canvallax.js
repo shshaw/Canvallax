@@ -1,20 +1,28 @@
-/*! canvallax v2.0.0 ( built 2016-08-05 ) https://github.com/shshaw/Canvallax.js @preserve */
+/*! canvallax v2.0.0 ( built 2016-08-15 ) https://github.com/shshaw/Canvallax.js @preserve */
 
-(function(win){
+;(function (root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define(factory);
+  } else if (typeof exports !== "undefined") {
+    module.exports = factory();
+  } else {
+    root.canvallax = factory();
+  }
+})(this, function() {
 
   'use strict';
 
-  var /**
+  var win = window,
+      doc = document,
+      root = doc.documentElement,
+      body = doc.body,
+      arr = Array.prototype,
+      /**
        * Canvallax object containing all classes & methods
        * @namespace {object} canvallax
        * @public
        */
       canvallax = win.canvallax = win.canvallax || {},
-
-      doc = document,
-      root = doc.documentElement,
-      body = doc.body,
-      arr = Array.prototype,
       // requestAnimationFrame polyfill
       requestAnimationFrame = win.requestAnimationFrame || win.webkitRequestAnimationFrame || win.mozRequestAnimationFrame || win.msRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); }; // IE Fallback
 
@@ -622,12 +630,12 @@ var animations = extend({},arrayLike,{
 
   animate: function(){
 
-    animations.frame = requestAnimationFrame(animations.animate);
-
     var len = animations.length,
         el;
 
-    if ( !animations.playing || len === 0  ) { animations.stop(); return; }
+    if ( !animations.playing || len === 0 ) { animations.stop(); return; }
+    else { animations.frame = requestAnimationFrame(animations.animate); }
+
     while(len--){
       el = animations[len];
       if ( el && el.playing && ( el.render && !el.render() )) { el.stop(); }
@@ -1744,4 +1752,6 @@ pluginQueue.push = function(fn){ fn(canvallax); };
 win._clx = pluginQueue;
 
 
-})(window || this);
+  return canvallax;
+
+});

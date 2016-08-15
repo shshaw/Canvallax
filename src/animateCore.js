@@ -7,12 +7,12 @@ var animations = extend({},arrayLike,{
 
   animate: function(){
 
-    animations.frame = requestAnimationFrame(animations.animate);
-
     var len = animations.length,
         el;
 
-    if ( !animations.playing || len === 0  ) { animations.stop(); return; }
+    if ( !animations.playing || len === 0 ) { animations.stop(); return; }
+    else { animations.frame = requestAnimationFrame(animations.animate); }
+
     while(len--){
       el = animations[len];
       if ( el && el.playing && ( el.render && !el.render() )) { el.stop(); }

@@ -1,19 +1,27 @@
 // @echo header
-(function(win){
+;(function (root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define(factory);
+  } else if (typeof exports !== "undefined") {
+    module.exports = factory();
+  } else {
+    root.canvallax = factory();
+  }
+})(this, function() {
 
   'use strict';
 
-  var /**
+  var win = window,
+      doc = document,
+      root = doc.documentElement,
+      body = doc.body,
+      arr = Array.prototype,
+      /**
        * Canvallax object containing all classes & methods
        * @namespace {object} canvallax
        * @public
        */
       canvallax = win.canvallax = win.canvallax || {},
-
-      doc = document,
-      root = doc.documentElement,
-      body = doc.body,
-      arr = Array.prototype,
       // requestAnimationFrame polyfill
       requestAnimationFrame = win.requestAnimationFrame || win.webkitRequestAnimationFrame || win.mozRequestAnimationFrame || win.msRequestAnimationFrame || function(callback){ win.setTimeout(callback, 20); }; // IE Fallback
 
@@ -47,4 +55,6 @@
 // @endif
 // @include ./plugins.js
 
-})(window || this);
+  return canvallax;
+
+});
