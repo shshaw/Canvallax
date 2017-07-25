@@ -12,6 +12,14 @@
     "type": "git",
     "url": "https://github.com/shshaw/Canvallax.js"
   },
+
+  "files": [
+    "dist/canvallax.js",
+    "dist/canvallax.min.js",
+    "src",
+    "plugins"
+  ],
+
   "homepage": "https://github.com/shshaw/Canvallax.js",
   "bugs": "https://github.com/shshaw/Canvallax.js/issues",
   "license": "MIT",
