@@ -97,12 +97,13 @@ var core = {
       o = ctx.globalAlpha * me.opacity;
       if ( o > 0 ) {
 
+        // Apply clipping mask
+        if ( me.clip ) { me._clip(ctx,parent); }
+
         ctx.globalAlpha = o;
 
         if ( me.blend ) { ctx.globalCompositeOperation = me.blend; }
 
-        // Apply clipping mask
-        if ( me.clip ) { me._clip(ctx,parent); }
 
         // 'z' scaling if it has a parent and isn't fixed
         if ( me.fixed || ( parent && parent.transform(ctx, me.z) ) ) {
